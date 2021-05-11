@@ -210,7 +210,7 @@ void Player::Update(Input* input)
 
 void Player::Draw()
 {
-	player.Draw();
+	player.Draw(1);
 
 	if (attackReady)attackReadySprite.Draw();
 	if (isAttack)
@@ -231,7 +231,7 @@ void Player::Draw()
 		for (int i = 0; i < damageNum.size(); i++)
 		{
 			number[damageNum[i]].Update({ -70 + (5 * (float)i),0,0 }, number[i].GetScale());
-			number[damageNum[i]].Draw();
+			number[damageNum[i]].Draw(1);
 		}
 	}
 

@@ -18,17 +18,21 @@
 #pragma comment(lib,"dxguid.lib")
 
 
+#define NORMAL 0
+#define TOON 1
+
 class Object
 {
 public:
 	Object();
 	~Object();
 
+	// 初期化処理　全体で一回のみinitを回す
 	void Init(MyDirectX12* my12, MyWindow* window);
 	void CreatePiplineStateOBJ();
 
 
-	void Draw();
+	void Draw(int num);
 
 	void Update(DirectX::XMFLOAT3 position, DirectX::XMFLOAT3 scale = { 1,1,1 }, DirectX::XMFLOAT3 rotation = {0,0,0});
 
@@ -89,17 +93,21 @@ private:
 
 
 	// 共有する変数
-	static Microsoft::WRL::ComPtr<ID3D12RootSignature> rootSignature; // ルートシグネチャ
-	static Microsoft::WRL::ComPtr<ID3D12PipelineState> pipelineState; // パイプラインステート
+	static Microsoft::WRL::ComPtr<ID3D12RootSignature> rootSignature[2]; // ルートシグネチャ
+	static Microsoft::WRL::ComPtr<ID3D12PipelineState> pipelineState[2]; // パイプラインステート
 	static DirectX::XMMATRIX matProjection; // 射影行列
 	//static const int SRVCount = 512; // テクスチャの最大枚数
-	Microsoft::WRL::ComPtr<ID3D12DescriptorHeap> descHeap;
 	static DirectX::XMMATRIX matView;
 
 	static Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList> commandList;
 	static Microsoft::WRL::ComPtr<ID3D12Device> device;
 	static D3D12_GRAPHICS_PIPELINE_STATE_DESC gpipeline;
 	static MyWindow* window;
+
+	// 
+	static DirectX::XMFLOAT3 eye; // 視点座標
+	static DirectX::XMFLOAT3 target; // 注視点座標
+	static DirectX::XMFLOAT3 up; // 上方向ベクトル
 
 	// 1枚ごとに変える変数
 	Microsoft::WRL::ComPtr<ID3D12Resource> vertBuff; // 頂点バッファ
@@ -108,6 +116,8 @@ private:
 	Microsoft::WRL::ComPtr<ID3D12Resource> constBuffB1;
 	
 	Microsoft::WRL::ComPtr<ID3D12Resource> texBuff;
+
+	Microsoft::WRL::ComPtr<ID3D12DescriptorHeap> descHeap;
 
 	D3D12_VERTEX_BUFFER_VIEW vbView{}; // 頂点バッファビュー
 	D3D12_INDEX_BUFFER_VIEW  ibView{}; // インデックスバッファビュー
@@ -120,9 +130,9 @@ private:
 	DirectX::XMMATRIX matTrans; // 平行移動行列
 
 
-	DirectX::XMFLOAT3 position{}; // 座標
-	DirectX::XMFLOAT3 scale{};     // スケール
-	DirectX::XMFLOAT3 rotation{}; // 回転
+	DirectX::XMFLOAT3 position = { 0,0,0 }; // 座標
+	DirectX::XMFLOAT3 scale = { 1,1,1 };     // スケール
+	DirectX::XMFLOAT3 rotation = { 0,0,0 }; // 回転
 	DirectX::XMMATRIX objMatWorld{}; // ワールド座標
 	DirectX::XMFLOAT4 objColor = { 1,1,1,1 }; // スプライトの色
 	UINT texNumber =0; //	テクスチャ番号

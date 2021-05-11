@@ -60,6 +60,9 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	obj->Init(&my12, &myw);
 	obj->CreateModel("player");
 
+	Object* obj2 = new Object();
+	obj2->CreateModel("player");
+
 	MSG msg{}; // メッセージ
 	while (true)
 	{
@@ -70,12 +73,14 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 	
 		obj->Update({ 0,0,0 });
+		obj2->Update({ 0,1,0 });
 		#pragma region 描画処理
 
 		// 描画準備用
 		my12.PreDraw();
 
-		obj->Draw();
+		obj->Draw(NORMAL);
+		obj2->Draw(TOON);
 
 		// 描画コマンド消化用
 		my12.PostDraw();
@@ -83,6 +88,9 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		#pragma endregion
 
 	}
+
+	delete obj;
+	delete obj2;
 
 	return 0;
 }

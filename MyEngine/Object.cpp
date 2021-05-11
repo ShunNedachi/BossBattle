@@ -21,8 +21,8 @@
 using namespace std;
 
 // 3dobject 共有変数
-Microsoft::WRL::ComPtr<ID3D12RootSignature> Object::rootSignature; // ルートシグネチャ
-Microsoft::WRL::ComPtr<ID3D12PipelineState> Object::pipelineState; // パイプラインステート
+Microsoft::WRL::ComPtr<ID3D12RootSignature> Object::rootSignature[2]; // ルートシグネチャ
+Microsoft::WRL::ComPtr<ID3D12PipelineState> Object::pipelineState[2]; // パイプラインステート
 DirectX::XMMATRIX Object::matProjection; // 射影行列
 //Microsoft::WRL::ComPtr<ID3D12DescriptorHeap> Object::descHeap;
 //Microsoft::WRL::ComPtr<ID3D12Resource> Object::texBuff[SRVCount];
@@ -32,6 +32,10 @@ Microsoft::WRL::ComPtr<ID3D12Device> Object::device;
 D3D12_GRAPHICS_PIPELINE_STATE_DESC Object::gpipeline{};
 MyWindow* Object::window;
 
+//
+DirectX::XMFLOAT3 Object::eye = { 0,0,-100 }; // 視点座標
+DirectX::XMFLOAT3 Object::target = { 0,0,0 }; // 注視点座標
+DirectX::XMFLOAT3 Object::up = { 0,1,0 }; // 上方向ベクトル
 
 Object::Object()
 {
@@ -190,33 +194,116 @@ void Object::CreatePiplineStateOBJ()
 
 	// ルートシグネチャの生成
 	result = device->CreateRootSignature(0, rootSigBlob->GetBufferPointer(), rootSigBlob->GetBufferSize(),
-		IID_PPV_ARGS(&rootSignature));
+		IID_PPV_ARGS(&rootSignature[0]));
 
 	// パイプラインにルートシグネチャをセット
-	gpipeline.pRootSignature = rootSignature.Get();
+	gpipeline.pRootSignature = rootSignature[0].Get();
 
-	result = device.Get()->CreateGraphicsPipelineState(&gpipeline, IID_PPV_ARGS(&pipelineState));
+	result = device.Get()->CreateGraphicsPipelineState(&gpipeline, IID_PPV_ARGS(&pipelineState[0]));
 
 
-	// デスクリプタヒープを生成
-	D3D12_DESCRIPTOR_HEAP_DESC descHeapDesc = {};
-	descHeapDesc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV;
-	descHeapDesc.Flags = D3D12_DESCRIPTOR_HEAP_FLAG_SHADER_VISIBLE;
-	descHeapDesc.NumDescriptors = 1;
-	result = device->CreateDescriptorHeap(&descHeapDesc, IID_PPV_ARGS(&descHeap));
+	// トゥーンシェーダー用ルートシグネチャ設定
+		// 頂点シェーダーの読み込みとコンパイル
+	result = D3DCompileFromFile(
+		L"ToonVertexShader.hlsl", // シェーダーファイル名
+		nullptr,
+		D3D_COMPILE_STANDARD_FILE_INCLUDE, // インクルード可能にする
+		"main", "vs_5_0", // エントリーポイント名、シェーダーモデル指定
+		D3DCOMPILE_DEBUG | D3DCOMPILE_SKIP_OPTIMIZATION, // デバッグ用設定
+		0,
+		&vsBlob, &errorBlob);
+
+	// ピクセルシェーダーの読み込みとコンパイル
+	result = D3DCompileFromFile(
+		L"ToonPixelShader.hlsl", // シェーダーファイル名
+		nullptr,
+		D3D_COMPILE_STANDARD_FILE_INCLUDE, // インクルード可能にする
+		"main", "ps_5_0", // エントリーポイント名、シェーダーモデル設定
+		D3DCOMPILE_DEBUG | D3DCOMPILE_SKIP_OPTIMIZATION, // デバッグ用設定
+		0,
+		&psBlob, &errorBlob);
+
+	if (FAILED(result))
+	{
+
+		// errorBlobからエラー内容をstring型にコピー
+		std::string errstr;
+		errstr.resize(errorBlob->GetBufferSize());
+
+		std::copy_n((char*)errorBlob->GetBufferPointer(),
+			errorBlob->GetBufferSize(),
+			errstr.begin());
+		errstr += "\n";
+
+		// エラー内容を出力ウィンドウに表示
+		OutputDebugStringA(errstr.c_str());
+		exit(1);
+	}
+
+	// 頂点レイアウト
+	D3D12_INPUT_ELEMENT_DESC inputLayout2[] =
+	{
+		{// xyz座標(1行で書いたほうが見やすい)
+			"POSITION",0,DXGI_FORMAT_R32G32B32_FLOAT,0,
+			D3D12_APPEND_ALIGNED_ELEMENT,
+			D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA,0
+		},
+
+		{ // 法線ベクトル(1行で書いたほうが見やすい)
+			"NORMAL",0,DXGI_FORMAT_R32G32B32_FLOAT,0,
+			D3D12_APPEND_ALIGNED_ELEMENT,
+			D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA,0
+		},
+
+		{// uv座標(1行で書いたほうが見やすい)
+			"TEXCOORD",0,DXGI_FORMAT_R32G32_FLOAT,0,
+			D3D12_APPEND_ALIGNED_ELEMENT,
+			D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA,0
+		},
+	};
+
+	gpipeline.VS = CD3DX12_SHADER_BYTECODE(vsBlob.Get());
+	gpipeline.PS = CD3DX12_SHADER_BYTECODE(psBlob.Get());
+
+	gpipeline.InputLayout.pInputElementDescs = inputLayout2;
+	gpipeline.InputLayout.NumElements = _countof(inputLayout2);
+
+	// ルートシグネチャの生成
+	result = device->CreateRootSignature(0, rootSigBlob->GetBufferPointer(), rootSigBlob->GetBufferSize(),
+		IID_PPV_ARGS(&rootSignature[1]));
+
+	// パイプラインにルートシグネチャをセット
+	gpipeline.pRootSignature = rootSignature[1].Get();
+
+	result = device.Get()->CreateGraphicsPipelineState(&gpipeline, IID_PPV_ARGS(&pipelineState[1]));
+
+
+
 
 }
 
 
-void Object::Draw()
+void Object::Draw(int num)
 {
+	if (num == 0)
+	{	
+		// パイプラインステートの設定
+		commandList->SetPipelineState(pipelineState[0].Get());
+		// ルートシグネチャの設定
+		commandList->SetGraphicsRootSignature(rootSignature[0].Get());
+		// プリミティブ形状を設定
+		commandList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP);
+	}
+	else if (num == 1)
+	{
+		// パイプラインステートの設定
+		commandList->SetPipelineState(pipelineState[1].Get());
+		// ルートシグネチャの設定
+		commandList->SetGraphicsRootSignature(rootSignature[1].Get());
+		// プリミティブ形状を設定
+		commandList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP);
 
-	// パイプラインステートの設定
-	commandList->SetPipelineState(pipelineState.Get());
-	// ルートシグネチャの設定
-	commandList->SetGraphicsRootSignature(rootSignature.Get());
-	// プリミティブ形状を設定
-	commandList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP);
+	}
 
 	using namespace DirectX;
 	HRESULT result;
@@ -247,9 +334,12 @@ void Object::Draw()
 	constMap1->alpha = material.alpha;
 	constBuffB1->Unmap(0, nullptr);
 
+
+
 	// デスクリプタヒープの配列
 	ID3D12DescriptorHeap* ppHeaps[] = { descHeap.Get() };
 	commandList->SetDescriptorHeaps(_countof(ppHeaps), ppHeaps);
+
 
 	// 頂点バッファをセット
 	commandList->IASetVertexBuffers(0, 1, &vbView);
@@ -266,6 +356,7 @@ void Object::Draw()
 			descHeap->GetGPUDescriptorHandleForHeapStart(),
 			texNumber,
 			device->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV)));
+
 
 	commandList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
@@ -286,11 +377,6 @@ void Object::Init(MyDirectX12* my12,MyWindow* window)
 	using namespace DirectX;
 
 
-	// 座標、スケール、回転の初期化
-	scale = { 1.0f,1.0f,1.0f };
-	rotation = { 0,0,0 };
-	position = { 0,0,0 };
-
 	// 射影変換
 	matProjection = XMMatrixPerspectiveFovLH(
 		XMConvertToRadians(60.0f),
@@ -299,10 +385,6 @@ void Object::Init(MyDirectX12* my12,MyWindow* window)
 	);
 
 	// ビュー行列
-	float angle = 0.0f;	// カメラの回転角
-	XMFLOAT3 eye(0, 0, -100); // 視点座標
-	XMFLOAT3 target(0, 0, 0); // 注視点座標
-	XMFLOAT3 up(0, 1, 0); // 上方向ベクトル
 	matView = XMMatrixLookAtLH(XMLoadFloat3(&eye), XMLoadFloat3(&target), XMLoadFloat3(&up));
 
 
@@ -322,6 +404,12 @@ void Object::CreateModel(const string &modelname)
 	
 	HRESULT result = S_FALSE;
 
+	// デスクリプタヒープを生成
+	D3D12_DESCRIPTOR_HEAP_DESC descHeapDesc = {};
+	descHeapDesc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV;
+	descHeapDesc.Flags = D3D12_DESCRIPTOR_HEAP_FLAG_SHADER_VISIBLE;
+	descHeapDesc.NumDescriptors = 1;
+	result = device->CreateDescriptorHeap(&descHeapDesc, IID_PPV_ARGS(&descHeap));
 
 
 	// ファイルストリーム
@@ -637,6 +725,7 @@ bool Object::LoadTexture(const std::string &directoryPath, const std::string &fi
 			texNumber,
 			device->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV))
 	);
+
 
 	return S_OK;
 
