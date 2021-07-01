@@ -90,8 +90,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 	
 		camera->SetEye(eye);
-	/*	obj->SetTarget(obj->GetPosition());
-		obj->SetEye(eye);*/
+
 
 		obj->Update({ 0,0,0 });
 		obj2->Update({ 0,1,0 });

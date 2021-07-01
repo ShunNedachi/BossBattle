@@ -169,7 +169,40 @@ bool Xinput::PushButtom(int controller, short buttom)
 		}
 	}
 
+	// START“ü—Í
+	if (buttom == xinput_START)
+	{
+		if (state[count].Gamepad.wButtons & XINPUT_GAMEPAD_START)return true;
+	}
+	// BACK“ü—Í
+	if (buttom == xinput_BACK)
+	{
+		if (state[count].Gamepad.wButtons & XINPUT_GAMEPAD_BACK)return true;
+	}
 
+
+	// ã“ü—Í
+	if (buttom == xinput_UP)
+	{
+		if (state[count].Gamepad.wButtons & XINPUT_GAMEPAD_DPAD_UP)return true;
+	}
+
+	// ‰º“ü—Í
+	if (buttom == xinput_DOWN)
+	{
+		if (state[count].Gamepad.wButtons & XINPUT_GAMEPAD_DPAD_DOWN)return true;
+	}
+
+	// ¶“ü—Í
+	if (buttom == xinput_LEFT)
+	{
+		if (state[count].Gamepad.wButtons & XINPUT_GAMEPAD_DPAD_LEFT) return true;
+	}
+	// ‰E“ü—Í
+	if (buttom == xinput_RIGHT)
+	{
+		if (state[count].Gamepad.wButtons & XINPUT_GAMEPAD_DPAD_RIGHT)return true;
+	}
 
 	return false;
 }
@@ -324,8 +357,80 @@ bool Xinput::TriggerButtom(int controller, short buttom)
 		}
 	}
 
+	// START“ü—Í
+	if (buttom == xinput_START)
+	{
+		if (pastState[count].Gamepad.wButtons & XINPUT_GAMEPAD_START) {}
+		else forTrigger = true;
 
+		if (forTrigger &&
+			state[count].Gamepad.wButtons & XINPUT_GAMEPAD_START)
+		{
+			return true;
+		}
+	}
 
+	// START“ü—Í
+	if (buttom == xinput_BACK)
+	{
+		if (pastState[count].Gamepad.wButtons & XINPUT_GAMEPAD_BACK) {}
+		else forTrigger = true;
+
+		if (forTrigger &&
+			state[count].Gamepad.wButtons & XINPUT_GAMEPAD_BACK)
+		{
+			return true;
+		}
+	}
+
+	// ã“ü—Í
+	if (buttom == xinput_UP)
+	{
+		if (pastState[count].Gamepad.wButtons & XINPUT_GAMEPAD_DPAD_UP) {}
+		else forTrigger = true;
+
+		if (forTrigger &&
+			state[count].Gamepad.wButtons & XINPUT_GAMEPAD_DPAD_UP)
+		{
+			return true;
+		}
+	}
+	// ‰º“ü—Í
+	if (buttom == xinput_DOWN)
+	{
+		if (pastState[count].Gamepad.wButtons & XINPUT_GAMEPAD_DPAD_DOWN) {}
+		else forTrigger = true;
+
+		if (forTrigger &&
+			state[count].Gamepad.wButtons & XINPUT_GAMEPAD_DPAD_DOWN)
+		{
+			return true;
+		}
+	}
+	// ¶“ü—Í
+	if (buttom == xinput_LEFT)
+	{
+		if (pastState[count].Gamepad.wButtons & XINPUT_GAMEPAD_DPAD_LEFT) {}
+		else forTrigger = true;
+
+		if (forTrigger &&
+			state[count].Gamepad.wButtons & XINPUT_GAMEPAD_DPAD_LEFT)
+		{
+			return true;
+		}
+	}
+	// ‰E“ü—Í
+	if (buttom == xinput_RIGHT)
+	{
+		if (pastState[count].Gamepad.wButtons & XINPUT_GAMEPAD_DPAD_RIGHT) {}
+		else forTrigger = true;
+
+		if (forTrigger &&
+			state[count].Gamepad.wButtons & XINPUT_GAMEPAD_DPAD_RIGHT)
+		{
+			return true;
+		}
+	}
 
 	return false;
 }
@@ -426,4 +531,6 @@ int Xinput::MoveStick(int controller, short stick)
 		return moveState;
 
 	}
+
+	return 0;
 }

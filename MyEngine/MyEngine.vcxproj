@@ -132,7 +132,6 @@
     <ClCompile Include="MyDirectX12.cpp" />
     <ClCompile Include="MyWindow.cpp" />
     <ClCompile Include="Object.cpp" />
-    <ClCompile Include="Player.cpp" />
     <ClCompile Include="Sprite2D.cpp" />
     <ClCompile Include="XinputControll.cpp" />
   </ItemGroup>
@@ -142,7 +141,6 @@
     <ClInclude Include="MyDirectX12.h" />
     <ClInclude Include="MyWindow.h" />
     <ClInclude Include="Object.h" />
-    <ClInclude Include="Player.h" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="Sprite2D.h" />
     <ClInclude Include="XinputControll.h" />
