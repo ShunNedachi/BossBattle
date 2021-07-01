@@ -126,6 +126,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Camera.cpp" />
     <ClCompile Include="Input.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MyDirectX12.cpp" />
@@ -136,6 +137,7 @@
     <ClCompile Include="XinputControll.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Camera.h" />
     <ClInclude Include="Input.h" />
     <ClInclude Include="MyDirectX12.h" />
     <ClInclude Include="MyWindow.h" />

@@ -33,9 +33,9 @@ D3D12_GRAPHICS_PIPELINE_STATE_DESC Object::gpipeline{};
 MyWindow* Object::window;
 
 //
-DirectX::XMFLOAT3 Object::eye = { 0,0,-100 }; // 視点座標
-DirectX::XMFLOAT3 Object::target = { 0,0,0 }; // 注視点座標
-DirectX::XMFLOAT3 Object::up = { 0,1,0 }; // 上方向ベクトル
+//DirectX::XMFLOAT3 Object::eye = { 0,0,-100 }; // 視点座標
+//DirectX::XMFLOAT3 Object::target = { 0,0,0 }; // 注視点座標
+//DirectX::XMFLOAT3 Object::up = { 0,1,0 }; // 上方向ベクトル
 
 Object::Object()
 {
@@ -285,6 +285,7 @@ void Object::CreatePiplineStateOBJ()
 
 void Object::Draw(int num)
 {
+	// num によってシェーダーを切り替える
 	if (num == 0)
 	{	
 		// パイプラインステートの設定
@@ -320,9 +321,13 @@ void Object::Draw(int num)
 	matWorld *= matRot;
 	matWorld *= matTrans;
 
+	// ビュー行列
+	matView = XMMatrixLookAtLH(XMLoadFloat3(&camera->GetEye()), XMLoadFloat3(&camera->GetTarget()), XMLoadFloat3(&camera->GetUp()));
+
 	ConstBufferDataB0* constMap = nullptr;
 	result = constBuffB0->Map(0, nullptr, (void**)&constMap);
 	constMap->mat = matWorld * matView * matProjection;
+	constMap->cameraPos = camera->GetEye();
 	//constMap->clearColor = objColor;
 	constBuffB0->Unmap(0, nullptr);
 	// b1データ転送
@@ -372,7 +377,7 @@ void Object::Update(DirectX::XMFLOAT3 position, DirectX::XMFLOAT3 scale, DirectX
 	this->rotation = rotation;
 }
 
-void Object::Init(MyDirectX12* my12,MyWindow* window)
+void Object::Init(MyDirectX12* my12,MyWindow* window,Camera* camera)
 {
 	using namespace DirectX;
 
@@ -384,14 +389,13 @@ void Object::Init(MyDirectX12* my12,MyWindow* window)
 		0.1f, 1000.0f
 	);
 
-	// ビュー行列
-	matView = XMMatrixLookAtLH(XMLoadFloat3(&eye), XMLoadFloat3(&target), XMLoadFloat3(&up));
+
 
 
 	commandList = my12->CommandList();
 	device = my12->Device();
 	this->window = window;
-
+	this->camera = camera;
 	CreatePiplineStateOBJ();
 }
 

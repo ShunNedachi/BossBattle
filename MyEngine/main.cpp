@@ -7,6 +7,7 @@
 #include<wrl.h>
 #include"Sprite2D.h"
 #include"Object.h"
+#include"Camera.h"
 
 
 
@@ -37,6 +38,9 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 	Sprite2D::Init(&my12, &myw);
 
+	Camera* camera = Camera::GetInstance();
+
+
 	// DirectX 初期化処理 ここまで
 
 #pragma endregion
@@ -57,11 +61,12 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 	// 　3Dオブジェクト
 	Object* obj = new Object();
-	obj->Init(&my12, &myw);
-	obj->CreateModel("player");
+	obj->Init(&my12, &myw,camera);
+	obj->CreateModel("bless");
 
 	Object* obj2 = new Object();
-	obj2->CreateModel("player");
+	obj2->CreateModel("bless");
+	
 
 	MSG msg{}; // メッセージ
 	while (true)
@@ -71,7 +76,23 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		// 更新
 		input.Update();
 
+		XMFLOAT3 eye = camera->GetEye();
+		XMFLOAT3 target = camera->GetTarget();
+
+		if (input.PushKey(DIK_W))
+		{
+			eye.z--;
+		}
+		else if (input.PushKey(DIK_S))
+		{
+			eye.z++;
+		}
+
 	
+		camera->SetEye(eye);
+	/*	obj->SetTarget(obj->GetPosition());
+		obj->SetEye(eye);*/
+
 		obj->Update({ 0,0,0 });
 		obj2->Update({ 0,1,0 });
 		#pragma region 描画処理
@@ -79,8 +100,8 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		// 描画準備用
 		my12.PreDraw();
 
-		obj->Draw(NORMAL);
-		obj2->Draw(TOON);
+		//obj->Draw(NORMAL);
+		obj->Draw(TOON);
 
 		// 描画コマンド消化用
 		my12.PostDraw();
@@ -91,6 +112,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 	delete obj;
 	delete obj2;
+	camera->Destroy();
 
 	return 0;
 }

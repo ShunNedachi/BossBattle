@@ -10,6 +10,7 @@
 #include<d3dx12.h>
 #include"MyWindow.h"
 #include"MyDirectX12.h"
+#include"Camera.h"
 
 #pragma comment(lib,"d3dcompiler.lib")
 #pragma comment(lib,"d3d12.lib")
@@ -28,7 +29,7 @@ public:
 	~Object();
 
 	// 初期化処理　全体で一回のみinitを回す
-	void Init(MyDirectX12* my12, MyWindow* window);
+	void Init(MyDirectX12* my12, MyWindow* window,Camera* camera);
 	void CreatePiplineStateOBJ();
 
 
@@ -40,7 +41,15 @@ public:
 	void LoadMaterial(const std::string &directryPath, const std::string &filename);
 	bool LoadTexture(const std::string &directoryPath, const std::string &filename);
 
-	
+
+	//DirectX::XMFLOAT3 GetEye() { return eye; }
+	//DirectX::XMFLOAT3 GetTarget() { return target; }
+
+	//void SetEye(DirectX::XMFLOAT3 eye) { this->eye = eye; } // ｚがゼロでエラー
+	//void SetTarget(DirectX::XMFLOAT3 target) { this->target = target; }
+	//void SetCamera(Camera* camera) { this->camera = camera; }
+
+
 	DirectX::XMFLOAT3 GetPosition() { return position; }
 	DirectX::XMFLOAT3 GetRotation() { return rotation; }
 	DirectX::XMFLOAT3 GetScale() { return scale; }
@@ -53,6 +62,7 @@ private:
 	{
 		//DirectX::XMFLOAT4 clearColor; // 色（RGBA）
 		DirectX::XMMATRIX mat; // 3d変換行列
+		DirectX::XMFLOAT3 cameraPos;
 	};
 
 	// 定数バッファ用データ構造体b1
@@ -104,10 +114,10 @@ private:
 	static D3D12_GRAPHICS_PIPELINE_STATE_DESC gpipeline;
 	static MyWindow* window;
 
-	// 
-	static DirectX::XMFLOAT3 eye; // 視点座標
-	static DirectX::XMFLOAT3 target; // 注視点座標
-	static DirectX::XMFLOAT3 up; // 上方向ベクトル
+	//// 
+	//static DirectX::XMFLOAT3 eye; // 視点座標
+	//static DirectX::XMFLOAT3 target; // 注視点座標
+	//static DirectX::XMFLOAT3 up; // 上方向ベクトル
 
 	// 1枚ごとに変える変数
 	Microsoft::WRL::ComPtr<ID3D12Resource> vertBuff; // 頂点バッファ
@@ -144,4 +154,5 @@ private:
 	Material material;
 
 	// eye targetはコンストラクタ内部
+	Camera* camera = nullptr;
 };

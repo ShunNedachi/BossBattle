@@ -40,7 +40,7 @@ Player::Player(MyWindow* myw,MyDirectX12* my12,std::vector<Object> num)
 
 	#pragma region オブジェクト初期化
 
-	player.Init(my12, myw);
+	player.Init(my12, myw,Camera::GetInstance());
 	player.CreateModel("player");
 
 
