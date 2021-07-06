@@ -8,6 +8,7 @@
 #include"Sprite2D.h"
 #include"Object.h"
 #include"Camera.h"
+#include "XinputControll.h"
 
 
 
@@ -29,9 +30,10 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	Input input;
 	input.Initialize(myw.GetConfig().hInstance,myw.GetHWND());
 
+	Xinput xinput;
+
 	// DirectX ‰Šú‰»ˆ— ‚±‚±‚©‚ç
 	MyDirectX12 my12;
-	HRESULT result;
 
 	my12.Debug();
 	my12.Initialize(&myw);
@@ -75,17 +77,18 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 		// XV
 		input.Update();
+		xinput.Update();
 
 		XMFLOAT3 eye = camera->GetEye();
 		XMFLOAT3 target = camera->GetTarget();
 
-		if (input.PushKey(DIK_W))
-		{
-			eye.z--;
-		}
-		else if (input.PushKey(DIK_S))
+		if (input.PushKey(DIK_W) || xinput.MoveStick(0,xinput_LS) & XINPUT_STICK_UP)
 		{
 			eye.z++;
+		}
+		else if (input.PushKey(DIK_S)|| xinput.MoveStick(0,xinput_LS)& XINPUT_STICK_DOWN)
+		{
+			eye.z--;
 		}
 
 	

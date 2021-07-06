@@ -374,6 +374,8 @@ bool Input::IsStickUse()
 	{
 		return true;
 	}
+
+	return true;
 }
 
 // 十字キーを押したとき
