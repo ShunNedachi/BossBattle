@@ -97,7 +97,7 @@ bool Audio::LoadFile(const wchar_t* filename)
 	//memset(&wfx, 0, sizeof(WAVEFORMATEXTENSIBLE));
 	//memset(&buffer, 0, sizeof(XAUDIO2_BUFFER));
 
-	hFile = CreateFile(filename, GENERIC_READ, FILE_SHARE_READ, NULL,
+	hFile = CreateFileW(filename, GENERIC_READ, FILE_SHARE_READ, NULL,
 		OPEN_EXISTING, 0, NULL);
 
 	if (hFile == INVALID_HANDLE_VALUE) {

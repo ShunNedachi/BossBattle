@@ -13,93 +13,129 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="ソース ファイル\base">
+      <UniqueIdentifier>{dc1d2750-a9c6-46a2-b83d-18eaa7b6724e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\input">
+      <UniqueIdentifier>{cc416bd7-8d31-4122-9d8f-91c090228fd1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\object">
+      <UniqueIdentifier>{c540cadd-2fa1-4f34-b78e-123dab6cb72e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\object">
+      <UniqueIdentifier>{c02bb8ce-4355-4c52-a12e-6a3370dfe395}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\base">
+      <UniqueIdentifier>{8a7af771-a92a-400a-8796-8a17af259562}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\input">
+      <UniqueIdentifier>{ee8c07e4-7254-4115-9e26-ca2f45af5cc7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\audio">
+      <UniqueIdentifier>{9fce92f5-0cce-4dc5-a8c6-f20485cdd578}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\audio">
+      <UniqueIdentifier>{efbf611b-35ce-4086-b30e-715c3ce3deb2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\base\scene">
+      <UniqueIdentifier>{129eebe6-2013-4a62-9fd8-4805bb68d5ea}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\base\scene">
+      <UniqueIdentifier>{498574eb-e427-41d6-bf54-2b70648cb956}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="MyWindow.cpp">
-      <Filter>ソース ファイル</Filter>
+    <ClCompile Include="lib\audio\Audio.cpp">
+      <Filter>ソース ファイル\audio</Filter>
     </ClCompile>
-    <ClCompile Include="Input.cpp">
-      <Filter>ソース ファイル</Filter>
+    <ClCompile Include="lib\base\Camera.cpp">
+      <Filter>ソース ファイル\base</Filter>
     </ClCompile>
-    <ClCompile Include="MyDirectX12.cpp">
-      <Filter>ソース ファイル</Filter>
+    <ClCompile Include="lib\base\MyDirectX12.cpp">
+      <Filter>ソース ファイル\base</Filter>
     </ClCompile>
-    <ClCompile Include="Sprite2D.cpp">
-      <Filter>ソース ファイル</Filter>
+    <ClCompile Include="lib\base\MyWindow.cpp">
+      <Filter>ソース ファイル\base</Filter>
     </ClCompile>
-    <ClCompile Include="Object.cpp">
-      <Filter>ソース ファイル</Filter>
+    <ClCompile Include="lib\base\Scene.cpp">
+      <Filter>ソース ファイル\base\scene</Filter>
     </ClCompile>
-    <ClCompile Include="XinputControll.cpp">
-      <Filter>ソース ファイル</Filter>
+    <ClCompile Include="lib\input\Input.cpp">
+      <Filter>ソース ファイル\input</Filter>
     </ClCompile>
-    <ClCompile Include="Camera.cpp">
-      <Filter>ソース ファイル</Filter>
+    <ClCompile Include="lib\input\XinputControll.cpp">
+      <Filter>ソース ファイル\input</Filter>
+    </ClCompile>
+    <ClCompile Include="lib\object\Object.cpp">
+      <Filter>ソース ファイル\object</Filter>
+    </ClCompile>
+    <ClCompile Include="lib\object\ObjectManager.cpp">
+      <Filter>ソース ファイル\object</Filter>
+    </ClCompile>
+    <ClCompile Include="lib\object\Sprite2D.cpp">
+      <Filter>ソース ファイル\object</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="MyWindow.h">
-      <Filter>ヘッダー ファイル</Filter>
+    <ClInclude Include="lib\audio\Audio.h">
+      <Filter>ヘッダー ファイル\audio</Filter>
     </ClInclude>
-    <ClInclude Include="Input.h">
-      <Filter>ヘッダー ファイル</Filter>
+    <ClInclude Include="lib\base\Camera.h">
+      <Filter>ヘッダー ファイル\base</Filter>
     </ClInclude>
-    <ClInclude Include="MyDirectX12.h">
-      <Filter>ヘッダー ファイル</Filter>
+    <ClInclude Include="lib\base\MyDirectX12.h">
+      <Filter>ヘッダー ファイル\base</Filter>
     </ClInclude>
-    <ClInclude Include="Sprite2D.h">
-      <Filter>ヘッダー ファイル</Filter>
+    <ClInclude Include="lib\base\MyWindow.h">
+      <Filter>ヘッダー ファイル\base</Filter>
     </ClInclude>
-    <ClInclude Include="Object.h">
-      <Filter>ヘッダー ファイル</Filter>
+    <ClInclude Include="lib\base\Scene.h">
+      <Filter>ヘッダー ファイル\base\scene</Filter>
     </ClInclude>
-    <ClInclude Include="Scene.h">
-      <Filter>ヘッダー ファイル</Filter>
+    <ClInclude Include="lib\input\Input.h">
+      <Filter>ヘッダー ファイル\input</Filter>
     </ClInclude>
-    <ClInclude Include="XinputControll.h">
-      <Filter>ヘッダー ファイル</Filter>
+    <ClInclude Include="lib\input\XinputControll.h">
+      <Filter>ヘッダー ファイル\input</Filter>
     </ClInclude>
-    <ClInclude Include="Camera.h">
-      <Filter>ヘッダー ファイル</Filter>
+    <ClInclude Include="lib\object\Object.h">
+      <Filter>ヘッダー ファイル\object</Filter>
+    </ClInclude>
+    <ClInclude Include="lib\object\ObjectManager.h">
+      <Filter>ヘッダー ファイル\object</Filter>
+    </ClInclude>
+    <ClInclude Include="lib\object\Sprite2D.h">
+      <Filter>ヘッダー ファイル\object</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <FxCompile Include="BasicPixelShader.hlsl">
+    <FxCompile Include="Resources\shader\OBJPixelShader.hlsl">
       <Filter>リソース ファイル</Filter>
     </FxCompile>
-    <FxCompile Include="BasicVertexShader.hlsl">
+    <FxCompile Include="Resources\shader\OBJVertexShader.hlsl">
       <Filter>リソース ファイル</Filter>
     </FxCompile>
-    <FxCompile Include="SpritePixelShader.hlsl">
+    <FxCompile Include="Resources\shader\SpritePixelShader.hlsl">
       <Filter>リソース ファイル</Filter>
     </FxCompile>
-    <FxCompile Include="SpriteVertexShader.hlsl">
+    <FxCompile Include="Resources\shader\SpriteVertexShader.hlsl">
       <Filter>リソース ファイル</Filter>
     </FxCompile>
-    <FxCompile Include="OBJPixelShader.hlsl">
+    <FxCompile Include="Resources\shader\ToonPixelShader.hlsl">
       <Filter>リソース ファイル</Filter>
     </FxCompile>
-    <FxCompile Include="OBJVertexShader.hlsl">
-      <Filter>リソース ファイル</Filter>
-    </FxCompile>
-    <FxCompile Include="ToonVertexShader.hlsl">
-      <Filter>リソース ファイル</Filter>
-    </FxCompile>
-    <FxCompile Include="ToonPixelShader.hlsl">
+    <FxCompile Include="Resources\shader\ToonVertexShader.hlsl">
       <Filter>リソース ファイル</Filter>
     </FxCompile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="BasicShaderHeader.hlsli">
+    <None Include="Resources\shader\OBJShaderHeader.hlsli">
       <Filter>リソース ファイル</Filter>
     </None>
-    <None Include="SpriteShaderHeader.hlsli">
-      <Filter>リソース ファイル</Filter>
-    </None>
-    <None Include="OBJShaderHeader.hlsli">
+    <None Include="Resources\shader\SpriteShaderHeader.hlsli">
       <Filter>リソース ファイル</Filter>
     </None>
   </ItemGroup>

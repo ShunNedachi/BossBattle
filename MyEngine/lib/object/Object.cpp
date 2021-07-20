@@ -32,10 +32,7 @@ Microsoft::WRL::ComPtr<ID3D12Device> Object::device;
 D3D12_GRAPHICS_PIPELINE_STATE_DESC Object::gpipeline{};
 MyWindow* Object::window;
 
-//
-//DirectX::XMFLOAT3 Object::eye = { 0,0,-100 }; // 視点座標
-//DirectX::XMFLOAT3 Object::target = { 0,0,0 }; // 注視点座標
-//DirectX::XMFLOAT3 Object::up = { 0,1,0 }; // 上方向ベクトル
+
 
 Object::Object(int shaderNum):shaderNum(shaderNum)
 {
@@ -57,7 +54,7 @@ void Object::CreatePiplineStateOBJ()
 	ComPtr<ID3DBlob> errorBlob;// エラーオブジェクト
 	// 頂点シェーダーの読み込みとコンパイル
 	result = D3DCompileFromFile(
-		L"OBJVertexShader.hlsl", // シェーダーファイル名
+		L"Resources/shader/OBJVertexShader.hlsl", // シェーダーファイル名
 		nullptr,
 		D3D_COMPILE_STANDARD_FILE_INCLUDE, // インクルード可能にする
 		"main", "vs_5_0", // エントリーポイント名、シェーダーモデル指定
@@ -67,7 +64,7 @@ void Object::CreatePiplineStateOBJ()
 
 	// ピクセルシェーダーの読み込みとコンパイル
 	result = D3DCompileFromFile(
-		L"OBJPixelShader.hlsl", // シェーダーファイル名
+		L"Resources/shader/OBJPixelShader.hlsl", // シェーダーファイル名
 		nullptr,
 		D3D_COMPILE_STANDARD_FILE_INCLUDE, // インクルード可能にする
 		"main", "ps_5_0", // エントリーポイント名、シェーダーモデル設定
@@ -205,7 +202,7 @@ void Object::CreatePiplineStateOBJ()
 	// トゥーンシェーダー用ルートシグネチャ設定
 		// 頂点シェーダーの読み込みとコンパイル
 	result = D3DCompileFromFile(
-		L"ToonVertexShader.hlsl", // シェーダーファイル名
+		L"Resources/shader/ToonVertexShader.hlsl", // シェーダーファイル名
 		nullptr,
 		D3D_COMPILE_STANDARD_FILE_INCLUDE, // インクルード可能にする
 		"main", "vs_5_0", // エントリーポイント名、シェーダーモデル指定
@@ -215,7 +212,7 @@ void Object::CreatePiplineStateOBJ()
 
 	// ピクセルシェーダーの読み込みとコンパイル
 	result = D3DCompileFromFile(
-		L"ToonPixelShader.hlsl", // シェーダーファイル名
+		L"Resources/shader/ToonPixelShader.hlsl", // シェーダーファイル名
 		nullptr,
 		D3D_COMPILE_STANDARD_FILE_INCLUDE, // インクルード可能にする
 		"main", "ps_5_0", // エントリーポイント名、シェーダーモデル設定

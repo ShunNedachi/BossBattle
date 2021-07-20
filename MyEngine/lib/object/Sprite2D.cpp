@@ -63,7 +63,7 @@ void Sprite2D::CreatePipelineStateOBJ(Microsoft::WRL::ComPtr<ID3D12Device> dev)
 
 	// 頂点シェーダーの読み込みとコンパイル
 	result = D3DCompileFromFile(
-		L"SpriteVertexShader.hlsl", // シェーダーファイル名
+		L"Resources/shader/SpriteVertexShader.hlsl", // シェーダーファイル名
 		nullptr,
 		D3D_COMPILE_STANDARD_FILE_INCLUDE, // インクルード可能にする
 		"VSmain", "vs_5_0", // エントリーポイント名、シェーダーモデル指定
@@ -73,7 +73,7 @@ void Sprite2D::CreatePipelineStateOBJ(Microsoft::WRL::ComPtr<ID3D12Device> dev)
 
 	// ピクセルシェーダーの読み込みとコンパイル
 	result = D3DCompileFromFile(
-		L"SpritePixelShader.hlsl", // シェーダーファイル名
+		L"Resources/shader/SpritePixelShader.hlsl", // シェーダーファイル名
 		nullptr,
 		D3D_COMPILE_STANDARD_FILE_INCLUDE, // インクルード可能にする
 		"PSmain", "ps_5_0", // エントリーポイント名、シェーダーモデル設定
