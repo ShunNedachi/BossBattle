@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
@@ -132,6 +132,7 @@
     <ClCompile Include="MyDirectX12.cpp" />
     <ClCompile Include="MyWindow.cpp" />
     <ClCompile Include="Object.cpp" />
+    <ClCompile Include="ObjectManager.cpp" />
     <ClCompile Include="Sprite2D.cpp" />
     <ClCompile Include="XinputControll.cpp" />
   </ItemGroup>
@@ -141,6 +142,7 @@
     <ClInclude Include="MyDirectX12.h" />
     <ClInclude Include="MyWindow.h" />
     <ClInclude Include="Object.h" />
+    <ClInclude Include="ObjectManager.h" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="Sprite2D.h" />
     <ClInclude Include="XinputControll.h" />

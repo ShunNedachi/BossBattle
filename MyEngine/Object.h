@@ -25,7 +25,7 @@
 class Object
 {
 public:
-	Object();
+	Object(int shaderNum);
 	~Object();
 
 	// 初期化処理　全体で一回のみinitを回す
@@ -33,7 +33,7 @@ public:
 	void CreatePiplineStateOBJ();
 
 
-	void Draw(int num);
+	void Draw();
 
 	void Update(DirectX::XMFLOAT3 position, DirectX::XMFLOAT3 scale = { 1,1,1 }, DirectX::XMFLOAT3 rotation = {0,0,0});
 
@@ -147,7 +147,7 @@ private:
 	DirectX::XMFLOAT4 objColor = { 1,1,1,1 }; // スプライトの色
 	UINT texNumber =0; //	テクスチャ番号
 
-	
+	int shaderNum;
 
 	std::vector<Vertex> vertices;
 	std::vector<unsigned short> indices;

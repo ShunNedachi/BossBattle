@@ -62,11 +62,11 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 
 	// 　3Dオブジェクト
-	Object* obj = new Object();
+	Object* obj = new Object(NORMAL);
 	obj->Init(&my12, &myw,camera);
 	obj->CreateModel("bless");
 
-	Object* obj2 = new Object();
+	Object* obj2 = new Object(TOON);
 	obj2->CreateModel("bless");
 	
 
@@ -84,9 +84,9 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 		if (input.PushKey(DIK_W) || xinput.MoveStick(0,xinput_LS) & XINPUT_STICK_UP)
 		{
-			eye.z++;
+			 if(eye.z < -1)eye.z++;
 		}
-		else if (input.PushKey(DIK_S)|| xinput.MoveStick(0,xinput_LS)& XINPUT_STICK_DOWN)
+		else if (input.PushKey(DIK_S)|| xinput.MoveStick(0,xinput_LS)& XINPUT_STICK_DOWN )
 		{
 			eye.z--;
 		}
@@ -103,7 +103,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		my12.PreDraw();
 
 		//obj->Draw(NORMAL);
-		obj->Draw(TOON);
+		obj->Draw();
 
 		// 描画コマンド消化用
 		my12.PostDraw();

@@ -37,7 +37,7 @@ MyWindow* Object::window;
 //DirectX::XMFLOAT3 Object::target = { 0,0,0 }; // 注視点座標
 //DirectX::XMFLOAT3 Object::up = { 0,1,0 }; // 上方向ベクトル
 
-Object::Object()
+Object::Object(int shaderNum):shaderNum(shaderNum)
 {
 
 }
@@ -283,10 +283,10 @@ void Object::CreatePiplineStateOBJ()
 }
 
 
-void Object::Draw(int num)
+void Object::Draw()
 {
 	// num によってシェーダーを切り替える
-	if (num == 0)
+	if (shaderNum == 0)
 	{	
 		// パイプラインステートの設定
 		commandList->SetPipelineState(pipelineState[0].Get());
@@ -295,7 +295,7 @@ void Object::Draw(int num)
 		// プリミティブ形状を設定
 		commandList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP);
 	}
-	else if (num == 1)
+	else if (shaderNum == 1)
 	{
 		// パイプラインステートの設定
 		commandList->SetPipelineState(pipelineState[1].Get());
