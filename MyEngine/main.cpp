@@ -9,7 +9,7 @@
 #include"Object.h"
 #include"Camera.h"
 #include "XinputControll.h"
-
+#include"SceneManager.h"
 
 
 using namespace Microsoft::WRL;
@@ -42,6 +42,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 	Camera* camera = Camera::GetInstance();
 
+	SceneManager* sceneManager = SceneManager::GetInstance();
 
 	// DirectX ‰Šú‰»ˆ— ‚±‚±‚Ü‚Å
 
@@ -91,6 +92,10 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 			eye.z--;
 		}
 
+		if (input.TriggerKey(DIK_1))
+		{
+			sceneManager->NextScene();
+		}
 	
 		camera->SetEye(eye);
 
@@ -115,6 +120,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	delete obj;
 	delete obj2;
 	camera->Destroy();
+	sceneManager->Destroy();
 
 	return 0;
 }

@@ -139,9 +139,13 @@
   <ItemGroup>
     <ClCompile Include="lib\audio\Audio.cpp" />
     <ClCompile Include="lib\base\Camera.cpp" />
+    <ClCompile Include="lib\base\EndScene.cpp" />
+    <ClCompile Include="lib\base\GameScene.cpp" />
     <ClCompile Include="lib\base\MyDirectX12.cpp" />
     <ClCompile Include="lib\base\MyWindow.cpp" />
     <ClCompile Include="lib\base\Scene.cpp" />
+    <ClCompile Include="lib\base\SceneManager.cpp" />
+    <ClCompile Include="lib\base\TitleScene.cpp" />
     <ClCompile Include="lib\input\Input.cpp" />
     <ClCompile Include="lib\input\XinputControll.cpp" />
     <ClCompile Include="lib\object\Object.cpp" />
@@ -152,9 +156,13 @@
   <ItemGroup>
     <ClInclude Include="lib\audio\Audio.h" />
     <ClInclude Include="lib\base\Camera.h" />
+    <ClInclude Include="lib\base\EndScene.h" />
+    <ClInclude Include="lib\base\GameScene.h" />
     <ClInclude Include="lib\base\MyDirectX12.h" />
     <ClInclude Include="lib\base\MyWindow.h" />
     <ClInclude Include="lib\base\Scene.h" />
+    <ClInclude Include="lib\base\SceneManager.h" />
+    <ClInclude Include="lib\base\TitleScene.h" />
     <ClInclude Include="lib\input\Input.h" />
     <ClInclude Include="lib\input\XinputControll.h" />
     <ClInclude Include="lib\object\Object.h" />

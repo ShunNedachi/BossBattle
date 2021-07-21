@@ -1,32 +1,25 @@
 #pragma once
-#include"Audio.h"
 
-enum Scenes
-{
-	title,
-	game,
-	gameover,
-	clear
-};
+#define titleSceneNum 0
+#define gameSceneNum 1
+#define endSceneNum 2
 
-// シングルトンパターン
+class SceneManager;
+
+
+// シーンクラスの基底クラス
 class Scene
 {
 public:
-	// 
-	static Scene* GetInstance();
-	static void Destroy();
-
-	// シーンの設定
-	void NextScene();
-
-protected:
 	Scene() {};
-	~Scene() {};
+	virtual ~Scene() {};
 
-private:
+	// シーンの動作用
+	virtual void Initalize() = 0;
+	virtual void Update() = 0;
+	virtual void Draw() = 0;
 
-	static Scene* instance;
-	static Scenes nowScene;
+	// シーンの切り替え
+	virtual void NextScene(SceneManager* nowScene) = 0;
 };
 

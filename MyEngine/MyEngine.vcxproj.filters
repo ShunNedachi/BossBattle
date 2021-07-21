@@ -60,9 +60,6 @@
     <ClCompile Include="lib\base\MyWindow.cpp">
       <Filter>ソース ファイル\base</Filter>
     </ClCompile>
-    <ClCompile Include="lib\base\Scene.cpp">
-      <Filter>ソース ファイル\base\scene</Filter>
-    </ClCompile>
     <ClCompile Include="lib\input\Input.cpp">
       <Filter>ソース ファイル\input</Filter>
     </ClCompile>
@@ -78,6 +75,21 @@
     <ClCompile Include="lib\object\Sprite2D.cpp">
       <Filter>ソース ファイル\object</Filter>
     </ClCompile>
+    <ClCompile Include="lib\base\Scene.cpp">
+      <Filter>ソース ファイル\base\scene</Filter>
+    </ClCompile>
+    <ClCompile Include="lib\base\EndScene.cpp">
+      <Filter>ソース ファイル\base\scene</Filter>
+    </ClCompile>
+    <ClCompile Include="lib\base\GameScene.cpp">
+      <Filter>ソース ファイル\base\scene</Filter>
+    </ClCompile>
+    <ClCompile Include="lib\base\TitleScene.cpp">
+      <Filter>ソース ファイル\base\scene</Filter>
+    </ClCompile>
+    <ClCompile Include="lib\base\SceneManager.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="lib\audio\Audio.h">
@@ -91,9 +103,6 @@
     </ClInclude>
     <ClInclude Include="lib\base\MyWindow.h">
       <Filter>ヘッダー ファイル\base</Filter>
-    </ClInclude>
-    <ClInclude Include="lib\base\Scene.h">
-      <Filter>ヘッダー ファイル\base\scene</Filter>
     </ClInclude>
     <ClInclude Include="lib\input\Input.h">
       <Filter>ヘッダー ファイル\input</Filter>
@@ -109,6 +118,21 @@
     </ClInclude>
     <ClInclude Include="lib\object\Sprite2D.h">
       <Filter>ヘッダー ファイル\object</Filter>
+    </ClInclude>
+    <ClInclude Include="lib\base\Scene.h">
+      <Filter>ヘッダー ファイル\base\scene</Filter>
+    </ClInclude>
+    <ClInclude Include="lib\base\EndScene.h">
+      <Filter>ヘッダー ファイル\base\scene</Filter>
+    </ClInclude>
+    <ClInclude Include="lib\base\GameScene.h">
+      <Filter>ヘッダー ファイル\base\scene</Filter>
+    </ClInclude>
+    <ClInclude Include="lib\base\TitleScene.h">
+      <Filter>ヘッダー ファイル\base\scene</Filter>
+    </ClInclude>
+    <ClInclude Include="lib\base\SceneManager.h">
+      <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
