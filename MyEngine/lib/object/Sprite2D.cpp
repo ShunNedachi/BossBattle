@@ -448,7 +448,7 @@ void Sprite2D::Draw()
 	// ワールド行列の更新
 	spriteMatWorld = XMMatrixIdentity();
 	spriteMatWorld *= XMMatrixRotationZ(XMConvertToRadians(spriteRotation));
-	spriteMatWorld *= XMMatrixTranslation(spritePosition.x, spritePosition.y, spritePosition.z);
+	spriteMatWorld *= XMMatrixTranslation(spritePosition.x, spritePosition.y,0);
 
 	// 行列の転送
 	ConstBufferData* constMap = nullptr;
@@ -491,7 +491,7 @@ void Sprite2D::DrawFlash()
 	// ワールド行列の更新
 	spriteMatWorld = XMMatrixIdentity();
 	spriteMatWorld *= XMMatrixRotationZ(XMConvertToRadians(spriteRotation));
-	spriteMatWorld *= XMMatrixTranslation(spritePosition.x, spritePosition.y, spritePosition.z);
+	spriteMatWorld *= XMMatrixTranslation(spritePosition.x, spritePosition.y, 0);
 
 	// 行列の転送
 	ConstBufferData* constMap = nullptr;
@@ -572,7 +572,7 @@ D3D12_GRAPHICS_PIPELINE_STATE_DESC Sprite2D::Getgpipeline()
 
 
 // 座標セット用
-void Sprite2D::SetPosition(DirectX::XMFLOAT3 position)
+void Sprite2D::SetPosition(DirectX::XMFLOAT2 position)
 {
 	spritePosition = position;
 }

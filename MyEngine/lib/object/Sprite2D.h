@@ -62,7 +62,7 @@ public:
 	D3D12_GRAPHICS_PIPELINE_STATE_DESC Getgpipeline();
 
 	// 座標セット用関数
-	void SetPosition(DirectX::XMFLOAT3 position);
+	void SetPosition(DirectX::XMFLOAT2 position);
 	// 頂点バッファ更新用関数
 	void UpdateVertices(float width, float height);
 	void UpdateVertices();
@@ -93,7 +93,7 @@ private:
 	D3D12_GRAPHICS_PIPELINE_STATE_DESC gpipeline{};
 
 	float spriteRotation = 0.0f; // ｚ軸周りの回転角
-	DirectX::XMFLOAT3 spritePosition{}; // 座標
+	DirectX::XMFLOAT2 spritePosition{}; // 座標
 	DirectX::XMMATRIX spriteMatWorld{}; // ワールド座標
 	DirectX::XMFLOAT4 spriteColor = { 1,1,1,1 }; // スプライトの色
 	UINT texNumber; //	テクスチャ番号
