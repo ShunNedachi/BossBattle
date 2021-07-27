@@ -36,3 +36,13 @@ void SceneManager::ChangeScene(Scene* scene)
 	nowScene = scene;
 	nowScene->Initalize();
 }
+
+void SceneManager::Update()
+{
+	nowScene->Update();
+}
+
+void SceneManager::Draw()
+{
+	nowScene->Draw();
+}

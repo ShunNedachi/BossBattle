@@ -21,5 +21,12 @@ public:
 
 	// シーンの切り替え
 	virtual void NextScene(SceneManager* nowScene) = 0;
+
+	// 切り替え要求用
+	bool IsNext() { return isNext; }
+
+protected:
+
+	bool isNext = false;
 };
 
