@@ -11,6 +11,7 @@ SceneManager* SceneManager::GetInstance()
 	{
 		instance = new SceneManager();
 		nowScene = new TitleScene();
+		nowScene->Initalize();
 	}
 
 	return instance;
