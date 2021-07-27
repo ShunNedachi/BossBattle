@@ -5,6 +5,11 @@
 #pragma comment(lib, "dinput8.lib")
 #pragma comment(lib,"dxguid.lib")
 
+// 静的メンバ変数の実体
+Input* Input::instance = nullptr;
+bool Input::isPad = false;
+
+// グローバル変数
 Microsoft::WRL::ComPtr<IDirectInput8> dinput;
 LPVOID padDate;
 LPDIRECTINPUTDEVICE8 devPad;
@@ -18,6 +23,30 @@ BOOL CALLBACK DeviceFindCallBack(LPCDIDEVICEINSTANCE ipddi, LPVOID pvRef)
 
 
 	return DIENUM_CONTINUE;
+}
+
+
+Input* Input::GetInstance()
+{
+	if (instance == nullptr)
+	{
+		instance = new Input;
+	}
+
+	return instance;
+}
+
+void Input::Destroy()
+{
+	delete instance;
+
+	instance = nullptr;
+
+	if (isPad)
+	{
+		devPad->Release();
+		delete padDate;
+	}
 }
 
 bool Input::Initialize(HINSTANCE hInstance, HWND hwnd)
@@ -251,18 +280,6 @@ POINT Input::GetMousePos(MyWindow* winapp)
 
 	return mouse;
 
-}
-
-
-
-
-Input::~Input()
-{
-	if (isPad)
-	{
-		devPad->Unacquire();
-		devPad->Release();
-	}
 }
 
 void Input::LStick(bool &isLstickLeft, bool &isLstickRight)

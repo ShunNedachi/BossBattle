@@ -13,6 +13,8 @@
 #define CROSSKEY_RIGHT 3
 
 
+// シングルトンパターン
+
 /// <summary>
 /// 入力
 /// </summary>
@@ -22,11 +24,18 @@ private: // エイリアス
 		 // Microsoft::WRL::を省略
 	template <class T> using ComPtr = Microsoft::WRL::ComPtr<T>;
 
-public: // メンバ関数
-		/// <summary>
-		/// 初期化
-		/// </summary>
-		/// <returns>成否</returns>
+public: 
+	Input() {};
+	~Input() {};
+	
+	static Input* GetInstance();
+	static void Destroy();
+
+	// メンバ関数
+	/// <summary>
+	/// 初期化
+	/// </summary>
+	/// <returns>成否</returns>
 	bool Initialize(HINSTANCE hInstance, HWND hwnd);
 
 	/// <summary>
@@ -55,8 +64,8 @@ public: // メンバ関数
 	POINT GetMousePos(MyWindow* winapp);
 
 	bool GetIsPad() { return isPad; }
-	// ゲームパッド用
-	~Input();
+
+	// ゲームパッド用関数
 
 	void LStick(bool &isLstickLeft, bool &isLstickRight);
 
@@ -74,7 +83,13 @@ public: // メンバ関数
 	bool TriggerCrossKey(int KeyNum);
 
 
-private: // メンバ変数
+private:
+	
+	// インスタンス
+	static Input* instance;
+	static bool isPad;
+
+	// メンバ変数
 	ComPtr<IDirectInputDevice8> devkeyboard;
 	ComPtr<IDirectInputDevice8> devMouse;
 	BYTE key[256] = {};
@@ -95,7 +110,6 @@ private: // メンバ変数
 	bool preA_BottonDown = false;
 	bool postA_BottonDown = false;
 
-	bool isPad;
 
 	// ボタン用配列
 	DIJOYSTATE padStatePost; // 前フレームのボタン入力用

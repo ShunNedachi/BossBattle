@@ -34,4 +34,5 @@ void SceneManager::ChangeScene(Scene* scene)
 {
 	delete nowScene;
 	nowScene = scene;
+	nowScene->Initalize();
 }

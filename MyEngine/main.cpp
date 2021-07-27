@@ -1,18 +1,11 @@
-#include<DirectXMath.h>
-#include<vector>
-#include<DirectXTex.h>
 #include"MyWindow.h"
 #include"MyDirectX12.h"
 #include"Input.h"
-#include<wrl.h>
 #include"Sprite2D.h"
 #include"Object.h"
 #include"Camera.h"
 #include "XinputControll.h"
 #include"SceneManager.h"
-
-
-using namespace Microsoft::WRL;
 
 
 bool MessageError(MSG msg);
@@ -22,13 +15,13 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 {
 	using namespace DirectX;
 
-	#pragma region 初期化処理
+#pragma region 初期化処理
 	// ウィンドウ用
 	MyWindow myw;
 	myw.Initialize("Engine");
 
-	Input input;
-	input.Initialize(myw.GetConfig().hInstance,myw.GetHWND());
+	Input* input = Input::GetInstance();
+	input->Initialize(myw.GetConfig().hInstance,myw.GetHWND());
 
 	Xinput xinput;
 
@@ -77,22 +70,22 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		if (MessageError(msg)) { break; };
 
 		// 更新
-		input.Update();
+		input->Update();
 		xinput.Update();
 
 		XMFLOAT3 eye = camera->GetEye();
 		XMFLOAT3 target = camera->GetTarget();
 
-		if (input.PushKey(DIK_W) || xinput.MoveStick(0,xinput_LS) & XINPUT_STICK_UP)
+		if (input->PushKey(DIK_W) || xinput.MoveStick(0,xinput_LS) & XINPUT_STICK_UP)
 		{
 			 if(eye.z < -1)eye.z++;
 		}
-		else if (input.PushKey(DIK_S)|| xinput.MoveStick(0,xinput_LS)& XINPUT_STICK_DOWN )
+		else if (input->PushKey(DIK_S)|| xinput.MoveStick(0,xinput_LS)& XINPUT_STICK_DOWN )
 		{
 			eye.z--;
 		}
 
-		if (input.TriggerKey(DIK_1))
+		if (input->TriggerKey(DIK_1))
 		{
 			sceneManager->NextScene();
 		}
@@ -119,6 +112,8 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 	delete obj;
 	delete obj2;
+
+	input->Destroy();
 	camera->Destroy();
 	sceneManager->Destroy();
 
