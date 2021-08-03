@@ -47,12 +47,12 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 
 	// スプライト
-	Sprite2D titleSprite(0.5f,0.5f);
+	//Sprite2D titleSprite(0.5f,0.5f);
 
-	Sprite2D::LoadTex(0, L"Resources/texture/title.png");
+	//Sprite2D::LoadTex(0, L"Resources/texture/title.png");
 
-	titleSprite.CreateSprite(0);
-    titleSprite.SetPosition({ 650,600,0 });
+	//titleSprite.CreateSprite(0);
+ //   titleSprite.SetPosition({ 650,600});
 
 
 	// 　3Dオブジェクト

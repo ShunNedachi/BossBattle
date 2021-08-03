@@ -70,16 +70,16 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <IncludePath>$(ProjectDir);$(ProjectDir)lib\base\;$(ProjectDir)lib\input\;$(ProjectDir)lib\object\;$(ProjectDir)lib\audio\;$(IncludePath)</IncludePath>
+    <IncludePath>$(ProjectDir);$(ProjectDir)lib\base\;$(ProjectDir)lib\input\;$(ProjectDir)lib\object\;$(ProjectDir)lib\audio\;$(ProjectDir)lib\easing\;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <IncludePath>$(ProjectDir);$(ProjectDir)lib\base\;$(ProjectDir)lib\input\;$(ProjectDir)lib\object\;$(ProjectDir)lib\audio\;$(IncludePath)</IncludePath>
+    <IncludePath>$(ProjectDir);$(ProjectDir)lib\base\;$(ProjectDir)lib\input\;$(ProjectDir)lib\object\;$(ProjectDir)lib\audio\;$(ProjectDir)lib\easing\;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>$(ProjectDir);$(ProjectDir)lib\base\;$(ProjectDir)lib\input\;$(ProjectDir)lib\object\;$(ProjectDir)lib\audio\;$(IncludePath)</IncludePath>
+    <IncludePath>$(ProjectDir);$(ProjectDir)lib\base\;$(ProjectDir)lib\input\;$(ProjectDir)lib\object\;$(ProjectDir)lib\audio\;$(ProjectDir)lib\easing\;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <IncludePath>$(ProjectDir);$(ProjectDir)lib\base\;$(ProjectDir)lib\input\;$(ProjectDir)lib\object\;$(ProjectDir)lib\audio\;$(IncludePath)</IncludePath>
+    <IncludePath>$(ProjectDir);$(ProjectDir)lib\base\;$(ProjectDir)lib\input\;$(ProjectDir)lib\object\;$(ProjectDir)lib\audio\;$(ProjectDir)lib\easing\;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -146,6 +146,7 @@
     <ClCompile Include="lib\base\Scene.cpp" />
     <ClCompile Include="lib\base\SceneManager.cpp" />
     <ClCompile Include="lib\base\TitleScene.cpp" />
+    <ClCompile Include="lib\easing\Easing.cpp" />
     <ClCompile Include="lib\input\Input.cpp" />
     <ClCompile Include="lib\input\XinputControll.cpp" />
     <ClCompile Include="lib\object\Object.cpp" />
@@ -163,6 +164,7 @@
     <ClInclude Include="lib\base\Scene.h" />
     <ClInclude Include="lib\base\SceneManager.h" />
     <ClInclude Include="lib\base\TitleScene.h" />
+    <ClInclude Include="lib\easing\Easing.h" />
     <ClInclude Include="lib\input\Input.h" />
     <ClInclude Include="lib\input\XinputControll.h" />
     <ClInclude Include="lib\object\Object.h" />

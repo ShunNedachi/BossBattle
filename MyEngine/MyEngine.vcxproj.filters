@@ -43,6 +43,12 @@
     <Filter Include="ヘッダー ファイル\base\scene">
       <UniqueIdentifier>{498574eb-e427-41d6-bf54-2b70648cb956}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\easing">
+      <UniqueIdentifier>{e470ca98-3a2d-4155-9562-3c8652afefb7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\easing">
+      <UniqueIdentifier>{e92024f4-d8b1-4d65-a8e7-b2ef5be3fe0d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -88,7 +94,10 @@
       <Filter>ソース ファイル\base\scene</Filter>
     </ClCompile>
     <ClCompile Include="lib\base\SceneManager.cpp">
-      <Filter>ソース ファイル</Filter>
+      <Filter>ソース ファイル\base\scene</Filter>
+    </ClCompile>
+    <ClCompile Include="lib\easing\Easing.cpp">
+      <Filter>ソース ファイル\easing</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -132,7 +141,10 @@
       <Filter>ヘッダー ファイル\base\scene</Filter>
     </ClInclude>
     <ClInclude Include="lib\base\SceneManager.h">
-      <Filter>ヘッダー ファイル</Filter>
+      <Filter>ヘッダー ファイル\base\scene</Filter>
+    </ClInclude>
+    <ClInclude Include="lib\easing\Easing.h">
+      <Filter>ヘッダー ファイル\easing</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

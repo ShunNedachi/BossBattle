@@ -71,6 +71,14 @@ public:
 
 	// 全体で一度だけ初期化
 	static void Init(MyDirectX12* directX,MyWindow* window);
+
+	// 色変更系
+	void SetColor(DirectX::XMFLOAT4 color) { spriteColor = color; }
+	void SetAlpha(float alpha) { spriteColor.w = alpha; }
+	DirectX::XMFLOAT4 GetColor() { return spriteColor; }
+	float GetAlpha() { return spriteColor.w; }
+
+
 private:
 
 	// 共有する変数  静的変数
