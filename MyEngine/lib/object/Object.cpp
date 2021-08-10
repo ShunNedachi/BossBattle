@@ -1,9 +1,5 @@
 #include "Object.h"
-#include<d3d12.h>
-#include<dxgi1_6.h>
-#include<DirectXMath.h>
 #include<vector>
-#include<d3dcompiler.h>
 #include<Windows.h>
 #include<DirectXTex.h>
 #include<wrl.h>
@@ -12,11 +8,6 @@
 #include<sstream>
 #include<string>
 
-#pragma comment(lib,"d3dcompiler.lib")
-#pragma comment(lib,"d3d12.lib")
-#pragma comment(lib,"dxgi.lib")
-#pragma comment(lib,"dinput8.lib")
-#pragma comment(lib,"dxguid.lib")
 
 using namespace std;
 
@@ -30,7 +21,8 @@ DirectX::XMMATRIX Object::matView;
 Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList> Object::commandList;
 Microsoft::WRL::ComPtr<ID3D12Device> Object::device;
 D3D12_GRAPHICS_PIPELINE_STATE_DESC Object::gpipeline{};
-MyWindow* Object::window;
+MyWindow* Object::window = nullptr;
+Camera* Object::camera = nullptr;
 
 
 
@@ -391,8 +383,8 @@ void Object::Init(MyDirectX12* my12,MyWindow* window,Camera* camera)
 
 	commandList = my12->CommandList();
 	device = my12->Device();
-	this->window = window;
-	this->camera = camera;
+	Object::window = window;
+	Object::camera = camera;
 	CreatePiplineStateOBJ();
 }
 

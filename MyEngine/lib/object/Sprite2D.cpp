@@ -1,19 +1,8 @@
 #include "Sprite2D.h"
-#include<d3d12.h>
-#include<dxgi1_6.h>
-#include<DirectXMath.h>
 #include<vector>
-#include<d3dcompiler.h>
-#include<Windows.h>
-#include<DirectXTex.h>
 #include<wrl.h>
 #include<d3dx12.h>
 
-#pragma comment(lib,"d3dcompiler.lib")
-#pragma comment(lib,"d3d12.lib")
-#pragma comment(lib,"dxgi.lib")
-#pragma comment(lib,"dinput8.lib")
-#pragma comment(lib,"dxguid.lib")
 
 using namespace DirectX;
 using namespace Microsoft::WRL;
@@ -30,15 +19,12 @@ ComPtr<ID3D12GraphicsCommandList> Sprite2D::commandList;
 MyWindow* Sprite2D::window;
 
 
-
-
 Sprite2D::Sprite2D(float anchorWidth, float anchorHeight) :anchorpoint{ anchorWidth,anchorHeight }
 {
 }
 Sprite2D::~Sprite2D()
 {
 }
-
 
 void Sprite2D::CreatePipelineStateOBJ(Microsoft::WRL::ComPtr<ID3D12Device> dev)
 {
@@ -553,28 +539,6 @@ void Sprite2D::InitColor()
 	constMap->color = spriteColor;
 	spriteConstBuff->Unmap(0, nullptr);
 
-}
-
-
-// 確認用
-Microsoft::WRL::ComPtr<ID3D12PipelineState> Sprite2D::GetPipelineState()
-{
-	return spritePipelineState;
-}
-Microsoft::WRL::ComPtr<ID3D12RootSignature> Sprite2D::GetRootSignature()
-{
-	return spriteRootSignature;
-}
-D3D12_GRAPHICS_PIPELINE_STATE_DESC Sprite2D::Getgpipeline()
-{
-	return gpipeline;
-}
-
-
-// 座標セット用
-void Sprite2D::SetPosition(DirectX::XMFLOAT2 position)
-{
-	spritePosition = position;
 }
 
 // 表示サイズ設定

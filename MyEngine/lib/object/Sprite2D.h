@@ -1,21 +1,8 @@
 #pragma once
-#include<d3d12.h>
-#include<dxgi1_6.h>
-#include<DirectXMath.h>
 #include<vector>
-#include<d3dcompiler.h>
-#include<Windows.h>
 #include<DirectXTex.h>
-#include<wrl.h>
-#include<d3dx12.h>
 #include"MyWindow.h"
 #include"MyDirectX12.h"
-
-#pragma comment(lib,"d3dcompiler.lib")
-#pragma comment(lib,"d3d12.lib")
-#pragma comment(lib,"dxgi.lib")
-#pragma comment(lib,"dinput8.lib")
-#pragma comment(lib,"dxguid.lib")
 
 struct VertexPosUV
 {
@@ -35,6 +22,9 @@ public:
 	// アンカーポイントの設定
 	Sprite2D(float anchorWidth, float anchorHeigh);
 	~Sprite2D();
+
+	// 全体で一度だけ初期化
+	static void Init(MyDirectX12* directX,MyWindow* window);
 
 	static void CreatePipelineStateOBJ(Microsoft::WRL::ComPtr<ID3D12Device> dev);
 
@@ -57,20 +47,19 @@ public:
 	void InitColor();
 
 
-	Microsoft::WRL::ComPtr<ID3D12PipelineState> GetPipelineState();
-	Microsoft::WRL::ComPtr<ID3D12RootSignature> GetRootSignature();
-	D3D12_GRAPHICS_PIPELINE_STATE_DESC Getgpipeline();
-
 	// 座標セット用関数
-	void SetPosition(DirectX::XMFLOAT2 position);
+	void SetPosition(DirectX::XMFLOAT2 position) { spritePosition = position; }
+	DirectX::XMFLOAT2 GetPosition() { return spritePosition; }
+	// 回転用関数
+	void SetRotation(float rotation) { spriteRotation = rotation;}
+	float GetRotation() { return spriteRotation; }
+
 	// 頂点バッファ更新用関数
 	void UpdateVertices(float width, float height);
 	void UpdateVertices();
 	// スプライトテクスチャ範囲設定
 	void SpriteExtent(float tex_x, float tex_y, float tex_width, float tex_height);
 
-	// 全体で一度だけ初期化
-	static void Init(MyDirectX12* directX,MyWindow* window);
 
 	// 色変更系
 	void SetColor(DirectX::XMFLOAT4 color) { spriteColor = color; }

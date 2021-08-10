@@ -2,10 +2,10 @@
 #include"MyDirectX12.h"
 #include"Input.h"
 #include"Sprite2D.h"
-#include"Object.h"
 #include"Camera.h"
 #include "XinputControll.h"
 #include"SceneManager.h"
+#include"ObjectManager.h"
 
 
 bool MessageError(MSG msg);
@@ -31,38 +31,29 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	my12.Debug();
 	my12.Initialize(&myw);
 
-	Sprite2D::Init(&my12, &myw);
 
-	Camera* camera = Camera::GetInstance();
-
-	SceneManager* sceneManager = SceneManager::GetInstance();
 
 	// DirectX 初期化処理 ここまで
 
 #pragma endregion
 
+	Camera* camera = Camera::GetInstance();
+
+	SceneManager* sceneManager = SceneManager::GetInstance();
 
 
 	// 描画初期化
-
-
-	// スプライト
-	//Sprite2D titleSprite(0.5f,0.5f);
-
-	//Sprite2D::LoadTex(0, L"Resources/texture/title.png");
-
-	//titleSprite.CreateSprite(0);
- //   titleSprite.SetPosition({ 650,600});
-
+	ObjectManager* objManager;
+	objManager = ObjectManager::GetInstance();
+	objManager->Initialize(&my12, &myw, camera);
 
 	// 　3Dオブジェクト
-	Object* obj = new Object(NORMAL);
-	obj->Init(&my12, &myw,camera);
-	obj->CreateModel("bless");
+	objManager->AddOBJ("bless");
+	objManager->AddOBJ("bless", { 0,0,-200 });
 
-	Object* obj2 = new Object(TOON);
-	obj2->CreateModel("bless");
-	
+	// スプライト
+	objManager->LoadTexture(L"Resources/texture/Good.png", 0);
+	objManager->AddSprite(0);
 
 	MSG msg{}; // メッセージ
 	while (true)
@@ -93,15 +84,13 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		camera->SetEye(eye);
 
 
-		obj->Update({ 0,0,0 });
-		obj2->Update({ 0,1,0 });
 		#pragma region 描画処理
 
 		// 描画準備用
 		my12.PreDraw();
 
 		//obj->Draw(NORMAL);
-		obj->Draw();
+		objManager->Draw();
 
 		// 描画コマンド消化用
 		my12.PostDraw();
@@ -110,12 +99,12 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 	}
 
-	delete obj;
-	delete obj2;
+
 
 	input->Destroy();
 	camera->Destroy();
 	sceneManager->Destroy();
+	objManager->Destroy();
 
 	return 0;
 }

@@ -1,22 +1,10 @@
 #pragma once
-#include<d3d12.h>
-#include<dxgi1_6.h>
-#include<DirectXMath.h>
 #include<vector>
-#include<d3dcompiler.h>
-#include<Windows.h>
 #include<DirectXTex.h>
-#include<wrl.h>
-#include<d3dx12.h>
 #include"MyWindow.h"
 #include"MyDirectX12.h"
 #include"Camera.h"
-
-#pragma comment(lib,"d3dcompiler.lib")
-#pragma comment(lib,"d3d12.lib")
-#pragma comment(lib,"dxgi.lib")
-#pragma comment(lib,"dinput8.lib")
-#pragma comment(lib,"dxguid.lib")
+#include<string>
 
 
 #define NORMAL 0
@@ -29,8 +17,8 @@ public:
 	~Object();
 
 	// 初期化処理　全体で一回のみinitを回す
-	void Init(MyDirectX12* my12, MyWindow* window,Camera* camera);
-	void CreatePiplineStateOBJ();
+	static void Init(MyDirectX12* my12, MyWindow* window,Camera* camera);
+	static void CreatePiplineStateOBJ();
 
 
 	void Draw();
@@ -40,15 +28,6 @@ public:
 	void CreateModel(const std::string &filename);
 	void LoadMaterial(const std::string &directryPath, const std::string &filename);
 	bool LoadTexture(const std::string &directoryPath, const std::string &filename);
-
-
-	//DirectX::XMFLOAT3 GetEye() { return eye; }
-	//DirectX::XMFLOAT3 GetTarget() { return target; }
-
-	//void SetEye(DirectX::XMFLOAT3 eye) { this->eye = eye; } // ｚがゼロでエラー
-	//void SetTarget(DirectX::XMFLOAT3 target) { this->target = target; }
-	//void SetCamera(Camera* camera) { this->camera = camera; }
-
 
 	DirectX::XMFLOAT3 GetPosition() { return position; }
 	DirectX::XMFLOAT3 GetRotation() { return rotation; }
@@ -114,10 +93,9 @@ private:
 	static D3D12_GRAPHICS_PIPELINE_STATE_DESC gpipeline;
 	static MyWindow* window;
 
-	//// 
-	//static DirectX::XMFLOAT3 eye; // 視点座標
-	//static DirectX::XMFLOAT3 target; // 注視点座標
-	//static DirectX::XMFLOAT3 up; // 上方向ベクトル
+	// eye targetはコンストラクタ内部
+	static Camera* camera;
+
 
 	// 1枚ごとに変える変数
 	Microsoft::WRL::ComPtr<ID3D12Resource> vertBuff; // 頂点バッファ
@@ -153,6 +131,4 @@ private:
 	std::vector<unsigned short> indices;
 	Material material;
 
-	// eye targetはコンストラクタ内部
-	Camera* camera = nullptr;
 };
