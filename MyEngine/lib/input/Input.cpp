@@ -38,15 +38,16 @@ Input* Input::GetInstance()
 
 void Input::Destroy()
 {
-	delete instance;
-
-	instance = nullptr;
-
 	if (isPad)
 	{
 		devPad->Release();
 		delete padDate;
 	}
+
+	delete instance;
+
+	instance = nullptr;
+
 }
 
 bool Input::Initialize(HINSTANCE hInstance, HWND hwnd)

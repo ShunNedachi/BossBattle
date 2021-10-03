@@ -42,7 +42,8 @@ public:
 	void LoadTexture(const wchar_t* filename, int textureNum);
 
 	// スプライト生成
-	void AddSprite(int textureNum, XMFLOAT2 position = { 0,0 }, float rotation = 0.0f, XMFLOAT2 anchorPoint = {0.5f,0.5f}, XMFLOAT4 color = { 1,1,1,1 });
+	void AddSprite(int textureNum, XMFLOAT2 position = { 0,0 }, float rotation = 0.0f, 
+		XMFLOAT2 anchorPoint = {0.5f,0.5f}, XMFLOAT4 color = { 1,1,1,1 });
 
 
 #pragma endregion

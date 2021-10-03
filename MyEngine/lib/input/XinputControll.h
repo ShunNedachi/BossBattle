@@ -27,10 +27,10 @@
 #define xinput_LEFT 16
 #define xinput_RIGHT 17
 
-#define XINPUT_STICK_LEFT 0x00000001
-#define XINPUT_STICK_RIGHT 0x00000002
-#define XINPUT_STICK_UP 0x00000010
-#define XINPUT_STICK_DOWN 0x00000020
+#define leftInput 0x00000001
+#define rightInput 0x00000002
+#define topInput 0x00000010
+#define bottomInput 0x00000020
 
 // 接続した、コントローラーの番号を識別
 struct SetController

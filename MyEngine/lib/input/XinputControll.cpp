@@ -478,20 +478,20 @@ int Xinput::MoveStick(int controller, short stick)
 
 		if (state[count].Gamepad.sThumbLX <= -XINPUT_GAMEPAD_LEFT_THUMB_DEADZONE)
 		{
-			moveState = XINPUT_STICK_LEFT;
+			moveState = leftInput;
 		}
 		else if (state[count].Gamepad.sThumbLX >= XINPUT_GAMEPAD_LEFT_THUMB_DEADZONE)
 		{
-			moveState = XINPUT_STICK_RIGHT;
+			moveState = rightInput;
 		}
 
 		if (state[count].Gamepad.sThumbLY <= -XINPUT_GAMEPAD_LEFT_THUMB_DEADZONE)
 		{
-			moveState += XINPUT_STICK_DOWN;
+			moveState += topInput;
 		}
 		else if (state[count].Gamepad.sThumbLY >= XINPUT_GAMEPAD_LEFT_THUMB_DEADZONE)
 		{
-			moveState += XINPUT_STICK_UP;
+			moveState += bottomInput;
 		}
 
 		return moveState;
@@ -512,20 +512,20 @@ int Xinput::MoveStick(int controller, short stick)
 
 		if (state[count].Gamepad.sThumbRX <= -XINPUT_GAMEPAD_RIGHT_THUMB_DEADZONE)
 		{
-			moveState = XINPUT_STICK_LEFT;
+			moveState = leftInput;
 		}
 		else if (state[count].Gamepad.sThumbRX >= XINPUT_GAMEPAD_RIGHT_THUMB_DEADZONE)
 		{
-			moveState = XINPUT_STICK_RIGHT;
+			moveState = rightInput;
 		}
 
 		if (state[count].Gamepad.sThumbRY <= -XINPUT_GAMEPAD_RIGHT_THUMB_DEADZONE)
 		{
-			moveState += XINPUT_STICK_DOWN;
+			moveState += topInput;
 		}
 		else if (state[count].Gamepad.sThumbRY >= XINPUT_GAMEPAD_RIGHT_THUMB_DEADZONE)
 		{
-			moveState += XINPUT_STICK_UP;
+			moveState += bottomInput;
 		}
 
 		return moveState;
