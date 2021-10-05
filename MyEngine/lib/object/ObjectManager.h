@@ -4,6 +4,7 @@
 #include"MyWindow.h"
 #include"MyDirectX12.h"
 #include"Sprite2D.h"
+#include<string>
 
 // シングルトンパターン
 class ObjectManager
@@ -33,18 +34,22 @@ public:
 	void AddOBJ(const std::string& filename, XMFLOAT3 position = { 0,0,0 }, XMFLOAT3 scale = {1,1,1}, 
 		XMFLOAT3 rotation = { 0,0,0 },int drawShader = NORMAL);
 
+	void DeleteOBJ(int index);
+
 	#pragma endregion
 
 
 	#pragma region スプライト用関数
 
 	// 画像データロード
-	void LoadTexture(const wchar_t* filename, int textureNum);
+	//void LoadTexture(const wchar_t* filename, int textureNum);
 
 	// スプライト生成
-	void AddSprite(int textureNum, XMFLOAT2 position = { 0,0 }, float rotation = 0.0f, 
+	void AddSprite(int textureNum,const std::string& filename = "white.png", XMFLOAT2 position = {0,0}, float rotation = 0.0f,
 		XMFLOAT2 anchorPoint = {0.5f,0.5f}, XMFLOAT4 color = { 1,1,1,1 });
 
+	// 削除
+	void DeleteSprite(int index);
 
 #pragma endregion
 
@@ -56,9 +61,14 @@ private:
 
 	// .obj用配列
 	static std::vector<Object*> objArray;
+	// model用配列
+	static std::vector<>
+
 	// sprite用配列
 	static std::vector<Sprite2D*> spriteArray;
 
+	// ロードされているファイルデータを保存
+	static std::vector<std::string> loadedFileArray;
 
 };
 

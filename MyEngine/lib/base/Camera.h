@@ -1,5 +1,7 @@
 #pragma once
 #include<DirectXMath.h>
+#include"XinputControll.h"
+#include"Input.h"
 
 // シングルトンパターン
 class Camera
@@ -12,6 +14,9 @@ public:
 	static Camera* GetInstance();
 	static void Destroy();
 
+
+	// カメラの動作用
+	void Update();
 
 	// ゲッター
 	XMFLOAT3 GetEye() { return eye; }
@@ -35,5 +40,7 @@ private:
 	static XMFLOAT3 target;
 	static XMFLOAT3 up;
 	
+	static Input* input;
+	static Xinput xinput;
 };
 

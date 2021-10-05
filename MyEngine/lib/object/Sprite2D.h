@@ -1,6 +1,7 @@
 #pragma once
 #include<vector>
 #include<DirectXTex.h>
+#include<string>
 #include"MyWindow.h"
 #include"MyDirectX12.h"
 
@@ -33,8 +34,8 @@ public:
 	HRESULT CreateSprite(UINT texNumber);
 
 
-	// 共有テクスチャ番号に画像を記録
-	static HRESULT LoadTex(UINT texnumber, const wchar_t* filename);
+	// 共有テクスチャ番号に画像を記録　拡張子を添える必要あり
+	static HRESULT LoadTex(UINT texnumber, const std::string& filename);
 	HRESULT Resize(float width, float height);
 	HRESULT Resize();
 

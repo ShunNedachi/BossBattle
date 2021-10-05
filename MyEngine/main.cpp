@@ -49,11 +49,12 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 	// 　3Dオブジェクト
 	objManager->AddOBJ("bless");
-	objManager->AddOBJ("bless", { 0,0,-200 });
+	objManager->AddOBJ("bless", { 0,0,-50 });
 
 	// スプライト
-	objManager->LoadTexture(L"Resources/texture/Good.png", 0);
 	objManager->AddSprite(0);
+
+	int objNum = 2;
 
 	MSG msg{}; // メッセージ
 	while (true)
@@ -64,32 +65,38 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		input->Update();
 		xinput.Update();
 
-		XMFLOAT3 eye = camera->GetEye();
-		XMFLOAT3 target = camera->GetTarget();
-
-		if (input->PushKey(DIK_W) || xinput.MoveStick(0,xinput_LS) & XINPUT_STICK_UP)
-		{
-			 if(eye.z < -1)eye.z++;
-		}
-		else if (input->PushKey(DIK_S)|| xinput.MoveStick(0,xinput_LS)& XINPUT_STICK_DOWN )
-		{
-			eye.z--;
-		}
 
 		if (input->TriggerKey(DIK_1))
 		{
 			sceneManager->NextScene();
 		}
-	
-		camera->SetEye(eye);
 
+		if (input->TriggerKey(DIK_2))
+		{
+			objNum--;
+			objManager->DeleteOBJ(0);
+		}
+
+		if (input->TriggerKey(DIK_3))
+		{
+			objNum++;
+			objManager->AddOBJ("bless", {0,0,-50 * (float)objNum});
+		}
+
+		// 各シーンのupdate
+		// 現在は使用していないが、後々子シーンクラスに処理を移行
+		sceneManager->Update();
+
+		objManager->Update();
+	
+		camera->Update();
 
 		#pragma region 描画処理
 
 		// 描画準備用
 		my12.PreDraw();
 
-		//obj->Draw(NORMAL);
+
 		objManager->Draw();
 
 		// 描画コマンド消化用
@@ -100,7 +107,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	}
 
 
-
+	// 解放処理
 	input->Destroy();
 	camera->Destroy();
 	sceneManager->Destroy();

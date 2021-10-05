@@ -340,12 +340,18 @@ HRESULT Sprite2D::CreateSprite(UINT texNumber)
 }
 
 
-HRESULT Sprite2D::LoadTex(UINT texnumber, const wchar_t* filename)
+// 拡張子を添える必要あり
+HRESULT Sprite2D::LoadTex(UINT texnumber, const std::string& filename)
 {
 	using namespace DirectX;
 	HRESULT result;
 
+	std::string fullPath = "Resources/texture/" + filename;
 
+	// stringを変換
+	WCHAR wfilepath[128];
+	int iBufferSize = MultiByteToWideChar(CP_ACP, 0, fullPath.c_str(),
+		-1, wfilepath, _countof(wfilepath));
 
 	// テクスチャ系
 	// WICテクスチャのロード
@@ -353,7 +359,7 @@ HRESULT Sprite2D::LoadTex(UINT texnumber, const wchar_t* filename)
 	ScratchImage scratchImg{};
 
 	result = LoadFromWICFile(
-		filename,
+		wfilepath,
 		WIC_FLAGS_NONE,
 		&metadata,
 		scratchImg

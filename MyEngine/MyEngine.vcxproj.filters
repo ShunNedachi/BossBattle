@@ -78,9 +78,6 @@
     <ClCompile Include="lib\object\ObjectManager.cpp">
       <Filter>ソース ファイル\object</Filter>
     </ClCompile>
-    <ClCompile Include="lib\object\Sprite2D.cpp">
-      <Filter>ソース ファイル\object</Filter>
-    </ClCompile>
     <ClCompile Include="lib\base\Scene.cpp">
       <Filter>ソース ファイル\base\scene</Filter>
     </ClCompile>
@@ -98,6 +95,9 @@
     </ClCompile>
     <ClCompile Include="lib\easing\Easing.cpp">
       <Filter>ソース ファイル\easing</Filter>
+    </ClCompile>
+    <ClCompile Include="lib\object\Sprite2D.cpp">
+      <Filter>ソース ファイル\object</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

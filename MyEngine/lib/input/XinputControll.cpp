@@ -482,16 +482,16 @@ int Xinput::MoveStick(int controller, short stick)
 		}
 		else if (state[count].Gamepad.sThumbLX >= XINPUT_GAMEPAD_LEFT_THUMB_DEADZONE)
 		{
-			moveState = rightInput;
+			moveState = XINPUT_STICK_RIGHT;
 		}
 
 		if (state[count].Gamepad.sThumbLY <= -XINPUT_GAMEPAD_LEFT_THUMB_DEADZONE)
 		{
-			moveState += topInput;
+			moveState += XINPUT_STICK_UP;
 		}
 		else if (state[count].Gamepad.sThumbLY >= XINPUT_GAMEPAD_LEFT_THUMB_DEADZONE)
 		{
-			moveState += bottomInput;
+			moveState += XINPUT_STICK_DOWN;
 		}
 
 		return moveState;
