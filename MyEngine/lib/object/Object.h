@@ -5,6 +5,7 @@
 #include"MyDirectX12.h"
 #include"Camera.h"
 #include<string>
+#include"Model.h"
 
 
 #define NORMAL 0
@@ -29,6 +30,11 @@ public:
 	void LoadMaterial(const std::string &directryPath, const std::string &filename);
 	bool LoadTexture(const std::string &directoryPath, const std::string &filename);
 
+
+	// setter
+	//void SetModel(Model* model) { this->model = model; }
+
+	// getter
 	DirectX::XMFLOAT3 GetPosition() { return position; }
 	DirectX::XMFLOAT3 GetRotation() { return rotation; }
 	DirectX::XMFLOAT3 GetScale() { return scale; }
@@ -131,4 +137,6 @@ private:
 	std::vector<unsigned short> indices;
 	Material material;
 
+	// ƒ‚ƒfƒ‹ƒNƒ‰ƒX
+	/*Model* model;*/
 };

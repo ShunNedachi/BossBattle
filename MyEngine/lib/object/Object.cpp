@@ -11,12 +11,10 @@
 
 using namespace std;
 
-// 3dobject 共有変数
+// 3dObject 共有変数
 Microsoft::WRL::ComPtr<ID3D12RootSignature> Object::rootSignature[2]; // ルートシグネチャ
 Microsoft::WRL::ComPtr<ID3D12PipelineState> Object::pipelineState[2]; // パイプラインステート
 DirectX::XMMATRIX Object::matProjection; // 射影行列
-//Microsoft::WRL::ComPtr<ID3D12DescriptorHeap> Object::descHeap;
-//Microsoft::WRL::ComPtr<ID3D12Resource> Object::texBuff[SRVCount];
 DirectX::XMMATRIX Object::matView;
 Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList> Object::commandList;
 Microsoft::WRL::ComPtr<ID3D12Device> Object::device;
@@ -319,6 +317,7 @@ void Object::Draw()
 	constMap->cameraPos = camera->GetEye();
 	//constMap->clearColor = objColor;
 	constBuffB0->Unmap(0, nullptr);
+
 	// b1データ転送
 	ConstBufferDataB1* constMap1 = nullptr;
 	result = constBuffB1->Map(0, nullptr, (void**)&constMap1);
@@ -342,6 +341,7 @@ void Object::Draw()
 
 	// 定数バッファをセット
 	commandList->SetGraphicsRootConstantBufferView(0, constBuffB0->GetGPUVirtualAddress());
+	// マテリアル関係
 	commandList->SetGraphicsRootConstantBufferView(1, constBuffB1->GetGPUVirtualAddress());
 
 	// シェーダリソースビューをセット
@@ -420,6 +420,9 @@ void Object::CreateModel(const string &modelname)
 	vector<XMFLOAT3> normals;
 	vector<XMFLOAT2> texcoords;
 
+	// 四角形ポリゴン用
+	int indexCount = 0;
+
 	string line;
 	while (getline(file, line))
 	{
@@ -461,6 +464,8 @@ void Object::CreateModel(const string &modelname)
 		}
 		if (key == "f")
 		{
+			int faceCount = 0;
+
 			string index_string;
 			while (getline(line_stream,index_string,' '))
 			{
@@ -480,7 +485,24 @@ void Object::CreateModel(const string &modelname)
 				vertex.uv = texcoords[indexTexcoord - 1];
 				vertices.emplace_back(vertex);
 
-				indices.emplace_back((unsigned short)indices.size());
+				
+				if (faceCount >= 3)
+				{
+					// 四角形ポリゴンの4点目
+					// 012ですでに作っているので230で三角を作る
+					indices.emplace_back(indexCount - 1);
+					indices.emplace_back(indexCount);
+					indices.emplace_back(indexCount - 3);
+
+				}
+				else
+				{
+
+					indices.emplace_back(indexCount);
+				}
+
+				faceCount++;
+				indexCount++;
 			}
 
 

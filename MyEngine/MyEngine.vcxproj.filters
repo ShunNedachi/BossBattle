@@ -99,6 +99,12 @@
     <ClCompile Include="lib\object\Sprite2D.cpp">
       <Filter>ソース ファイル\object</Filter>
     </ClCompile>
+    <ClCompile Include="lib\object\Player.cpp">
+      <Filter>ソース ファイル\object</Filter>
+    </ClCompile>
+    <ClCompile Include="lib\object\Model.cpp">
+      <Filter>ソース ファイル\object</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="lib\audio\Audio.h">
@@ -145,6 +151,12 @@
     </ClInclude>
     <ClInclude Include="lib\easing\Easing.h">
       <Filter>ヘッダー ファイル\easing</Filter>
+    </ClInclude>
+    <ClInclude Include="lib\object\Player.h">
+      <Filter>ヘッダー ファイル\object</Filter>
+    </ClInclude>
+    <ClInclude Include="lib\object\Model.h">
+      <Filter>ヘッダー ファイル\object</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

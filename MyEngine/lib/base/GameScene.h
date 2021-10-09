@@ -2,11 +2,15 @@
 #include "Scene.h"
 #include"TitleScene.h"
 #include"EndScene.h"
+#include<ObjectManager.h>
+#include"Camera.h"
+#include"Player.h"
+#include"Model.h"
 
 class GameScene :
     public Scene
 {
-	~GameScene() {};
+	~GameScene();
 
 	// シーンの動作用
 	void Initalize() override;
@@ -15,5 +19,17 @@ class GameScene :
 
 	// シーンの切り替え
 	void NextScene(SceneManager* nowScene) override;
+
+public:
+
+	// 関数
+
+private:
+	// フィールド
+	ObjectManager* objectManager;
+
+	// カメラ
+	Camera* camera;
+
 };
 

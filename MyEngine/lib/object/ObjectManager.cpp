@@ -6,6 +6,8 @@ ObjectManager* ObjectManager::instance = nullptr;
 std::vector<Object*> ObjectManager::objArray;
 std::vector<Sprite2D*> ObjectManager::spriteArray;
 std::vector<std::string> ObjectManager::loadedFileArray;
+Player* ObjectManager::player = nullptr;
+
 
 ObjectManager* ObjectManager::GetInstance()
 {
@@ -49,12 +51,15 @@ void ObjectManager::Destroy()
 		spriteArray.clear();
 		spriteArray.shrink_to_fit();
 	}
+
+	player->Destroy();
 }
 
 void ObjectManager::Initialize(MyDirectX12* my12, MyWindow* window, Camera* camera)
 {
 	Object::Init(my12, window, camera);
 	Sprite2D::Init(my12, window);
+
 }
 
 void ObjectManager::Update()
@@ -74,6 +79,10 @@ void ObjectManager::Update()
 			itr++;
 		}
 	}
+	
+	// player用
+	if(player)player->Update();
+
 	// sprite用
 	for (auto itr = spriteArray.begin(); itr < spriteArray.end();)
 	{
@@ -94,19 +103,27 @@ void ObjectManager::Draw()
 	{
 		if(x != nullptr)x->Draw();
 	}
+
+	if(player)player->Draw();
+
 	for (auto x : spriteArray)
 	{
 		if(x != nullptr)x->Draw();
 	}
 }
 
+void ObjectManager::AddPlayer(const std::string& filename)
+{
+	ObjectManager::player = player->GetInstance();
+	ObjectManager::player->Init(filename);
+}
+
 void ObjectManager::AddOBJ(const std::string& filename,XMFLOAT3 position,XMFLOAT3 scale,XMFLOAT3 rotation,int drawShader)
 {
 	Object* obj = new Object(drawShader);
-
 	obj->CreateModel(filename);
 	// ファイル名保存
-	loadedFileArray.push_back(filename);
+	/*loadedFileArray.push_back(filename);*/
 
 	obj->Update(position, scale, rotation);
 

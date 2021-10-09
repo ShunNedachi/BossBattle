@@ -1,4 +1,14 @@
 #include"XinputControll.h"
+#include<Xinput.h>
+
+#pragma comment(lib,"xinput.lib")
+
+// Ã“Iƒƒ“ƒo•Ï”‚ÌÀ‘ÌéŒ¾
+XINPUT_STATE Xinput::state[4] = {};
+XINPUT_STATE Xinput::pastState[4] = {};
+
+int Xinput::controllerNum = 4;
+SetController Xinput::pad = {};
 
 Xinput::Xinput()
 {

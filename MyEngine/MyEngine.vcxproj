@@ -149,8 +149,10 @@
     <ClCompile Include="lib\easing\Easing.cpp" />
     <ClCompile Include="lib\input\Input.cpp" />
     <ClCompile Include="lib\input\XinputControll.cpp" />
+    <ClCompile Include="lib\object\Model.cpp" />
     <ClCompile Include="lib\object\Object.cpp" />
     <ClCompile Include="lib\object\ObjectManager.cpp" />
+    <ClCompile Include="lib\object\Player.cpp" />
     <ClCompile Include="lib\object\Sprite2D.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
@@ -167,8 +169,10 @@
     <ClInclude Include="lib\easing\Easing.h" />
     <ClInclude Include="lib\input\Input.h" />
     <ClInclude Include="lib\input\XinputControll.h" />
+    <ClInclude Include="lib\object\Model.h" />
     <ClInclude Include="lib\object\Object.h" />
     <ClInclude Include="lib\object\ObjectManager.h" />
+    <ClInclude Include="lib\object\Player.h" />
     <ClInclude Include="lib\object\Sprite2D.h" />
   </ItemGroup>
   <ItemGroup>

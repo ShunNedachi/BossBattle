@@ -4,7 +4,9 @@
 #include"MyWindow.h"
 #include"MyDirectX12.h"
 #include"Sprite2D.h"
+#include"Player.h"
 #include<string>
+#include"Model.h"
 
 // シングルトンパターン
 class ObjectManager
@@ -19,14 +21,23 @@ public:
 	ObjectManager() {};
 	~ObjectManager() {};
 
-	// コンストラクタ　デストラクタ
 	static ObjectManager* GetInstance();
 	static void Destroy();
-	// 初期化
+
 	static void Initialize(MyDirectX12* my12, MyWindow* window, Camera* camera);
 
 	void Update();
 	void Draw();
+
+	#pragma region Player関係関数
+
+	static void AddPlayer(const std::string& filename);
+
+	// getter
+	XMFLOAT3 GetPlayerPos() { return player->GetPos(); }
+
+#pragma endregion
+
 
 	#pragma region 3Dオブジェクト用関数
 
@@ -61,8 +72,7 @@ private:
 
 	// .obj用配列
 	static std::vector<Object*> objArray;
-	// model用配列
-	static std::vector<>
+
 
 	// sprite用配列
 	static std::vector<Sprite2D*> spriteArray;
@@ -70,5 +80,9 @@ private:
 	// ロードされているファイルデータを保存
 	static std::vector<std::string> loadedFileArray;
 
+	static Player* player;
+
+
+	int modelNum = 0;
 };
 

@@ -9,6 +9,7 @@ class Camera
 
 private:
 	using XMFLOAT3 = DirectX::XMFLOAT3;
+	using XMVECTOR = DirectX::XMVECTOR;
 
 public:
 	static Camera* GetInstance();
@@ -17,6 +18,9 @@ public:
 
 	// カメラの動作用
 	void Update();
+
+	// カメラの回転用
+	void UpdateRot();
 
 	// ゲッター
 	XMFLOAT3 GetEye() { return eye; }

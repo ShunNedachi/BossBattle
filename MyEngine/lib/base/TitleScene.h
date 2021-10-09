@@ -3,13 +3,14 @@
 #include"GameScene.h"
 #include"EndScene.h"
 #include"SceneManager.h"
-
+#include"ObjectManager.h"
 
 
 class TitleScene :
     public Scene
 {
-    ~TitleScene(){};
+public:
+    ~TitleScene();
     
 	// シーンの動作用
 	void Initalize() override;
@@ -18,5 +19,11 @@ class TitleScene :
 
 	// シーンの切り替え
 	void NextScene(SceneManager* nowScene) override;
+
+private:
+
+	//
+	ObjectManager* objManager;
+	
 };
 
