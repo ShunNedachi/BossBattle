@@ -5,7 +5,7 @@
 #pragma comment(lib,"xinput.lib")
 
 
-	#pragma region define
+#pragma region define
 
 	// コントローラーのボタン
 	#define xinput_X 0
@@ -51,10 +51,6 @@ class Xinput
 {
 
 public:
-
-	Xinput();
-	~Xinput() {};
-
 	// 更新用
 	void Update();
 
@@ -70,8 +66,18 @@ public:
 	int IsControllNUM() { return controllerNum; }
 
 	// 
+	static Xinput* GetInstance();
 
 private:
+	// 関数 
+	Xinput();
+	~Xinput() {};
+	
+
+
+	// 変数
+
+	static Xinput* instance;
 
 	static XINPUT_STATE state[4];
 	// トリガー用

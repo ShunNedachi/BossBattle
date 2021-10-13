@@ -11,16 +11,17 @@ private:
 	// エイリアス
 	using XMFLOAT2 = DirectX::XMFLOAT2;
 	using XMFLOAT3 = DirectX::XMFLOAT3;
+	using XMVECTOR = DirectX::XMVECTOR;
 	using String = std::string;
 
 public:
 	// 関数
 
 	static Player* GetInstance();
-	static void Destroy();
+	void Destroy();
 
 	//
-	static void Init(const std::string& filename);
+	void Init(const std::string& filename);
 	void Update();
 	void Draw();
 
@@ -47,10 +48,15 @@ private:
 
 	static Player* instance;
 
-	static Object* objPlayer;
-	static XMFLOAT3 playerPos;
-	static XMFLOAT3 playerRot;
-	static XMFLOAT3 playerScale;
+	Object* objPlayer = nullptr;
+	XMFLOAT3 playerPos = {0,0,0};
+	XMFLOAT3 playerRot = {0,0,0};
+	XMFLOAT3 playerScale = {1,1,1};
 
+
+	XMFLOAT3 playerVelo = { 0,0,0 };
+
+	bool canJump = true;
+	bool jumpInit = false;
 };
 

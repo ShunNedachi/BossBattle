@@ -10,6 +10,8 @@ XINPUT_STATE Xinput::pastState[4] = {};
 int Xinput::controllerNum = 4;
 SetController Xinput::pad = {};
 
+Xinput* Xinput::instance;
+
 Xinput::Xinput()
 {
 	ZeroMemory(&state[0], sizeof(XINPUT_STATE));
@@ -22,6 +24,16 @@ Xinput::Xinput()
 	ZeroMemory(&pastState[2], sizeof(XINPUT_STATE));
 	ZeroMemory(&pastState[3], sizeof(XINPUT_STATE));
 
+}
+
+Xinput* Xinput::GetInstance()
+{
+	if (instance == nullptr)
+	{
+		instance = new Xinput();
+	}
+	
+	return instance;
 }
 
 void Xinput::Update()

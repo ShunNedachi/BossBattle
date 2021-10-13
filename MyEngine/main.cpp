@@ -25,7 +25,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	// DirectInput,Xinput用初期化
 	Input* input = Input::GetInstance();
 	input->Initialize(myw.GetConfig().hInstance,myw.GetHWND());
-	Xinput xinput;
+	Xinput* xinput = Xinput::GetInstance();
 
 
 	// directX12基本初期化
@@ -34,7 +34,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	my12.Initialize(&myw);
 
 	// オブジェクトマネージャー初期化
-	ObjectManager::Initialize(&my12, &myw, Camera::GetInstance());
+	ObjectManager::Initialize(&my12, &myw);
 
 	// シーン管理用
 	SceneManager* sceneManager = SceneManager::GetInstance();
@@ -50,7 +50,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 		// 更新
 		input->Update();
-		xinput.Update();
+		xinput->Update();
 
 
 		// 各シーンのupdate

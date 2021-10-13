@@ -366,7 +366,7 @@ void Object::Update(DirectX::XMFLOAT3 position, DirectX::XMFLOAT3 scale, DirectX
 	this->rotation = rotation;
 }
 
-void Object::Init(MyDirectX12* my12,MyWindow* window,Camera* camera)
+void Object::Init(MyDirectX12* my12,MyWindow* window)
 {
 	using namespace DirectX;
 
@@ -384,7 +384,7 @@ void Object::Init(MyDirectX12* my12,MyWindow* window,Camera* camera)
 	commandList = my12->CommandList();
 	device = my12->Device();
 	Object::window = window;
-	Object::camera = camera;
+	Object::camera = Camera::GetInstance();
 	CreatePiplineStateOBJ();
 }
 

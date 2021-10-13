@@ -24,10 +24,11 @@ public:
 	static ObjectManager* GetInstance();
 	static void Destroy();
 
-	static void Initialize(MyDirectX12* my12, MyWindow* window, Camera* camera);
+	static void Initialize(MyDirectX12* my12, MyWindow* window);
 
 	void Update();
 	void Draw();
+
 
 	#pragma region Playerä÷åWä÷êî
 
@@ -83,6 +84,6 @@ private:
 	static Player* player;
 
 
-	int modelNum = 0;
+	static Xinput* xinput;
 };
 

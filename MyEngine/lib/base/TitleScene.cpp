@@ -19,10 +19,10 @@ void TitleScene::Update()
 {
 	// inputŠÖŒW
 	Input* input = Input::GetInstance();
-	Xinput xinput;
+	Xinput* xinput = Xinput::GetInstance();
 
 	// ƒV[ƒ“•ÏX
-	if (input->TriggerKey(DIK_1) || xinput.TriggerButtom(0,xinput_A))NextScene(SceneManager::GetInstance());
+	if (input->TriggerKey(DIK_1) || xinput->TriggerButtom(0,xinput_A))NextScene(SceneManager::GetInstance());
 
 	objManager->Update();
 }

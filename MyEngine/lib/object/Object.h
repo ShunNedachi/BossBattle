@@ -18,7 +18,7 @@ public:
 	~Object();
 
 	// ‰Šú‰»ˆ—@‘S‘Ì‚Åˆê‰ñ‚Ì‚Ýinit‚ð‰ñ‚·
-	static void Init(MyDirectX12* my12, MyWindow* window,Camera* camera);
+	static void Init(MyDirectX12* my12, MyWindow* window);
 	static void CreatePiplineStateOBJ();
 
 
@@ -33,6 +33,7 @@ public:
 
 	// setter
 	//void SetModel(Model* model) { this->model = model; }
+	void SetShaderNum(int shaderNum) { this->shaderNum = shaderNum; }
 
 	// getter
 	DirectX::XMFLOAT3 GetPosition() { return position; }

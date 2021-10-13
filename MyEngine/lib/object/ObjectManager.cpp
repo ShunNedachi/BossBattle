@@ -23,8 +23,6 @@ void ObjectManager::Destroy()
 {
 	// インスタンスを削除
 	
-	if(instance != nullptr)delete instance;
-	instance = nullptr;
 
 	// 配列も削除
 	// .obj用配列
@@ -52,14 +50,18 @@ void ObjectManager::Destroy()
 		spriteArray.shrink_to_fit();
 	}
 
-	player->Destroy();
+	if(player != nullptr)player->Destroy();
+	player = nullptr;
+
+
+	if(instance != nullptr)delete instance;
+	instance = nullptr;
 }
 
-void ObjectManager::Initialize(MyDirectX12* my12, MyWindow* window, Camera* camera)
+void ObjectManager::Initialize(MyDirectX12* my12, MyWindow* window)
 {
-	Object::Init(my12, window, camera);
+	Object::Init(my12, window);
 	Sprite2D::Init(my12, window);
-
 }
 
 void ObjectManager::Update()

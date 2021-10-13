@@ -11,22 +11,25 @@ void GameScene::Initalize()
 	objectManager = ObjectManager::GetInstance();
 
 	// リソースロード
-	objectManager->AddOBJ("triangle", {0,0,-100});
+	objectManager->AddOBJ("triangle", { 0,0,-100 });
 
 	camera = Camera::GetInstance();
 
-	objectManager->AddPlayer("T");
+	objectManager->AddPlayer("Sphere");
 	objectManager->AddOBJ("ground", { 0,-1,0 });
 	objectManager->AddOBJ("skydome");
+	camera->SetEye({ 0, 20, -100 });
 }
 
 void GameScene::Update()
 {
 	// input関係
 	Input* input = Input::GetInstance();
-	Xinput xinput;
+	Xinput* xinput = Xinput::GetInstance();
 
-	camera->Update();
+	//camera->Update();
+	//camera->FollowTarget();
+	camera->SetTarget(objectManager->GetPlayerPos());
 	camera->UpdateRot();
 
 	objectManager->Update();
@@ -34,10 +37,8 @@ void GameScene::Update()
 
 	//DirectX::XMFLOAT3 tempPos = objectManager->GetPlayerPos();
 	//camera->SetEye({ tempPos.x,tempPos.y,tempPos.z - 10 });
-	//camera->SetTarget(tempPos);
 
-	if (input->TriggerKey(DIK_1) || xinput.TriggerButtom(0,xinput_A))NextScene(SceneManager::GetInstance());
-	
+	if (input->TriggerKey(DIK_1))NextScene(SceneManager::GetInstance());
 }
 
 void GameScene::Draw()

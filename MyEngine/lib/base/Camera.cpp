@@ -5,8 +5,8 @@ Camera* Camera::instance = nullptr;
 DirectX::XMFLOAT3 Camera::eye = { 0,0,-100 };
 DirectX::XMFLOAT3 Camera::target = { 0,0,0 };
 DirectX::XMFLOAT3 Camera::up = { 0,1,0 };
-Input* Camera::input = Input::GetInstance();
-Xinput Camera::xinput;
+DirectX::XMFLOAT3 Camera::eyeDir = { 0,0,0 };
+
 
 
 Camera* Camera::GetInstance()
@@ -28,14 +28,14 @@ void Camera::Destroy()
 
 void Camera::Update()
 {
-	xinput.Update();
-	
+	Input* input = Input::GetInstance();
+	Xinput* xinput = Xinput::GetInstance();
 
-	if (input->PushKey(DIK_W) || xinput.MoveStick(0, xinput_LS) & XINPUT_STICK_UP)
+	if (input->PushKey(DIK_W) || xinput->MoveStick(0, xinput_LS) & XINPUT_STICK_UP)
 	{
 		eye.y++;
 	}
-	else if (input->PushKey(DIK_S) || xinput.MoveStick(0, xinput_LS) & XINPUT_STICK_DOWN)
+	else if (input->PushKey(DIK_S) || xinput->MoveStick(0, xinput_LS) & XINPUT_STICK_DOWN)
 	{
 		eye.y--;
 	}
@@ -50,116 +50,56 @@ void Camera::Update()
 	}
 
 	SetEye(eye);
+
+
+	XMVECTOR eyeDirV = { target.x - eye.x,target.y - eye.y,target.z - eye.z,0 };
+	eyeDirV = DirectX::XMVector3Normalize(eyeDirV);
+	DirectX::XMStoreFloat3(&eyeDir, eyeDirV);
+
 }
 
 void Camera::UpdateRot()
 {
 	using namespace DirectX;
-	xinput.Update();
+	Input* input = Input::GetInstance();
+	Xinput* xinput = Xinput::GetInstance();
 
-	XMVECTOR axis;
+	// 定数定義
+	const int MIN_PHI_RADIUS = 0;
+	const int MAX_PHI_RADIUS = 360;
+	const int MIN_THETA_RADIUS = 0;
+	const int MAX_THETA_RADIUS = 89;
 
-	// 上下方向のカメラの回転
-	if (input->PushKey(DIK_UP))
-	{	
-		// x軸回転
-		axis = { 1,0,0,0 };
-		XMVECTOR qt = XMQuaternionRotationAxis(axis, XMConvertToRadians(1));
-		XMVECTOR eyeV = { eye.x,eye.y,eye.z,0 };
-		XMVECTOR qt_Inverce = XMQuaternionRotationAxis(axis, XMConvertToRadians(-1));
+	if (input->PushKey(DIK_UP))theta++;
+	else if (input->PushKey(DIK_DOWN))theta--;
 
-		XMVECTOR result = XMQuaternionMultiply(eyeV, qt);
-		result = XMQuaternionMultiply(qt_Inverce, result);
+	if (input->PushKey(DIK_RIGHT))phi++;
+	else if (input->PushKey(DIK_LEFT))phi--;
 
-		XMStoreFloat3(&eye, result);
+	// 最大値最小値の設定
+	if (phi > MAX_PHI_RADIUS)phi = MIN_PHI_RADIUS;
+	else if (phi <= MIN_PHI_RADIUS)phi = MAX_PHI_RADIUS;
+
+	if (theta > MAX_THETA_RADIUS)theta = MAX_THETA_RADIUS;
+	else if (theta < MIN_THETA_RADIUS)theta = MIN_THETA_RADIUS;
 
 
-		SetEye(eye);
+	// 度をラジアンに変更
+	float phiRADIUS = phi * XM_PI / 180;
+	float thetaRADIUS = theta * XM_PI / 180;
 
-		// upにも同じことをする
-		XMVECTOR upV = { up.x,up.y,up.z,0 };
+	float eyeX = cos(phiRADIUS) * cos(thetaRADIUS) * r;
+	float eyeY = sin(thetaRADIUS) * r;
+	float eyeZ = sin(phiRADIUS) * cos(thetaRADIUS) * r;
 
-		result = XMQuaternionMultiply(upV, qt);
-		result = XMQuaternionMultiply(qt_Inverce, result);
+	SetEye({ eyeX,eyeY,eyeZ });
 
-		XMStoreFloat3(&up, result);
+}
 
-		SetUp(up);
-	}
-	else if (input->PushKey(DIK_DOWN))
-	{
-		axis = { -1,0,0,0 };
-		XMVECTOR qt = XMQuaternionRotationAxis(axis, XMConvertToRadians(1));
-		XMVECTOR eyeV = { eye.x,eye.y,eye.z,0 };
-		XMVECTOR qt_Inverce = XMQuaternionRotationAxis(axis, XMConvertToRadians(-1));
-
-		XMVECTOR result = XMQuaternionMultiply(eyeV, qt);
-		result = XMQuaternionMultiply(qt_Inverce, result);
-
-		XMStoreFloat3(&eye, result);
-
-		SetEye(eye);
-				// upにも同じことをする
-		XMVECTOR upV = { up.x,up.y,up.z,0 };
-
-		result = XMQuaternionMultiply(upV, qt);
-		result = XMQuaternionMultiply(qt_Inverce, result);
-
-		XMStoreFloat3(&up, result);
-
-		SetUp(up);
-
-	}
-
-	// 横方向のカメラの回転
-	if (input->PushKey(DIK_RIGHT))
-	{
-		axis = { 0,-1,0,0 };
-		XMVECTOR qt = XMQuaternionRotationAxis(axis, XMConvertToRadians(1));
-		XMVECTOR eyeV = { eye.x,eye.y,eye.z,0 };
-		XMVECTOR qt_Inverce = XMQuaternionRotationAxis(axis, XMConvertToRadians(-1));
-
-		XMVECTOR result = XMQuaternionMultiply(eyeV, qt);
-		result = XMQuaternionMultiply(qt_Inverce, result);
-
-		XMStoreFloat3(&eye, result);
-
-		SetEye(eye);
-
-		// upにも同じことをする
-		XMVECTOR upV = { up.x,up.y,up.z,0 };
-
-		result = XMQuaternionMultiply(upV, qt);
-		result = XMQuaternionMultiply(qt_Inverce, result);
-
-		XMStoreFloat3(&up, result);
-
-		SetUp(up);
-
-	}
-	else if (input->PushKey(DIK_LEFT))
-	{
-		axis = { 0,1,0,0 };
-		XMVECTOR qt = XMQuaternionRotationAxis(axis, XMConvertToRadians(1));
-		XMVECTOR eyeV = { eye.x,eye.y,eye.z,0 };
-		XMVECTOR qt_Inverce = XMQuaternionRotationAxis(axis, XMConvertToRadians(-1));
-
-		XMVECTOR result = XMQuaternionMultiply(eyeV, qt);
-		result = XMQuaternionMultiply(qt_Inverce, result);
-
-		XMStoreFloat3(&eye, result);
-
-		SetEye(eye);
-
-		// upにも同じことをする
-		XMVECTOR upV = { up.x,up.y,up.z,0 };
-
-		result = XMQuaternionMultiply(upV, qt);
-		result = XMQuaternionMultiply(qt_Inverce, result);
-
-		XMStoreFloat3(&up, result);
-
-		SetUp(up);
-
-	}
+void Camera::FollowTarget()
+{
+	XMFLOAT3 followEye = { target.x + 0,target.y + 10, target.z + 40 };
+	XMFLOAT3 followUp = { 0,10,0 };
+	//SetEye(followEye);
+	//SetUp(followUp);
 }
