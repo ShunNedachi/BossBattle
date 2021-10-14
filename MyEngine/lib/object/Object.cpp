@@ -296,21 +296,6 @@ void Object::Draw()
 	using namespace DirectX;
 	HRESULT result;
 
-	matScale = XMMatrixScaling(scale.x, scale.y, scale.z);
-	matTrans = XMMatrixTranslation(position.x, position.y, position.z);
-	matRot = XMMatrixIdentity();
-	matRot *= XMMatrixRotationZ(XMConvertToRadians(rotation.z));
-	matRot *= XMMatrixRotationX(XMConvertToRadians(rotation.x));
-	matRot *= XMMatrixRotationY(XMConvertToRadians(rotation.y));
-
-	matWorld = XMMatrixIdentity();
-	matWorld *= matScale;
-	matWorld *= matRot;
-	matWorld *= matTrans;
-
-	// ビュー行列
-	matView = XMMatrixLookAtLH(XMLoadFloat3(&camera->GetEye()), XMLoadFloat3(&camera->GetTarget()), XMLoadFloat3(&camera->GetUp()));
-
 	ConstBufferDataB0* constMap = nullptr;
 	result = constBuffB0->Map(0, nullptr, (void**)&constMap);
 	constMap->mat = matWorld * matView * matProjection;
@@ -326,7 +311,6 @@ void Object::Draw()
 	constMap1->specular = material.specular;
 	constMap1->alpha = material.alpha;
 	constBuffB1->Unmap(0, nullptr);
-
 
 
 	// デスクリプタヒープの配列
@@ -359,11 +343,28 @@ void Object::Draw()
 }
 
 
-void Object::Update(DirectX::XMFLOAT3 position, DirectX::XMFLOAT3 scale, DirectX::XMFLOAT3 rotation)
+void Object::Update()
 {
-	this->position = position;
-	this->scale = scale;
-	this->rotation = rotation;
+	using namespace DirectX;
+	HRESULT result;
+
+	// 行列の更新
+
+	matScale = XMMatrixScaling(scale.x, scale.y, scale.z);
+	matTrans = XMMatrixTranslation(position.x, position.y, position.z);
+	matRot = XMMatrixIdentity();
+	matRot *= XMMatrixRotationZ(XMConvertToRadians(rotation.z));
+	matRot *= XMMatrixRotationX(XMConvertToRadians(rotation.x));
+	matRot *= XMMatrixRotationY(XMConvertToRadians(rotation.y));
+
+	matWorld = XMMatrixIdentity();
+	matWorld *= matScale;
+	matWorld *= matRot;
+	matWorld *= matTrans;
+
+	// ビュー行列
+	matView = XMMatrixLookAtLH(XMLoadFloat3(&camera->GetEye()), XMLoadFloat3(&camera->GetTarget()), XMLoadFloat3(&camera->GetUp()));
+
 }
 
 void Object::Init(MyDirectX12* my12,MyWindow* window)

@@ -124,10 +124,12 @@ void ObjectManager::AddOBJ(const std::string& filename,XMFLOAT3 position,XMFLOAT
 {
 	Object* obj = new Object(drawShader);
 	obj->CreateModel(filename);
-	// ƒtƒ@ƒCƒ‹–¼•Û‘¶
-	/*loadedFileArray.push_back(filename);*/
 
-	obj->Update(position, scale, rotation);
+	obj->SetPosition(position);
+	obj->SetRotation(rotation);
+	obj->SetScale(scale);
+
+	obj->Update();
 
 	objArray.push_back(obj);
 }

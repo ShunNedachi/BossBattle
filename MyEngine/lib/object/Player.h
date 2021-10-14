@@ -53,10 +53,5 @@ private:
 	XMFLOAT3 playerRot = {0,0,0};
 	XMFLOAT3 playerScale = {1,1,1};
 
-
-	XMFLOAT3 playerVelo = { 0,0,0 };
-
-	bool canJump = true;
-	bool jumpInit = false;
 };
 

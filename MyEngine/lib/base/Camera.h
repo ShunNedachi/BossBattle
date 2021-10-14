@@ -19,11 +19,16 @@ public:
 	// カメラの動作用
 	void Update();
 
-	// カメラの回転用
-	void UpdateRot();
+	// カメラの追従用update
+	void UpdateFollow(XMFLOAT3 target);
 
 	// カメラの追従用(targetに追従)
-	void FollowTarget();
+	//void FollowTarget();
+
+
+	// eyeDirの更新
+	void UpdateEyeDir();
+
 
 	// ゲッター
 	static XMFLOAT3 GetEye() { return eye; }
@@ -33,7 +38,7 @@ public:
 	
 	// セッター
 	static void SetEye(XMFLOAT3 eye) { Camera::eye = eye; }
-	static void SetTarget(XMFLOAT3 target) { Camera::target = target; }
+	static void SetTarget(XMFLOAT3 target) { Camera::target = target;}
 	static void SetUp(XMFLOAT3 up) { Camera::up = up; }
 
 protected:
@@ -52,9 +57,12 @@ private:
 	static XMFLOAT3 eyeDir;
 
 	// 半径
-	float r = 20;
+	float r = 40;
 	// 緯度 経度
 	float phi;
 	float theta;
+
+	// 追従用
+	static XMFLOAT3 pastTarget;
 };
 

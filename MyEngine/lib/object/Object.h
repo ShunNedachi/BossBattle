@@ -13,6 +13,10 @@
 
 class Object
 {
+private:
+
+	using XMFLOAT3 = DirectX::XMFLOAT3;
+
 public:
 	Object(int shaderNum);
 	~Object();
@@ -24,7 +28,7 @@ public:
 
 	void Draw();
 
-	void Update(DirectX::XMFLOAT3 position, DirectX::XMFLOAT3 scale = { 1,1,1 }, DirectX::XMFLOAT3 rotation = {0,0,0});
+	void Update();
 
 	void CreateModel(const std::string &filename);
 	void LoadMaterial(const std::string &directryPath, const std::string &filename);
@@ -34,11 +38,14 @@ public:
 	// setter
 	//void SetModel(Model* model) { this->model = model; }
 	void SetShaderNum(int shaderNum) { this->shaderNum = shaderNum; }
+	void SetPosition(XMFLOAT3 position) { this->position = position; }
+	void SetRotation(XMFLOAT3 rotation) { this->rotation = rotation; }
+	void SetScale(XMFLOAT3 scale) { this->scale = scale; }
 
 	// getter
-	DirectX::XMFLOAT3 GetPosition() { return position; }
-	DirectX::XMFLOAT3 GetRotation() { return rotation; }
-	DirectX::XMFLOAT3 GetScale() { return scale; }
+	XMFLOAT3 GetPosition() { return position; }
+	XMFLOAT3 GetRotation() { return rotation; }
+	XMFLOAT3 GetScale() { return scale; }
 
 	DirectX::XMFLOAT4 GetObjColor() { return objColor; }
 	void SetObjColor(DirectX::XMFLOAT4 color) { objColor = color; }
@@ -88,6 +95,8 @@ private:
 	};
 
 
+	#pragma region	directX用
+
 	// 共有する変数
 	static Microsoft::WRL::ComPtr<ID3D12RootSignature> rootSignature[2]; // ルートシグネチャ
 	static Microsoft::WRL::ComPtr<ID3D12PipelineState> pipelineState[2]; // パイプラインステート
@@ -109,7 +118,7 @@ private:
 	Microsoft::WRL::ComPtr<ID3D12Resource> indexBuff; // インデックスバッファ
 	Microsoft::WRL::ComPtr<ID3D12Resource> constBuffB0; // 定数バッファ
 	Microsoft::WRL::ComPtr<ID3D12Resource> constBuffB1;
-	
+
 	Microsoft::WRL::ComPtr<ID3D12Resource> texBuff;
 
 	Microsoft::WRL::ComPtr<ID3D12DescriptorHeap> descHeap;
@@ -130,7 +139,7 @@ private:
 	DirectX::XMFLOAT3 rotation = { 0,0,0 }; // 回転
 	DirectX::XMMATRIX objMatWorld{}; // ワールド座標
 	DirectX::XMFLOAT4 objColor = { 1,1,1,1 }; // スプライトの色
-	UINT texNumber =0; //	テクスチャ番号
+	UINT texNumber = 0; //	テクスチャ番号
 
 	int shaderNum;
 
@@ -138,6 +147,11 @@ private:
 	std::vector<unsigned short> indices;
 	Material material;
 
-	// モデルクラス
-	/*Model* model;*/
+
+#pragma endregion
+
+
+
+
+	//	
 };

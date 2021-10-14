@@ -19,6 +19,8 @@ void GameScene::Initalize()
 	objectManager->AddOBJ("ground", { 0,-1,0 });
 	objectManager->AddOBJ("skydome");
 	camera->SetEye({ 0, 20, -100 });
+
+	//camera->SetTarget(objectManager->GetPlayerPos());
 }
 
 void GameScene::Update()
@@ -28,9 +30,9 @@ void GameScene::Update()
 	Xinput* xinput = Xinput::GetInstance();
 
 	//camera->Update();
+	//camera->SetTarget(objectManager->GetPlayerPos());
 	//camera->FollowTarget();
-	camera->SetTarget(objectManager->GetPlayerPos());
-	camera->UpdateRot();
+	camera->UpdateFollow(objectManager->GetPlayerPos());
 
 	objectManager->Update();
 
