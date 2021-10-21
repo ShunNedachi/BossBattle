@@ -12,7 +12,7 @@ SetController Xinput::pad = {};
 
 Xinput* Xinput::instance;
 
-Xinput::Xinput()
+void Xinput::Initialize()
 {
 	ZeroMemory(&state[0], sizeof(XINPUT_STATE));
 	ZeroMemory(&state[1], sizeof(XINPUT_STATE));
@@ -34,6 +34,13 @@ Xinput* Xinput::GetInstance()
 	}
 	
 	return instance;
+}
+
+void Xinput::Destroy()
+{
+	delete instance;
+
+	instance = nullptr;
 }
 
 void Xinput::Update()

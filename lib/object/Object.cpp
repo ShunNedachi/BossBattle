@@ -9,7 +9,6 @@
 #include<string>
 
 
-using namespace std;
 
 // 3dObject 共有変数
 Microsoft::WRL::ComPtr<ID3D12RootSignature> Object::rootSignature[2]; // ルートシグネチャ
@@ -24,9 +23,9 @@ Camera* Object::camera = nullptr;
 
 
 
-Object::Object(int shaderNum):shaderNum(shaderNum)
+Object::Object(int shaderNum, const string& filename):shaderNum(shaderNum)
 {
-
+	CreateModel(filename);
 }
 Object::~Object()
 {
@@ -417,9 +416,9 @@ void Object::CreateModel(const string &modelname)
 
 	if (file.fail())assert(0);
 
-	vector<XMFLOAT3> positions;
-	vector<XMFLOAT3> normals;
-	vector<XMFLOAT2> texcoords;
+	std::vector<XMFLOAT3> positions;
+	std::vector<XMFLOAT3> normals;
+	std::vector<XMFLOAT2> texcoords;
 
 	// 四角形ポリゴン用
 	int indexCount = 0;
@@ -475,9 +474,9 @@ void Object::CreateModel(const string &modelname)
 				unsigned short indexPosition,indexNormal,indexTexcoord;
 				index_stream >> indexPosition;
 
-				index_stream.seekg(1, ios_base::cur);
+				index_stream.seekg(1, std::ios_base::cur);
 				index_stream >> indexTexcoord;
-				index_stream.seekg(1, ios_base::cur);
+				index_stream.seekg(1, std::ios_base::cur);
 				index_stream >> indexNormal;
 
 				Vertex vertex{};

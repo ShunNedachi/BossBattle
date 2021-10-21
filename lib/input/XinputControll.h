@@ -49,8 +49,22 @@ struct SetController
 
 class Xinput
 {
+private:
+	Xinput() = default;
+	~Xinput() = default;
+
+	void operator=(const Xinput& obj) {}
+	Xinput(const Xinput& obj) {}
+
 
 public:
+
+	// デストラクタ
+	static void Destroy();
+
+	// 初期化
+	static void Initialize();
+
 	// 更新用
 	void Update();
 
@@ -69,9 +83,7 @@ public:
 	static Xinput* GetInstance();
 
 private:
-	// 関数 
-	Xinput();
-	~Xinput() {};
+
 	
 
 

@@ -7,10 +7,14 @@
 #include<wrl.h>
 #include"MyWindow.h"
 
-using namespace Microsoft::WRL;
 
 class MyDirectX12
 {
+private:
+
+	// エイリアス
+	template<class T>using ComPtr = Microsoft::WRL::ComPtr<T>;
+
 
 public:
 
@@ -22,7 +26,7 @@ public:
 	void SetViewport();
 	void SetScissorrect();
 
-	void Draw(Microsoft::WRL::ComPtr<ID3D12DescriptorHeap>basicDescHeap, D3D12_INDEX_BUFFER_VIEW  ibView,
+	void Draw(ComPtr<ID3D12DescriptorHeap>basicDescHeap, D3D12_INDEX_BUFFER_VIEW  ibView,
 		D3D12_VERTEX_BUFFER_VIEW vbView, UINT Indices, D3D12_GPU_DESCRIPTOR_HANDLE gpuDescHandleCBV, D3D12_GPU_DESCRIPTOR_HANDLE gpuDescHandleSRV);
 
 	ComPtr<ID3D12Device> Device();

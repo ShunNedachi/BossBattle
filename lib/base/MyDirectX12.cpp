@@ -158,11 +158,11 @@ void MyDirectX12::Debug()
 #endif // DEBUG
 }
 
-ComPtr<ID3D12Device> MyDirectX12::Device()
+Microsoft::WRL::ComPtr<ID3D12Device> MyDirectX12::Device()
 {
 	return dev;
 }
-ComPtr<ID3D12GraphicsCommandList> MyDirectX12::CommandList()
+Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList> MyDirectX12::CommandList()
 {
 	return cmdList;
 }

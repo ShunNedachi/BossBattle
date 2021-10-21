@@ -16,7 +16,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 {
 	using namespace DirectX;
 
-#pragma region 初期化処理
+	#pragma region 初期化処理
 
 	// ウィンドウ用
 	MyWindow myw;
@@ -26,7 +26,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	Input* input = Input::GetInstance();
 	input->Initialize(myw.GetConfig().hInstance,myw.GetHWND());
 	Xinput* xinput = Xinput::GetInstance();
-
+	Xinput::Initialize();
 
 	// directX12基本初期化
 	MyDirectX12 my12;
@@ -53,6 +53,9 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		xinput->Update();
 
 
+		// exe強制終了用
+		if (xinput->TriggerButtom(0, xinput_BACK))break;
+
 		// 各シーンのupdate
 		sceneManager->Update();
 
@@ -76,6 +79,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	input->Destroy();
 	Camera::Destroy();
 	sceneManager->Destroy();
+	xinput->Destroy();
 
 	return 0;
 }

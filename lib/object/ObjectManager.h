@@ -11,15 +11,23 @@
 // シングルトンパターン
 class ObjectManager
 {
-public:
+private:
 	// エイリアス
 	using XMFLOAT3 = DirectX::XMFLOAT3;
 	using XMFLOAT2 = DirectX::XMFLOAT2;
 	using XMFLOAT4 = DirectX::XMFLOAT4;
 
+
+private:
+	ObjectManager() = default;
+	~ObjectManager() = default;
+
+	void operator=(const ObjectManager& obj) {}
+	ObjectManager(const ObjectManager& obj) {}
+
+
 public:
-	ObjectManager() {};
-	~ObjectManager() {};
+
 
 	static ObjectManager* GetInstance();
 	static void Destroy();

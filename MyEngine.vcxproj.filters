@@ -49,6 +49,12 @@
     <Filter Include="ヘッダー ファイル\easing">
       <UniqueIdentifier>{e92024f4-d8b1-4d65-a8e7-b2ef5be3fe0d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ヘッダー ファイル\gameSystem">
+      <UniqueIdentifier>{40170686-0005-4c77-a059-09973cdefe66}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\gameSystem">
+      <UniqueIdentifier>{ab56752e-c6c6-4510-8bc4-20575db287c4}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -105,6 +111,9 @@
     <ClCompile Include="lib\object\Model.cpp">
       <Filter>ソース ファイル\object</Filter>
     </ClCompile>
+    <ClCompile Include="lib\gameSystem\AttackBase.cpp">
+      <Filter>ソース ファイル\gameSystem</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="lib\audio\Audio.h">
@@ -157,6 +166,9 @@
     </ClInclude>
     <ClInclude Include="lib\object\Model.h">
       <Filter>ヘッダー ファイル\object</Filter>
+    </ClInclude>
+    <ClInclude Include="lib\gameSystem\AttackBase.h">
+      <Filter>ヘッダー ファイル\gameSystem</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

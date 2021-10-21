@@ -7,7 +7,9 @@ DirectX::XMFLOAT3 Camera::target = { 0,0,0 };
 DirectX::XMFLOAT3 Camera::pastTarget = { 0,0,0 };
 DirectX::XMFLOAT3 Camera::up = { 0,1,0 };
 DirectX::XMFLOAT3 Camera::eyeDir = { 0,0,0 };
-
+float Camera::phi = 0;
+float Camera::theta = 0;
+float Camera::r = 40;
 
 
 Camera* Camera::GetInstance()
@@ -72,8 +74,8 @@ void Camera::UpdateFollow(XMFLOAT3 target)
 	if (input->PushKey(DIK_UP)|| xinput->MoveStick(0,xinput_RS)&XINPUT_STICK_UP)theta++;
 	else if (input->PushKey(DIK_DOWN)|| xinput->MoveStick(0,xinput_RS)&XINPUT_STICK_DOWN)theta--;
 
-	if (input->PushKey(DIK_RIGHT)||xinput->MoveStick(0,xinput_RS)&XINPUT_STICK_RIGHT)phi++;
-	else if (input->PushKey(DIK_LEFT)|| xinput->MoveStick(0,xinput_RS)&XINPUT_STICK_LEFT)phi--;
+	if (input->PushKey(DIK_RIGHT)||xinput->MoveStick(0,xinput_RS)&XINPUT_STICK_RIGHT)phi--;
+	else if (input->PushKey(DIK_LEFT)|| xinput->MoveStick(0,xinput_RS)&XINPUT_STICK_LEFT)phi++;
 
 	// Å‘å’lÅ¬’l‚ÌÝ’è
 	if (phi > MAX_PHI_RADIUS)phi = MIN_PHI_RADIUS;

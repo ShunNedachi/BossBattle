@@ -15,7 +15,7 @@ void GameScene::Initalize()
 
 	camera = Camera::GetInstance();
 
-	objectManager->AddPlayer("Sphere");
+	objectManager->AddPlayer("player");
 	objectManager->AddOBJ("ground", { 0,-1,0 });
 	objectManager->AddOBJ("skydome");
 	camera->SetEye({ 0, 20, -100 });

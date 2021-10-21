@@ -1,6 +1,7 @@
 #pragma once
 #include"Object.h"
 #include"Sprite2D.h"
+#include"AttackBase.h"
 #include<string>
 
 class Player
@@ -21,27 +22,32 @@ public:
 	void Destroy();
 
 	//
-	void Init(const std::string& filename);
+	void Init(const String& filename);
 	void Update();
 	void Draw();
 
 	// setter
-	void SetPos(XMFLOAT3 pos) { playerPos = pos; }
-	void SetRot(XMFLOAT3 rot) { playerRot = rot; }
-	void SetScale(XMFLOAT3 scale) { playerScale = scale; }
+	void SetPos(XMFLOAT3 pos) { position = pos; }
+	void SetRot(XMFLOAT3 rot) { rotation = rot; }
+	void SetScale(XMFLOAT3 scale) { scale = scale; }
 
 	// getter
-	XMFLOAT3 GetPos() { return playerPos; }
-	XMFLOAT3 GetRot() { return playerRot; }
-	XMFLOAT3 GetScale() { return playerScale; }
+	XMFLOAT3 GetPos() { return position; }
+	XMFLOAT3 GetRot() { return rotation; }
+	XMFLOAT3 GetScale() { return scale; }
 
 
 protected:
-	// コンストラクタ
-	Player() {};
-	// デストラクタ
-	~Player() {};
 
+private:
+	// コンストラクタ
+	Player() = default;
+	// デストラクタ
+	~Player() = default;
+
+	// 禁止項目
+	void operator=(const Player& obj) {}
+	Player(const Player& obj){}
 
 private:
 	// 変数
@@ -49,9 +55,20 @@ private:
 	static Player* instance;
 
 	Object* objPlayer = nullptr;
-	XMFLOAT3 playerPos = {0,0,0};
-	XMFLOAT3 playerRot = {0,0,0};
-	XMFLOAT3 playerScale = {1,1,1};
+	XMFLOAT3 position = {0,0,0};
+	XMFLOAT3 rotation = {0,0,0};
+	XMFLOAT3 scale = {1,1,1};
+
+	// system用
+	float health;
+
+	// 攻撃用
+	AttackBase* attack;
+	Object* attackObj;
+
+	// 回転確認用
+	float rotX = 0; // x軸用
+	float rotY = 0; // y軸用
 
 };
 

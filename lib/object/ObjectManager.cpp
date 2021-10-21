@@ -28,7 +28,7 @@ void ObjectManager::Destroy()
 	// .obj用配列
 	if (objArray.size() > 0)
 	{
-		for (auto x : objArray)
+		for (auto& x : objArray)
 		{
 			delete x;
 			x = nullptr;
@@ -40,7 +40,7 @@ void ObjectManager::Destroy()
 	// sprite用配列
 	if (spriteArray.size() > 0)
 	{
-		for (auto x : spriteArray)
+		for (auto& x : spriteArray)
 		{
 			delete x;
 			x = nullptr;
@@ -50,7 +50,10 @@ void ObjectManager::Destroy()
 		spriteArray.shrink_to_fit();
 	}
 
-	if(player != nullptr)player->Destroy();
+	if (player != nullptr)
+	{
+		player->Destroy();
+	}
 	player = nullptr;
 
 
@@ -122,8 +125,7 @@ void ObjectManager::AddPlayer(const std::string& filename)
 
 void ObjectManager::AddOBJ(const std::string& filename,XMFLOAT3 position,XMFLOAT3 scale,XMFLOAT3 rotation,int drawShader)
 {
-	Object* obj = new Object(drawShader);
-	obj->CreateModel(filename);
+	Object* obj = new Object(drawShader,filename);
 
 	obj->SetPosition(position);
 	obj->SetRotation(rotation);
