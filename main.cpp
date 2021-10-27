@@ -5,8 +5,7 @@
 #include"Camera.h"
 #include "XinputControll.h"
 #include"SceneManager.h"
-#include<thread>
-
+#include"FrameFixed.h"
 
 bool MessageError(MSG msg);
 
@@ -39,6 +38,8 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	// シーン管理用
 	SceneManager* sceneManager = SceneManager::GetInstance();
 
+	// fps固定用
+	FrameFixed* frameFixed = FrameFixed::GetInstance();
 
 #pragma endregion
 
@@ -47,6 +48,9 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	while (true)
 	{
 		if (MessageError(msg)) { break; };
+
+		// フレームレート固定
+		frameFixed->PreWait();
 
 		// 更新
 		input->Update();
@@ -72,6 +76,8 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 		#pragma endregion
 
+		// fps固定用
+		frameFixed->PostWait();
 	}
 
 
@@ -80,6 +86,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	Camera::Destroy();
 	sceneManager->Destroy();
 	xinput->Destroy();
+	frameFixed->Destroy();
 
 	return 0;
 }

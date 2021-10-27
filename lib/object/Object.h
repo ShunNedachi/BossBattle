@@ -23,8 +23,12 @@ private:
 	using XMMATRIX = DirectX::XMMATRIX;
 
 public:
+
+
 	Object(int shaderNum, const string& filename);
 	~Object();
+
+	#pragma region メンバー関数
 
 	// 初期化処理　全体で一回のみinitを回す
 	static void Init(MyDirectX12* my12, MyWindow* window);
@@ -32,12 +36,13 @@ public:
 
 
 	void Draw();
+	void DrawFlash();
 
 	void Update();
 
-	void CreateModel(const string &filename);
-	void LoadMaterial(const string &directryPath, const string &filename);
-	bool LoadTexture(const string &directoryPath, const string &filename);
+	void CreateModel(const string& filename);
+	void LoadMaterial(const string& directryPath, const string& filename);
+	bool LoadTexture(const string& directoryPath, const string& filename);
 
 
 	// setter
@@ -46,21 +51,34 @@ public:
 	void SetPosition(XMFLOAT3 position) { this->position = position; }
 	void SetRotation(XMFLOAT3 rotation) { this->rotation = rotation; }
 	void SetScale(XMFLOAT3 scale) { this->scale = scale; }
+	void SetSize(XMFLOAT3 size) { this->size = size; }
+	void SetRadius(float r) { this->r = r; }
+	void SetColor(XMFLOAT3 color) { this->color = color; }
 
 	// getter
 	XMFLOAT3 GetPosition() { return position; }
 	XMFLOAT3 GetRotation() { return rotation; }
 	XMFLOAT3 GetScale() { return scale; }
+	XMFLOAT3 GetSize() { return size; }
+	float GetRadius() { return r; }
+	XMFLOAT3 GetObjColor() { return color; }
 
-	XMFLOAT4 GetObjColor() { return objColor; }
-	void SetObjColor(XMFLOAT4 color) { objColor = color; }
+
+	#pragma endregion
+
 private:
+
+	#pragma region 構造体
 
 	struct ConstBufferDataB0
 	{
-		//DirectX::XMFLOAT4 clearColor; // 色（RGBA）
 		XMMATRIX mat; // 3d変換行列
 		XMFLOAT3 cameraPos;
+		XMFLOAT3 color;
+		//float colorR; // 色（RGBA）
+		//float colorG;
+		//float colorB;
+		//float colorA;
 	};
 
 	// 定数バッファ用データ構造体b1
@@ -86,7 +104,7 @@ private:
 		XMFLOAT3 ambient;
 		XMFLOAT3 diffuse;
 		XMFLOAT3 specular;
-		
+
 		float alpha;
 		string textureFilename;
 
@@ -98,6 +116,7 @@ private:
 			alpha = 1.0f;
 		}
 	};
+#pragma endregion
 
 
 	#pragma region	directX用
@@ -143,8 +162,14 @@ private:
 	XMFLOAT3 scale = { 1,1,1 };     // スケール
 	XMFLOAT3 rotation = { 0,0,0 }; // 回転
 	XMMATRIX objMatWorld{}; // ワールド座標
-	XMFLOAT4 objColor = { 1,1,1,1 }; // スプライトの色
+	XMFLOAT3 color = { 1,1,1 }; // スプライトの色
 	UINT texNumber = 0; //	テクスチャ番号
+
+	// どちらかに値を入れてオブジェクトの大きさを取ってくる(主に当たり判定用)
+	XMFLOAT3 size = { 0,0,0 }; // 矩形の大きさ
+	float r = 0; // 半径
+
+	
 
 	int shaderNum;
 

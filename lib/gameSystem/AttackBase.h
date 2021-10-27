@@ -2,7 +2,6 @@
 #include<DirectXMath.h>
 #include"Object.h"
 
-
 struct AttackSize
 {
 	DirectX::XMFLOAT3 squareSize = {0,0,0};
@@ -28,7 +27,7 @@ public:
 	/// <param name="attackFrame">攻撃用の持続フレーム</param>
 	/// <param name="size">攻撃の範囲</param>
 	/// <param name="comboInputTime"></param>
-	AttackBase(int startFrame,int stopFrame,int attackFrame,AttackSize size,int comboInputTime = 0);
+	AttackBase(int startFrame,int attackFrame, int stopFrame,int comboInputTime = 0);
 	~AttackBase();
 
 	// update
@@ -40,6 +39,7 @@ public:
 	void SetObject(Object* object) { this->object = object; }
 
 	// get
+	XMFLOAT3 GetAttackPos() { return object->GetPosition(); }
 	bool GetIsAttack() { return isAttack; }
 	bool GetAttackStart() { return attackStart; }
 
@@ -75,13 +75,15 @@ private:
 	// 連続攻撃用受付時間
 	float comboInputTime = 0;
 	
-	// 攻撃の判定範囲用
-	AttackSize size;
+	//// 攻撃の判定範囲用
+	//AttackSize size;
 
 	// 経過フレーム(計算用)
 	int elapsedFrame = 0;
 	
 	// 攻撃の見た目用
 	Object* object = nullptr;
+
+	//
 };
 

@@ -114,6 +114,18 @@
     <ClCompile Include="lib\gameSystem\AttackBase.cpp">
       <Filter>ソース ファイル\gameSystem</Filter>
     </ClCompile>
+    <ClCompile Include="lib\gameSystem\Collision.cpp">
+      <Filter>ソース ファイル\gameSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="lib\base\FrameFixed.cpp">
+      <Filter>ソース ファイル\base</Filter>
+    </ClCompile>
+    <ClCompile Include="lib\object\Enemy.cpp">
+      <Filter>ソース ファイル\object</Filter>
+    </ClCompile>
+    <ClCompile Include="lib\object\Boss.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="lib\audio\Audio.h">
@@ -169,6 +181,21 @@
     </ClInclude>
     <ClInclude Include="lib\gameSystem\AttackBase.h">
       <Filter>ヘッダー ファイル\gameSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="lib\gameSystem\Collision.h">
+      <Filter>ヘッダー ファイル\gameSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="lib\object\SpriteLoadDefine.h">
+      <Filter>ヘッダー ファイル\object</Filter>
+    </ClInclude>
+    <ClInclude Include="lib\base\FrameFixed.h">
+      <Filter>ヘッダー ファイル\base</Filter>
+    </ClInclude>
+    <ClInclude Include="lib\object\Enemy.h">
+      <Filter>ヘッダー ファイル\object</Filter>
+    </ClInclude>
+    <ClInclude Include="lib\object\Boss.h">
+      <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

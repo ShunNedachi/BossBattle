@@ -7,6 +7,7 @@
 #include"Player.h"
 #include<string>
 #include"Model.h"
+#include"Enemy.h"
 
 // シングルトンパターン
 class ObjectManager
@@ -48,6 +49,15 @@ public:
 #pragma endregion
 
 
+	#pragma region Enemy関係関数
+
+	void AddEnemy();
+
+
+
+#pragma endregion
+
+
 	#pragma region 3Dオブジェクト用関数
 
 	// オブジェクト追加コマンド
@@ -77,6 +87,8 @@ public:
 
 private:
 
+	static Xinput* xinput;
+
 	static ObjectManager* instance;
 
 	// .obj用配列
@@ -91,7 +103,7 @@ private:
 
 	static Player* player;
 
-
-	static Xinput* xinput;
+	// Enemy 仮置き
+	static Enemy* enemy;
 };
 

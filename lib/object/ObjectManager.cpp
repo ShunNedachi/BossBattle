@@ -1,4 +1,6 @@
 #include "ObjectManager.h"
+#include"SpriteLoadDefine.h"
+#include"Collision.h"
 #include<string>
 
 // 静的メンバ変数
@@ -7,7 +9,7 @@ std::vector<Object*> ObjectManager::objArray;
 std::vector<Sprite2D*> ObjectManager::spriteArray;
 std::vector<std::string> ObjectManager::loadedFileArray;
 Player* ObjectManager::player = nullptr;
-
+Enemy* ObjectManager::enemy = nullptr;
 
 ObjectManager* ObjectManager::GetInstance()
 {
@@ -50,12 +52,20 @@ void ObjectManager::Destroy()
 		spriteArray.shrink_to_fit();
 	}
 
+	// プレイヤー
 	if (player != nullptr)
 	{
 		player->Destroy();
 	}
 	player = nullptr;
 
+	// 敵
+	if (enemy != nullptr)
+	{
+		enemy->Destroy();
+		delete enemy;
+	}
+	enemy = nullptr;
 
 	if(instance != nullptr)delete instance;
 	instance = nullptr;
@@ -71,8 +81,7 @@ void ObjectManager::Update()
 {
 	// updateの最初で配列内にnullがないか確認をする
 	// 入っていた場合配列から削除し、配列を詰める
-
-	// obj用
+	// obj用配列整理
 	for (auto itr  = objArray.begin();itr < objArray.end();)
 	{
 		if (*itr == nullptr)
@@ -84,10 +93,6 @@ void ObjectManager::Update()
 			itr++;
 		}
 	}
-	
-	// player用
-	if(player)player->Update();
-
 	// sprite用
 	for (auto itr = spriteArray.begin(); itr < spriteArray.end();)
 	{
@@ -100,6 +105,44 @@ void ObjectManager::Update()
 			itr++;
 		}
 	}
+
+
+
+	// player用
+	if(player)player->Update();
+	
+	// enemy用
+	if (enemy)
+	{
+		enemy->Update();
+		if (enemy->GetHealth() <= 0)
+		{
+			enemy->Destroy();
+			delete enemy;
+			enemy = nullptr;
+		}
+	}
+
+	// 当たり判定処理
+	if (enemy)
+	{
+		// プレイヤーの攻撃と敵との判定
+		if (Collision::Attack2OBJ(enemy->GetOBJ(), player->GetAttack()))
+		{
+			if (!enemy->GetIsDamage())enemy->RecieveDamage(player->GetAttackPos(), player->GetDamage());
+		}
+
+		// プレイヤーと敵との判定
+		if (Collision::Sphere2Sphere(player->GetPos(), enemy->GetPosition(), player->GetRadius(), enemy->GetRadius()))
+		{
+			if(!player->GetIsDamage())player->RecieveDamage(enemy->GetPosition(), enemy->GetDamage());
+		}
+	}
+
+	// ここまで
+
+
+
 }
 
 void ObjectManager::Draw()
@@ -111,6 +154,8 @@ void ObjectManager::Draw()
 
 	if(player)player->Draw();
 
+	if (enemy)enemy->Draw();
+
 	for (auto x : spriteArray)
 	{
 		if(x != nullptr)x->Draw();
@@ -120,7 +165,19 @@ void ObjectManager::Draw()
 void ObjectManager::AddPlayer(const std::string& filename)
 {
 	ObjectManager::player = player->GetInstance();
+
+	// プレイヤーのスプライト関係のロード
+	Sprite2D::LoadTex(playerHealthBar, TEXT("playerHealth.png"));
+	Sprite2D::LoadTex(playerHealth, TEXT("playerHealth1Dot.png"));
+
 	ObjectManager::player->Init(filename);
+}
+
+void ObjectManager::AddEnemy()
+{
+	enemy = new Enemy();
+	enemy->Init();
+	enemy->SetRadius(1);
 }
 
 void ObjectManager::AddOBJ(const std::string& filename,XMFLOAT3 position,XMFLOAT3 scale,XMFLOAT3 rotation,int drawShader)
@@ -146,11 +203,6 @@ void ObjectManager::DeleteOBJ(int index)
 }
 
 // ↓sprite
-
-//void ObjectManager::LoadTexture(const wchar_t* filename, int textureNum)
-//{
-//	Sprite2D::LoadTex(textureNum, filename);
-//}
 
 void ObjectManager::AddSprite(int textureNum, const std::string& filename, XMFLOAT2 position, float rotation,XMFLOAT2 anchorPoint, XMFLOAT4 color)
 {

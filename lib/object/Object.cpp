@@ -31,7 +31,6 @@ Object::~Object()
 {
 }
 
-
 void Object::CreatePiplineStateOBJ()
 {
 	HRESULT result;
@@ -159,7 +158,7 @@ void Object::CreatePiplineStateOBJ()
 	CD3DX12_DESCRIPTOR_RANGE descRangeSRV;
 	descRangeSRV.Init(D3D12_DESCRIPTOR_RANGE_TYPE_SRV, 1, 0); // t0レジスタ
 
-	// ルートパラメータ
+	// ルートパラメータ 定数バッファの項目
 	//CD3DX12_ROOT_PARAMETER rootparams[2];
 	//rootparams[0].InitAsConstantBufferView(0, 0, D3D12_SHADER_VISIBILITY_ALL); // 定数バッファとして初期化
 	//rootparams[1].InitAsDescriptorTable(1, &descRangeSRV, D3D12_SHADER_VISIBILITY_ALL);
@@ -268,7 +267,6 @@ void Object::CreatePiplineStateOBJ()
 
 }
 
-
 void Object::Draw()
 {
 	// num によってシェーダーを切り替える
@@ -299,7 +297,11 @@ void Object::Draw()
 	result = constBuffB0->Map(0, nullptr, (void**)&constMap);
 	constMap->mat = matWorld * matView * matProjection;
 	constMap->cameraPos = camera->GetEye();
-	//constMap->clearColor = objColor;
+	constMap->color = color;
+	//constMap->colorR = color.x;
+	//constMap->colorG = color.y;
+	//constMap->colorB = color.z;
+	//constMap->colorA = color.w;
 	constBuffB0->Unmap(0, nullptr);
 
 	// b1データ転送
@@ -601,8 +603,13 @@ void Object::CreateModel(const string &modelname)
 	// b0 データ転送
 	ConstBufferDataB0* constMap = nullptr;
 	result = constBuffB0->Map(0, nullptr, (void**)&constMap);
-	/*constMap->clearColor = XMFLOAT4(1,1,1, 1);*/
 	constMap->mat = matWorld * matView * matProjection;
+	//constMap->cameraPos = camera->GetEye();
+	constMap->color = color;
+	//constMap->colorR = color.x;
+	//constMap->colorG = color.y;
+	//constMap->colorB = color.z;
+	//constMap->colorA = color.w;
 
 	constBuffB0->Unmap(0, nullptr);
 
@@ -621,6 +628,7 @@ void Object::LoadMaterial(const std::string &directoryPath, const std::string &f
 {
 
 	std::ifstream file;
+	bool isTexture = false;
 
 	file.open(directoryPath + filename);
 
@@ -664,9 +672,14 @@ void Object::LoadMaterial(const std::string &directoryPath, const std::string &f
 		if (key == "map_Kd")
 		{
 			line_stream >> material.textureFilename;
+
 			LoadTexture(directoryPath, material.textureFilename);
+			isTexture = true;
+
 		}
 	}
+	if(!isTexture)LoadTexture(TEXT("Resources/texture/"), "white.png");
+
 	file.close();
 }
 

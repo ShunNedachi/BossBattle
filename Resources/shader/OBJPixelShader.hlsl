@@ -16,5 +16,12 @@ float4 main(VSOutput input):SV_TARGET
 
 	float4 texcolor = tex.Sample(smp,input.uv);
 
-	return input.color * texcolor;
+	float4 pixelReturn = input.color * texcolor;
+	pixelReturn.x *= colorR;
+	//pixelReturn.x *= 1;
+	pixelReturn.y *= colorG;
+	pixelReturn.z *= colorB;
+
+
+	return pixelReturn;
 }

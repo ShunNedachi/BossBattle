@@ -1,7 +1,8 @@
 #include "AttackBase.h"
+#include"Collision.h"
 
-AttackBase::AttackBase(int startFrame, int stopFrame,int attackFrame, AttackSize size, int comboInputTime)
-						:startFrame(startFrame),stopFrame(stopFrame),attackFrame(attackFrame),size(size),comboInputTime(comboInputTime)
+AttackBase::AttackBase(int startFrame, int attackFrame, int stopFrame, int comboInputTime)
+						:startFrame(startFrame),stopFrame(stopFrame),attackFrame(attackFrame),comboInputTime(comboInputTime)
 {
 
 }
@@ -78,6 +79,24 @@ bool AttackBase::Hit(XMFLOAT3 pos, XMFLOAT3 size, float r)
 	if (isAttack)
 	{
 		// UŒ‚’†‚ÌŽž‚É”»’è‚Åtrue‚ª’Ê‚é‚æ‚¤‚É
+
+		// ”»’è‚ª‹éŒ`‚Ìê‡
+		// ‰Šú’l‚ª“ü‚Á‚Ä‚¢‚½ê‡’Ê‚ç‚È‚¢
+		if (size.x != 0 && size.y != 0 && size.z != 0)
+		{
+
+			// ‹éŒ`‚Ìˆ—(Œã’öOBB‚ð“ü‚ê‚é)
+
+		}
+		// ‚±‚±‚Ü‚Å
+
+		// ”»’è‚ª‹…‚Ìê‡
+		if (r != 0)
+		{
+			 return Collision::Sphere2Sphere(pos, object->GetPosition(), r, object->GetRadius());
+		}
+		// ‚±‚±‚Ü‚Å
+
 	}
 	return false;
 }

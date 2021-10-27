@@ -468,6 +468,7 @@ int Xinput::MoveStick(int controller, short stick)
 {
 	int count = -1;
 
+	// どのコントローラーを識別するのか
 	if (pad.controller1 && controller == 0)
 	{
 		count = 0;
@@ -516,11 +517,11 @@ int Xinput::MoveStick(int controller, short stick)
 
 		if (state[count].Gamepad.sThumbLY <= -XINPUT_GAMEPAD_LEFT_THUMB_DEADZONE)
 		{
-			moveState += XINPUT_STICK_UP;
+			moveState += XINPUT_STICK_DOWN;
 		}
 		else if (state[count].Gamepad.sThumbLY >= XINPUT_GAMEPAD_LEFT_THUMB_DEADZONE)
 		{
-			moveState += XINPUT_STICK_DOWN;
+			moveState += XINPUT_STICK_UP;
 		}
 
 		return moveState;
@@ -550,11 +551,11 @@ int Xinput::MoveStick(int controller, short stick)
 
 		if (state[count].Gamepad.sThumbRY <= -XINPUT_GAMEPAD_RIGHT_THUMB_DEADZONE)
 		{
-			moveState += XINPUT_STICK_UP;
+			moveState += XINPUT_STICK_DOWN;
 		}
 		else if (state[count].Gamepad.sThumbRY >= XINPUT_GAMEPAD_RIGHT_THUMB_DEADZONE)
 		{
-			moveState += XINPUT_STICK_DOWN;
+			moveState += XINPUT_STICK_UP;
 		}
 
 		return moveState;

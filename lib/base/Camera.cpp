@@ -71,8 +71,8 @@ void Camera::UpdateFollow(XMFLOAT3 target)
 	const int MIN_THETA_RADIUS = 0;
 	const int MAX_THETA_RADIUS = 89;
 
-	if (input->PushKey(DIK_UP)|| xinput->MoveStick(0,xinput_RS)&XINPUT_STICK_UP)theta++;
-	else if (input->PushKey(DIK_DOWN)|| xinput->MoveStick(0,xinput_RS)&XINPUT_STICK_DOWN)theta--;
+	if (input->PushKey(DIK_DOWN)|| xinput->MoveStick(0,xinput_RS)&XINPUT_STICK_DOWN)theta++;
+	else if (input->PushKey(DIK_UP)|| xinput->MoveStick(0,xinput_RS)&XINPUT_STICK_UP)theta--;
 
 	if (input->PushKey(DIK_RIGHT)||xinput->MoveStick(0,xinput_RS)&XINPUT_STICK_RIGHT)phi--;
 	else if (input->PushKey(DIK_LEFT)|| xinput->MoveStick(0,xinput_RS)&XINPUT_STICK_LEFT)phi++;

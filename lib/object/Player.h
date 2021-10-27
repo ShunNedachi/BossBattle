@@ -26,18 +26,34 @@ public:
 	void Update();
 	void Draw();
 
-	// setter
+	/// <summary>
+	/// ダメージを受けた時の処理
+	/// </summary>
+	/// <param name="pos">攻撃者の位置</param>
+	/// <param name="damage"></param>
+	void RecieveDamage(XMFLOAT3 pos, float damage);
+
+	// setter 後で修正
 	void SetPos(XMFLOAT3 pos) { position = pos; }
 	void SetRot(XMFLOAT3 rot) { rotation = rot; }
 	void SetScale(XMFLOAT3 scale) { scale = scale; }
+	void SetSize(XMFLOAT3 size) { objPlayer->SetSize(size); }
+	void SetRadius(float r) { objPlayer->SetRadius(r); }
 
 	// getter
 	XMFLOAT3 GetPos() { return position; }
 	XMFLOAT3 GetRot() { return rotation; }
 	XMFLOAT3 GetScale() { return scale; }
+	XMFLOAT3 GetSize() { return objPlayer->GetSize(); }
+	XMFLOAT3 GetAttackPos() { return attack->GetAttackPos(); }
+	float GetRadius() { return objPlayer->GetRadius(); }
+	bool GetIsDamage() { return isDamage; }
+	int GetDamage() { return damage; }
 
+	// 攻撃判定用
+	AttackBase* GetAttack() { return attack; }
+	Object* GetOBJ() { return objPlayer; }
 
-protected:
 
 private:
 	// コンストラクタ
@@ -59,16 +75,33 @@ private:
 	XMFLOAT3 rotation = {0,0,0};
 	XMFLOAT3 scale = {1,1,1};
 
+
 	// system用
-	float health;
+	// helth値
+	float health = 10;
+	// 経験値量
+	float experience;
+	// ダメージをくらっているのかの判定
+	bool isDamage = false;
+	// ダメージ状態の経過フレーム数
+	int damageCount;
+	// ダメージ状態の最大フレーム数
+	const int DAMAGE_FRAME = 20;
+
+	int damage = 1;
+
+	// 体力用
+	Sprite2D* healthBarSprite = nullptr;
+	// 体力バー用
+	std::vector<Sprite2D*> healthSprite;
+
 
 	// 攻撃用
 	AttackBase* attack;
 	Object* attackObj;
 
-	// 回転確認用
-	float rotX = 0; // x軸用
-	float rotY = 0; // y軸用
+	// プレイヤーの正面ベクトル
+	XMVECTOR move;
 
 };
 

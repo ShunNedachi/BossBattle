@@ -2,6 +2,11 @@ cbuffer cbuff0:register(b0)
 {
 	matrix mat;
 	float3 cameraPos;
+	//float3 color;
+	float colorR; // êFÅiRGBAÅj
+	float colorG;
+	float colorB;
+	//float colorA;
 }
 
 cbuffer cbuff1 : register(b1)

@@ -140,6 +140,7 @@
     <ClCompile Include="lib\audio\Audio.cpp" />
     <ClCompile Include="lib\base\Camera.cpp" />
     <ClCompile Include="lib\base\EndScene.cpp" />
+    <ClCompile Include="lib\base\FrameFixed.cpp" />
     <ClCompile Include="lib\base\GameScene.cpp" />
     <ClCompile Include="lib\base\MyDirectX12.cpp" />
     <ClCompile Include="lib\base\MyWindow.cpp" />
@@ -148,8 +149,11 @@
     <ClCompile Include="lib\base\TitleScene.cpp" />
     <ClCompile Include="lib\easing\Easing.cpp" />
     <ClCompile Include="lib\gameSystem\AttackBase.cpp" />
+    <ClCompile Include="lib\gameSystem\Collision.cpp" />
     <ClCompile Include="lib\input\Input.cpp" />
     <ClCompile Include="lib\input\XinputControll.cpp" />
+    <ClCompile Include="lib\object\Boss.cpp" />
+    <ClCompile Include="lib\object\Enemy.cpp" />
     <ClCompile Include="lib\object\Model.cpp" />
     <ClCompile Include="lib\object\Object.cpp" />
     <ClCompile Include="lib\object\ObjectManager.cpp" />
@@ -161,6 +165,7 @@
     <ClInclude Include="lib\audio\Audio.h" />
     <ClInclude Include="lib\base\Camera.h" />
     <ClInclude Include="lib\base\EndScene.h" />
+    <ClInclude Include="lib\base\FrameFixed.h" />
     <ClInclude Include="lib\base\GameScene.h" />
     <ClInclude Include="lib\base\MyDirectX12.h" />
     <ClInclude Include="lib\base\MyWindow.h" />
@@ -169,13 +174,17 @@
     <ClInclude Include="lib\base\TitleScene.h" />
     <ClInclude Include="lib\easing\Easing.h" />
     <ClInclude Include="lib\gameSystem\AttackBase.h" />
+    <ClInclude Include="lib\gameSystem\Collision.h" />
     <ClInclude Include="lib\input\Input.h" />
     <ClInclude Include="lib\input\XinputControll.h" />
+    <ClInclude Include="lib\object\Boss.h" />
+    <ClInclude Include="lib\object\Enemy.h" />
     <ClInclude Include="lib\object\Model.h" />
     <ClInclude Include="lib\object\Object.h" />
     <ClInclude Include="lib\object\ObjectManager.h" />
     <ClInclude Include="lib\object\Player.h" />
     <ClInclude Include="lib\object\Sprite2D.h" />
+    <ClInclude Include="lib\object\SpriteLoadDefine.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Resources\shader\OBJPixelShader.hlsl">
