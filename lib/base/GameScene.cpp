@@ -30,11 +30,15 @@ void GameScene::Update()
 	Xinput* xinput = Xinput::GetInstance();
 
 
-	objectManager->Update();
 	camera->UpdateFollow(objectManager->GetPlayerPos());
+	objectManager->Update();
 
 
-	if (input->TriggerKey(DIK_1))NextScene(SceneManager::GetInstance());
+	//if (IsNext())NextScene(SceneManager::GetInstance());
+
+	//// ƒV[ƒ“•ÏX
+	//if (xinput->TriggerButtom(0, xinput_A))isNext = true;
+
 }
 
 void GameScene::Draw()

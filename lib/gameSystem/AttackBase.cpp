@@ -88,10 +88,7 @@ bool AttackBase::Hit(XMFLOAT3 pos, XMFLOAT3 size, float r)
 			// ‹éŒ`‚Ìˆ—(Œã’öOBB‚ğ“ü‚ê‚é)
 
 		}
-		// ‚±‚±‚Ü‚Å
-
-		// ”»’è‚ª‹…‚Ìê‡
-		if (r != 0)
+		else if (r != 0)// ”»’è‚ª‹…‚Ìê‡
 		{
 			 return Collision::Sphere2Sphere(pos, object->GetPosition(), r, object->GetRadius());
 		}

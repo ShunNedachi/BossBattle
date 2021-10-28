@@ -144,7 +144,6 @@
     <ClCompile Include="lib\base\GameScene.cpp" />
     <ClCompile Include="lib\base\MyDirectX12.cpp" />
     <ClCompile Include="lib\base\MyWindow.cpp" />
-    <ClCompile Include="lib\base\Scene.cpp" />
     <ClCompile Include="lib\base\SceneManager.cpp" />
     <ClCompile Include="lib\base\TitleScene.cpp" />
     <ClCompile Include="lib\easing\Easing.cpp" />

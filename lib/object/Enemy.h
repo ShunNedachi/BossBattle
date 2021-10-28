@@ -5,7 +5,7 @@
 class Enemy
 {
 
-private:
+protected:
 	// エイリアス
 	using XMFLOAT3 = DirectX::XMFLOAT3;
 	using XMVECTOR = DirectX::XMVECTOR;
@@ -29,7 +29,7 @@ public:
 	void RecieveDamage(XMFLOAT3 pos, float damage);
 
 
-	// setter objにもあるのでなくてもいい？
+	// setter
 	void SetPosition(XMFLOAT3 position) { this->position = position; }
 	void SetScale(XMFLOAT3 scale) { this->scale = scale; }
 	void SetRotation(XMFLOAT3 rotation) { this->rotation = rotation; }
@@ -53,7 +53,7 @@ public:
 	Object* GetOBJ() { return obj; }
 
 
-private:
+protected:
 	Object* obj = nullptr;
 
 	XMFLOAT3 position = { 0,0,0 };

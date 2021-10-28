@@ -5,5 +5,8 @@ class Boss :
     public Enemy
 {
 
+private:
+
+
 };
 

@@ -84,9 +84,6 @@
     <ClCompile Include="lib\object\ObjectManager.cpp">
       <Filter>ソース ファイル\object</Filter>
     </ClCompile>
-    <ClCompile Include="lib\base\Scene.cpp">
-      <Filter>ソース ファイル\base\scene</Filter>
-    </ClCompile>
     <ClCompile Include="lib\base\EndScene.cpp">
       <Filter>ソース ファイル\base\scene</Filter>
     </ClCompile>
@@ -124,7 +121,7 @@
       <Filter>ソース ファイル\object</Filter>
     </ClCompile>
     <ClCompile Include="lib\object\Boss.cpp">
-      <Filter>ソース ファイル</Filter>
+      <Filter>ソース ファイル\object</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -195,7 +192,7 @@
       <Filter>ヘッダー ファイル\object</Filter>
     </ClInclude>
     <ClInclude Include="lib\object\Boss.h">
-      <Filter>ヘッダー ファイル</Filter>
+      <Filter>ヘッダー ファイル\object</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
