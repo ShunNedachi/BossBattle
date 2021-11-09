@@ -1,4 +1,5 @@
 #include "MyWindow.h"
+#include"Setting.h"
 #include<Windows.h>
 
 
@@ -36,7 +37,7 @@ void MyWindow::Initialize(const char* windowName)
 	// ウィンドウクラスをosに登録
 	RegisterClassEx(&w);
 	// ウィンドウサイズ{ｘ座標　ｙ座標　横幅　縦幅}
-	RECT wrc = { 0,0,window_width,window_height };
+	RECT wrc = { 0,0,WINDOW_WIDTH,WINDOW_HEIGHT };
 	AdjustWindowRect(&wrc, WS_OVERLAPPEDWINDOW, false); // 自動でサイズ補正
 
 	// ウィンドウオブジェクトの生成
@@ -66,15 +67,6 @@ void MyWindow::Release()
 {
 	// ウィンドウクラスを登録解除
 	UnregisterClass(w.lpszClassName, w.hInstance);
-}
-
-const int MyWindow::GetWidth()
-{
-	return window_width;
-}
-const int MyWindow::GetHeight()
-{
-	return window_height;
 }
 
 WNDCLASSEX MyWindow::GetConfig()

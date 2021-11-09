@@ -7,7 +7,7 @@
 #include"Player.h"
 #include<string>
 #include"Model.h"
-#include"Enemy.h"
+#include"Boss.h"
 
 // シングルトンパターン
 class ObjectManager
@@ -33,11 +33,12 @@ public:
 	static ObjectManager* GetInstance();
 	static void Destroy();
 
-	static void Initialize(MyDirectX12* my12, MyWindow* window);
+	static void Initialize(MyDirectX12* my12);
 
 	void Update();
 	void Draw();
 
+	bool GetIsClear() { return isClear; }
 
 	#pragma region Player関係関数
 
@@ -45,6 +46,8 @@ public:
 
 	// getter
 	XMFLOAT3 GetPlayerPos() { return player->GetPos(); }
+	bool GetPlayerDead() { return player->GetIsDead(); }
+
 
 #pragma endregion
 
@@ -78,6 +81,9 @@ public:
 	void AddSprite(int textureNum,const std::string& filename = "white.png", XMFLOAT2 position = {0,0}, float rotation = 0.0f,
 		XMFLOAT2 anchorPoint = {0.5f,0.5f}, XMFLOAT4 color = { 1,1,1,1 });
 
+	static void AddSprite(int textureNum, XMFLOAT2 position = { 0,0 }, float rotation = 0.0f,
+		XMFLOAT2 anchorPoint = { 0.5f,0.5f }, XMFLOAT4 color = { 1,1,1,1 });
+
 	// 削除
 	void DeleteSprite(int index);
 
@@ -104,6 +110,9 @@ private:
 	static Player* player;
 
 	// Enemy 仮置き
-	static Enemy* enemy;
+	static Boss* boss;
+
+	// クリア条件達成確認用
+	bool isClear = false;
 };
 

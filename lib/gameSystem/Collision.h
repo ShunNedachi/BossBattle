@@ -25,6 +25,6 @@ public:
 	/// <param name="obj">判定したいオブジェクト</param>
 	/// <param name="attack">判定したい攻撃</param>
 	/// <returns></returns>
-	static bool Attack2OBJ(Object* obj, AttackBase* attack);
+	static bool Attack2OBJ(const Object& obj,const AttackBase& attack);
 };
 

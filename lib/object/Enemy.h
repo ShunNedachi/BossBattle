@@ -12,8 +12,8 @@ protected:
 
 public:
 	// 関数
-	Enemy() {};
-	~Enemy() { Destroy(); }
+	Enemy() {}
+	virtual ~Enemy() { Destroy(); }
 
 	virtual void Init();
 	virtual void Update();
@@ -47,6 +47,7 @@ public:
 	bool GetIsDamage() { return isDamage; }
 
 	int GetHealth() { return health; }
+	float GetEXP() { return experience; }
 
 	// 攻撃判定用
 	//AttackBase* GetAttack() { return attack; }
@@ -62,7 +63,7 @@ protected:
 
 	// ステータス用
 	float health = 10;
-	float experience;
+	float experience = 10;
 
 	// ダメージをくらっているのかの判定
 	bool isDamage = false;

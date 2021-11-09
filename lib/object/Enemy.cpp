@@ -10,12 +10,11 @@ void Enemy::Init()
 	scale = { 5,5,5 };
 	obj->SetPosition(position);
 	obj->SetScale(scale);
-	obj->SetRadius(10);
+	obj->SetRadius(5);
 }
 
 void Enemy::Update()
 {
-	obj->Update();
 
 	// ダメージ状態時の処理
 	if (isDamage)
@@ -30,9 +29,11 @@ void Enemy::Update()
 			damageCount = 0;
 			obj->SetColor({ 1,1,1 });
 		}
-
 	}
 
+	obj->SetPosition(position);
+	obj->SetScale(scale);
+	obj->Update();
 }
 
 void Enemy::Draw()
@@ -54,12 +55,13 @@ void Enemy::RecieveDamage(XMFLOAT3 pos, float damage)
 	health -= damage;
 
 	// ダメージを受けた時に位置をずらす
-	XMVECTOR movePos;
+	XMVECTOR movePos{};
 	// 移動用　とりあえずxzのみ移動
 	movePos.m128_f32[0] = (pos.x - position.x);
 	movePos.m128_f32[2] = (pos.z - position.z);
+	
 
-	//movePos = DirectX::XMVector4Normalize(movePos);
+	movePos = DirectX::XMVector3Normalize(movePos);
 
 	// ノックバック処理
 	position.x -= movePos.m128_f32[0] * 10;

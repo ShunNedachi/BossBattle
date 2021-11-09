@@ -3,6 +3,7 @@
 
 // 静的変数の実体
 Player* Player::instance = nullptr;
+//float Player::experience = 0;
 
 Player* Player::GetInstance()
 {
@@ -61,6 +62,34 @@ void Player::Init(const String& filename)
 
 		healthSprite.push_back(temp);
 	}
+
+	// 経験値用
+	expBarSprite = new Sprite2D(0.5f, 0.5f);
+	expBarSprite->CreateSprite(playerExpBar);
+	expBarSprite->SetPosition({ 280,90 });
+
+	// 最大値分
+	for (int i = 0; i < 100; i++)
+	{
+		Sprite2D* temp = new Sprite2D(0.5f, 0.5f);
+		temp->CreateSprite(playerExp);
+		temp->Resize(5, 40);
+		temp->SetPosition({ (float)40 + i * 5,90 });
+
+		expSprite.push_back(temp);
+	}
+
+	// レベル用
+	for (int i = 0; i < 9; i++)
+	{
+		Sprite2D* temp = new Sprite2D(0.5f, 0.5f);
+		temp->CreateSprite(number0 + i);
+		temp->SetPosition({(float)20, 90});
+
+		numberSprite.push_back(temp);
+	}
+
+
 	// ここまで
 
 	// 攻撃関係
@@ -81,6 +110,7 @@ void Player::Update()
 
 	
 	const bool XINPUT_TRIGGER_A = xinput->TriggerButtom(0, xinput_A);
+	const bool XINPUT_TRIGGER_Y = xinput->TriggerButtom(0, xinput_Y);
 
 	// 移動処理　後で関数化して処理を分かりやすく
 	const int XINPUT_MOVE_STICK = xinput->MoveStick(0, xinput_LS);
@@ -178,6 +208,7 @@ void Player::Update()
 
 	// 攻撃用処理
 	
+	// 通常攻撃
 	if (XINPUT_TRIGGER_A)
 	{
 		// 攻撃用見た目オブジェクトの位置変更
@@ -191,6 +222,18 @@ void Player::Update()
 		// 正面方向に向きを合わせる(後程)
 
 		attack->SetAttackStart();
+	}
+
+	// 必殺技用
+	if (XINPUT_TRIGGER_Y)
+	{
+		const float DAMAGE = 2.5f;
+		
+		// レベルを消費して威力を上昇
+		float totalDamage = DAMAGE * level + experience * 0.08f;
+		level = 0;
+		experience = 0;
+
 	}
 
 	// ここまで
@@ -212,6 +255,12 @@ void Player::Update()
 
 	}
 
+	// 死んでるかどうかの判定
+	if (health <= 0)
+	{
+		isDead = true;
+	}
+
 
 	//	更新
 
@@ -228,12 +277,22 @@ void Player::Draw()
 
 	if (attack->GetIsAttack())attackObj->Draw();
 
+
+	// 体力バー用
 	for (int i = 0; i < health; i++)
 	{
 		healthSprite[i]->Draw();
 	}
-
 	healthBarSprite->Draw();
+
+	// 経験値用
+	for (int i = 0; i < experience; i++)
+	{
+		expSprite[i]->Draw();
+	}
+	expBarSprite->Draw();
+
+	numberSprite[level]->Draw();
 }
 
 void Player::RecieveDamage(XMFLOAT3 pos, float damage)
@@ -243,16 +302,44 @@ void Player::RecieveDamage(XMFLOAT3 pos, float damage)
 	health -= damage;
 
 	// ダメージを受けた時に位置をずらす
-	XMVECTOR movePos;
+	XMVECTOR movePos{};
 	// 移動用　とりあえずxzのみ移動
 	movePos.m128_f32[0] = (pos.x - position.x);
 	movePos.m128_f32[2] = (pos.z - position.z);
 
-	//movePos = DirectX::XMVector4Normalize(movePos);
+	movePos = DirectX::XMVector3Normalize(movePos);
 
 	// ノックバック処理
 	position.x -= movePos.m128_f32[0]* 10;
 	position.z -= movePos.m128_f32[2]* 10;
 
 	objPlayer->SetPosition(position);
+}
+
+void Player::EXPupdate()
+{
+	const int MAX_LEVEL = 9;
+	const float MAX_EXP = 100;
+
+	while (true)
+	{
+		bool breakFlg = false;
+
+
+		// 経験値バーの上限を超えたら0に戻す 最大レベルに達していたら100にして終了
+		if (experience >= MAX_EXP && level < MAX_LEVEL)
+		{
+			experience -= MAX_EXP;
+			level++;
+		}
+		else if (experience >= MAX_EXP && level >= MAX_LEVEL)
+		{
+			experience = MAX_EXP;
+			level = MAX_LEVEL;
+		}
+		else breakFlg = true;
+
+		if (breakFlg)break;
+	}
+
 }

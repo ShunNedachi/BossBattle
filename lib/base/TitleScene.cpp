@@ -5,14 +5,14 @@
 
 TitleScene::~TitleScene()
 {
-	objManager->Destroy();
+	objectManager->Destroy();
 }
 
 void TitleScene::Initalize()
 {
-	objManager = ObjectManager::GetInstance();
+	objectManager = ObjectManager::GetInstance();
 
-	objManager->AddSprite(0, "title.png", {500,600});
+	objectManager->AddSprite(0, "title.png", {500,600});
 }
 
 void TitleScene::Update()
@@ -28,12 +28,12 @@ void TitleScene::Update()
 	if (xinput->TriggerButtom(0, xinput_A))isNext = true;
 		
 
-	objManager->Update();
+	objectManager->Update();
 }
 
 void TitleScene::Draw()
 {
-	objManager->Draw();
+	objectManager->Draw();
 }
 
 void TitleScene::NextScene(SceneManager* nowScene)

@@ -149,6 +149,7 @@
     <ClCompile Include="lib\easing\Easing.cpp" />
     <ClCompile Include="lib\gameSystem\AttackBase.cpp" />
     <ClCompile Include="lib\gameSystem\Collision.cpp" />
+    <ClCompile Include="lib\gameSystem\GameFunction.cpp" />
     <ClCompile Include="lib\input\Input.cpp" />
     <ClCompile Include="lib\input\XinputControll.cpp" />
     <ClCompile Include="lib\object\Boss.cpp" />
@@ -174,6 +175,8 @@
     <ClInclude Include="lib\easing\Easing.h" />
     <ClInclude Include="lib\gameSystem\AttackBase.h" />
     <ClInclude Include="lib\gameSystem\Collision.h" />
+    <ClInclude Include="lib\gameSystem\GameFunction.h" />
+    <ClInclude Include="lib\gameSystem\Setting.h" />
     <ClInclude Include="lib\input\Input.h" />
     <ClInclude Include="lib\input\XinputControll.h" />
     <ClInclude Include="lib\object\Boss.h" />

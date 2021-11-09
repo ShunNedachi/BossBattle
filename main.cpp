@@ -33,7 +33,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	my12.Initialize(&myw);
 
 	// オブジェクトマネージャー初期化
-	ObjectManager::Initialize(&my12, &myw);
+	ObjectManager::Initialize(&my12);
 
 	// シーン管理用
 	SceneManager* sceneManager = SceneManager::GetInstance();
@@ -56,8 +56,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		input->Update();
 		xinput->Update();
 
-
-		// exe強制終了用
+		// exe終了用
 		if (xinput->TriggerButtom(0, xinput_BACK))break;
 
 		// 各シーンのupdate

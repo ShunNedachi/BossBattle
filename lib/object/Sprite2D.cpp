@@ -1,4 +1,5 @@
 #include "Sprite2D.h"
+#include"Setting.h"
 #include<vector>
 #include<wrl.h>
 #include<d3dx12.h>
@@ -16,7 +17,6 @@ ComPtr<ID3D12DescriptorHeap> Sprite2D::spriteDescHeap = nullptr;
 ComPtr<ID3D12Resource> Sprite2D::spriteTexBuff[spriteSRVCount] = {};
 ComPtr<ID3D12Device> Sprite2D::device;
 ComPtr<ID3D12GraphicsCommandList> Sprite2D::commandList;
-MyWindow* Sprite2D::window;
 
 
 Sprite2D::Sprite2D(float anchorWidth, float anchorHeight) :anchorpoint{ anchorWidth,anchorHeight }
@@ -216,7 +216,7 @@ HRESULT Sprite2D::CreateSprite(UINT texNumber, float sizeX, float sizeY)
 
 	// メンバ変数初期化
 	spriteMatProjection = XMMatrixOrthographicOffCenterLH(
-		0.0f, window->GetWidth(), window->GetHeight(), 0.0f, 0.0f, 1.0f
+		0.0f, WINDOW_WIDTH, WINDOW_HEIGHT, 0.0f, 0.0f, 1.0f
 	);
 
 	// 頂点バッファ生成
@@ -259,7 +259,7 @@ HRESULT Sprite2D::CreateSprite(UINT texNumber, float sizeX, float sizeY)
 	ConstBufferData* constMap = nullptr;
 	result = spriteConstBuff->Map(0, nullptr, (void**)&constMap);
 	constMap->mat = XMMatrixOrthographicOffCenterLH(
-		0.0f, window->GetWidth(), window->GetHeight(), 0.0f, 0.0f, 1.0f); // 平行投影行列の合成
+		0.0f,WINDOW_WIDTH , WINDOW_HEIGHT, 0.0f, 0.0f, 1.0f); // 平行投影行列の合成
 	spriteConstBuff->Unmap(0, nullptr);
 
 	Resize(sizeX, sizeY);
@@ -288,7 +288,7 @@ HRESULT Sprite2D::CreateSprite(UINT texNumber)
 
 	// メンバ変数初期化
 	spriteMatProjection = XMMatrixOrthographicOffCenterLH(
-		0.0f, window->GetWidth(), window->GetHeight(), 0.0f, 0.0f, 1.0f
+		0.0f, WINDOW_WIDTH, WINDOW_HEIGHT, 0.0f, 0.0f, 1.0f
 	);
 
 	// 頂点バッファ生成
@@ -331,7 +331,7 @@ HRESULT Sprite2D::CreateSprite(UINT texNumber)
 	ConstBufferData* constMap = nullptr;
 	result = spriteConstBuff->Map(0, nullptr, (void**)&constMap);
 	constMap->mat = XMMatrixOrthographicOffCenterLH(
-		0.0f, window->GetWidth(), window->GetHeight(), 0.0f, 0.0f, 1.0f); // 平行投影行列の合成
+		0.0f, WINDOW_WIDTH, WINDOW_HEIGHT, 0.0f, 0.0f, 1.0f); // 平行投影行列の合成
 	spriteConstBuff->Unmap(0, nullptr);
 
 	Resize();
@@ -714,12 +714,11 @@ void Sprite2D::SpriteExtent(float tex_x, float tex_y, float tex_width, float tex
 }
 
 
-void Sprite2D::Init(MyDirectX12* directX,MyWindow* window)
+void Sprite2D::Init(MyDirectX12* directX)
 {
 	// 共有変数の記録
 	Sprite2D::device = directX->Device();
 	Sprite2D::commandList = directX->CommandList();
-	Sprite2D::window = window;
 
 	CreatePipelineStateOBJ(device);
 }

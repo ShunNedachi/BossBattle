@@ -25,7 +25,7 @@ public:
 	~Sprite2D();
 
 	// ‘S‘Ì‚Åˆê“x‚¾‚¯‰Šú‰»
-	static void Init(MyDirectX12* directX,MyWindow* window);
+	static void Init(MyDirectX12* directX);
 
 	static void CreatePipelineStateOBJ(Microsoft::WRL::ComPtr<ID3D12Device> dev);
 
@@ -80,7 +80,6 @@ private:
 	static Microsoft::WRL::ComPtr<ID3D12Resource> spriteTexBuff[spriteSRVCount];
 	static Microsoft::WRL::ComPtr<ID3D12Device> device;
 	static Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList> commandList;
-	static MyWindow* window;
 
 
 	// 1–‡‚²‚Æ‚É•Ï‚¦‚é•Ï”

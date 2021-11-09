@@ -1,8 +1,16 @@
 #include "EndScene.h"
 
+
+EndScene::~EndScene()
+{
+	objectManager->Destroy();
+}
+
 void EndScene::Initalize()
 {
+	objectManager->AddSprite(0, "gameOver.png", { 500,500 });
 }
+
 
 void EndScene::Update()
 {
@@ -18,6 +26,7 @@ void EndScene::Update()
 
 void EndScene::Draw()
 {
+	objectManager->Draw();
 }
 
 void EndScene::NextScene(SceneManager* nowScene)

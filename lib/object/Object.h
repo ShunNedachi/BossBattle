@@ -1,7 +1,6 @@
 #pragma once
 #include<vector>
 #include<DirectXTex.h>
-#include"MyWindow.h"
 #include"MyDirectX12.h"
 #include"Camera.h"
 #include<string>
@@ -31,7 +30,7 @@ public:
 	#pragma region メンバー関数
 
 	// 初期化処理　全体で一回のみinitを回す
-	static void Init(MyDirectX12* my12, MyWindow* window);
+	static void Init(MyDirectX12* my12);
 	static void CreatePiplineStateOBJ();
 
 
@@ -131,7 +130,6 @@ private:
 	static ComPtr<ID3D12GraphicsCommandList> commandList;
 	static ComPtr<ID3D12Device> device;
 	static D3D12_GRAPHICS_PIPELINE_STATE_DESC gpipeline;
-	static MyWindow* window;
 
 	// eye targetはコンストラクタ内部
 	static Camera* camera;

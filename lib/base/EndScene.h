@@ -7,7 +7,7 @@
 class EndScene :
     public Scene
 {
-	~EndScene() {};
+	~EndScene();
 
 	// シーンの動作用
 	void Initalize() override;
@@ -16,5 +16,7 @@ class EndScene :
 
 	// シーンの切り替え
 	void NextScene(SceneManager* nowScene) override;
+
+private:
 };
 

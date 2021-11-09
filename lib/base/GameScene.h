@@ -25,8 +25,6 @@ public:
 	// 関数
 
 private:
-	// フィールド
-	ObjectManager* objectManager;
 
 	// カメラ
 	Camera* camera;

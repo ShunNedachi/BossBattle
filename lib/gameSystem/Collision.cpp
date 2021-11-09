@@ -23,16 +23,16 @@ bool Collision::Sphere2Sphere(const DirectX::XMFLOAT3& sphere1Pos, const DirectX
 	return false;
 }
 
-bool Collision::Attack2OBJ(Object* obj,AttackBase* attack)
+bool Collision::Attack2OBJ(const Object& obj,const AttackBase& attack)
 {
-	AttackBase* tempAttack = attack;
-	Object* tempObj = obj;
-	DirectX::XMFLOAT3 position = tempObj->GetPosition();
-	DirectX::XMFLOAT3 size = tempObj->GetSize();
-	float r = tempObj->GetRadius();
+	AttackBase tempAttack = attack;
+	Object tempObj = obj;
+	DirectX::XMFLOAT3 position = tempObj.GetPosition();
+	DirectX::XMFLOAT3 size = tempObj.GetSize();
+	float r = tempObj.GetRadius();
 
 
-	if (tempAttack->Hit(position,size,r))
+	if (tempAttack.Hit(position,size,r))
 	{
 		return true;
 	}

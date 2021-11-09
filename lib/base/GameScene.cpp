@@ -1,4 +1,6 @@
 #include "GameScene.h"
+#include"ObjectManager.h"
+#include"GameFunction.h"
 
 GameScene::~GameScene()
 {
@@ -8,13 +10,15 @@ GameScene::~GameScene()
 
 void GameScene::Initalize()
 {
+	camera = Camera::GetInstance();
+	// 初期画角用
+	Camera::SetTheta(20);
+
+	GameFunction::LoadGameSceneTexture();
+
 	objectManager = ObjectManager::GetInstance();
 
-	// リソースロード
-	objectManager->AddOBJ("triangle", { 0,0,-100 });
-
-	camera = Camera::GetInstance();
-
+	// 基本objの設置
 	objectManager->AddPlayer("sphere");
 	objectManager->AddOBJ("ground", { 0,-1,0 });
 	objectManager->AddOBJ("skydome");
@@ -35,9 +39,10 @@ void GameScene::Update()
 
 
 	//if (IsNext())NextScene(SceneManager::GetInstance());
-
 	//// シーン変更
-	//if (xinput->TriggerButtom(0, xinput_A))isNext = true;
+	//if (objectManager->GetPlayerDead())isNext = true;
+	if (objectManager->GetPlayerDead())NextScene(SceneManager::GetInstance());
+	else if (objectManager->GetIsClear())NextScene(SceneManager::GetInstance());
 
 }
 

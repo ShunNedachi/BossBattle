@@ -55,6 +55,12 @@
     <Filter Include="ソース ファイル\gameSystem">
       <UniqueIdentifier>{ab56752e-c6c6-4510-8bc4-20575db287c4}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\object\gameObject">
+      <UniqueIdentifier>{e5479656-77d3-4409-b074-5f3b2891de6b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\object\gameObject">
+      <UniqueIdentifier>{8b49e50d-92fd-4dee-8810-2510f95a5722}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -81,9 +87,6 @@
     <ClCompile Include="lib\object\Object.cpp">
       <Filter>ソース ファイル\object</Filter>
     </ClCompile>
-    <ClCompile Include="lib\object\ObjectManager.cpp">
-      <Filter>ソース ファイル\object</Filter>
-    </ClCompile>
     <ClCompile Include="lib\base\EndScene.cpp">
       <Filter>ソース ファイル\base\scene</Filter>
     </ClCompile>
@@ -102,9 +105,6 @@
     <ClCompile Include="lib\object\Sprite2D.cpp">
       <Filter>ソース ファイル\object</Filter>
     </ClCompile>
-    <ClCompile Include="lib\object\Player.cpp">
-      <Filter>ソース ファイル\object</Filter>
-    </ClCompile>
     <ClCompile Include="lib\object\Model.cpp">
       <Filter>ソース ファイル\object</Filter>
     </ClCompile>
@@ -117,11 +117,20 @@
     <ClCompile Include="lib\base\FrameFixed.cpp">
       <Filter>ソース ファイル\base</Filter>
     </ClCompile>
-    <ClCompile Include="lib\object\Enemy.cpp">
-      <Filter>ソース ファイル\object</Filter>
-    </ClCompile>
     <ClCompile Include="lib\object\Boss.cpp">
-      <Filter>ソース ファイル\object</Filter>
+      <Filter>ソース ファイル\object\gameObject</Filter>
+    </ClCompile>
+    <ClCompile Include="lib\object\Enemy.cpp">
+      <Filter>ソース ファイル\object\gameObject</Filter>
+    </ClCompile>
+    <ClCompile Include="lib\object\Player.cpp">
+      <Filter>ソース ファイル\object\gameObject</Filter>
+    </ClCompile>
+    <ClCompile Include="lib\object\ObjectManager.cpp">
+      <Filter>ソース ファイル\object\gameObject</Filter>
+    </ClCompile>
+    <ClCompile Include="lib\gameSystem\GameFunction.cpp">
+      <Filter>ソース ファイル\gameSystem</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -146,9 +155,6 @@
     <ClInclude Include="lib\object\Object.h">
       <Filter>ヘッダー ファイル\object</Filter>
     </ClInclude>
-    <ClInclude Include="lib\object\ObjectManager.h">
-      <Filter>ヘッダー ファイル\object</Filter>
-    </ClInclude>
     <ClInclude Include="lib\object\Sprite2D.h">
       <Filter>ヘッダー ファイル\object</Filter>
     </ClInclude>
@@ -170,9 +176,6 @@
     <ClInclude Include="lib\easing\Easing.h">
       <Filter>ヘッダー ファイル\easing</Filter>
     </ClInclude>
-    <ClInclude Include="lib\object\Player.h">
-      <Filter>ヘッダー ファイル\object</Filter>
-    </ClInclude>
     <ClInclude Include="lib\object\Model.h">
       <Filter>ヘッダー ファイル\object</Filter>
     </ClInclude>
@@ -188,11 +191,23 @@
     <ClInclude Include="lib\base\FrameFixed.h">
       <Filter>ヘッダー ファイル\base</Filter>
     </ClInclude>
-    <ClInclude Include="lib\object\Enemy.h">
-      <Filter>ヘッダー ファイル\object</Filter>
-    </ClInclude>
     <ClInclude Include="lib\object\Boss.h">
-      <Filter>ヘッダー ファイル\object</Filter>
+      <Filter>ヘッダー ファイル\object\gameObject</Filter>
+    </ClInclude>
+    <ClInclude Include="lib\object\Enemy.h">
+      <Filter>ヘッダー ファイル\object\gameObject</Filter>
+    </ClInclude>
+    <ClInclude Include="lib\object\Player.h">
+      <Filter>ヘッダー ファイル\object\gameObject</Filter>
+    </ClInclude>
+    <ClInclude Include="lib\gameSystem\Setting.h">
+      <Filter>ヘッダー ファイル\gameSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="lib\object\ObjectManager.h">
+      <Filter>ヘッダー ファイル\object\gameObject</Filter>
+    </ClInclude>
+    <ClInclude Include="lib\gameSystem\GameFunction.h">
+      <Filter>ヘッダー ファイル\gameSystem</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

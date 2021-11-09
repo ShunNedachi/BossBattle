@@ -1,4 +1,5 @@
 #include "Object.h"
+#include"Setting.h"
 #include<vector>
 #include<Windows.h>
 #include<DirectXTex.h>
@@ -18,7 +19,6 @@ DirectX::XMMATRIX Object::matView;
 Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList> Object::commandList;
 Microsoft::WRL::ComPtr<ID3D12Device> Object::device;
 D3D12_GRAPHICS_PIPELINE_STATE_DESC Object::gpipeline{};
-MyWindow* Object::window = nullptr;
 Camera* Object::camera = nullptr;
 
 
@@ -368,7 +368,7 @@ void Object::Update()
 
 }
 
-void Object::Init(MyDirectX12* my12,MyWindow* window)
+void Object::Init(MyDirectX12* my12)
 {
 	using namespace DirectX;
 
@@ -376,7 +376,7 @@ void Object::Init(MyDirectX12* my12,MyWindow* window)
 	// ŽË‰e•ÏŠ·
 	matProjection = XMMatrixPerspectiveFovLH(
 		XMConvertToRadians(60.0f),
-		(float)window->GetWidth() / window->GetHeight(),
+		(float)WINDOW_WIDTH / WINDOW_HEIGHT,
 		0.1f, 1000.0f
 	);
 
@@ -385,7 +385,6 @@ void Object::Init(MyDirectX12* my12,MyWindow* window)
 
 	commandList = my12->CommandList();
 	device = my12->Device();
-	Object::window = window;
 	Object::camera = Camera::GetInstance();
 	CreatePiplineStateOBJ();
 }

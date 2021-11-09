@@ -19,11 +19,6 @@ public:
 
 	// ƒV[ƒ“‚ÌØ‚è‘Ö‚¦
 	void NextScene(SceneManager* nowScene) override;
-
-private:
-
-	//
-	ObjectManager* objManager;
 	
 };
 

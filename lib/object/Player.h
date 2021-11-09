@@ -4,6 +4,11 @@
 #include"AttackBase.h"
 #include<string>
 
+// ステータス情報が増えたとき用　必要なら後で.hにファイル分け
+#define STATE_DEAD 0x001
+#define STATE_LIVE 0x002
+
+
 class Player
 {
 	// シングルトンパターン
@@ -25,6 +30,9 @@ public:
 	void Init(const String& filename);
 	void Update();
 	void Draw();
+
+	// 経験値更新用
+	void EXPupdate();
 
 	/// <summary>
 	/// ダメージを受けた時の処理
@@ -49,6 +57,10 @@ public:
 	float GetRadius() { return objPlayer->GetRadius(); }
 	bool GetIsDamage() { return isDamage; }
 	int GetDamage() { return damage; }
+	bool GetIsDead() { return isDead; }
+	
+	// 経験値用
+	void ExperienceUp(float exp) {experience += exp; }
 
 	// 攻撃判定用
 	AttackBase* GetAttack() { return attack; }
@@ -79,8 +91,13 @@ private:
 	// system用
 	// helth値
 	float health = 10;
-	// 経験値量
+	// 経験値量 静的関数で値変更可能にするために静的で　後で変更するかも
 	float experience;
+	// レベル量
+	int level = 0;
+
+	// ステータス状態
+	bool isDead = false;
 	// ダメージをくらっているのかの判定
 	bool isDamage = false;
 	// ダメージ状態の経過フレーム数
@@ -92,9 +109,13 @@ private:
 
 	// 体力用
 	Sprite2D* healthBarSprite = nullptr;
-	// 体力バー用
 	std::vector<Sprite2D*> healthSprite;
 
+	// 経験値用
+	Sprite2D* expBarSprite = nullptr;
+	std::vector<Sprite2D*> expSprite;
+	// レベル用
+	std::vector<Sprite2D*> numberSprite;
 
 	// 攻撃用
 	AttackBase* attack;

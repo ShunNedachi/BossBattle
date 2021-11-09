@@ -52,6 +52,8 @@ public:
 	static void SetTarget(XMFLOAT3 target) { Camera::target = target;}
 	static void SetUp(XMFLOAT3 up) { Camera::up = up; }
 
+	static void SetTheta(float theta) { Camera::theta = theta; }
+	static void SetPhi(float phi) { Camera::phi = phi; }
 
 private:
 	static Camera* instance;

@@ -1,4 +1,6 @@
 #pragma once
+#include"ObjectManager.h"
+
 
 #define titleSceneNum 0
 #define gameSceneNum 1
@@ -28,5 +30,6 @@ public:
 protected:
 
 	bool isNext = false;
+	ObjectManager* objectManager;
 };
 
