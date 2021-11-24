@@ -20,7 +20,7 @@ void EndScene::Update()
 	if (IsNext())NextScene(SceneManager::GetInstance());
 
 	// ƒV[ƒ“•ÏX
-	if (xinput->TriggerButtom(0, xinput_A))isNext = true;
+	if (xinput->TriggerButton(0)& XINPUT_BUTTON_A)isNext = true;
 
 }
 

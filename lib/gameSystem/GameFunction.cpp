@@ -33,3 +33,12 @@ void GameFunction::LoadGameSceneTexture()
 	Sprite2D::LoadTex(number9, TEXT("number/9.png"));
 }	
 
+DirectX::XMFLOAT3 GameFunction::GetPlayerPos()
+{
+	return Player::GetInstance()->GetPos();
+}
+
+bool GameFunction::GetPlayerIsSpecial()
+{
+	return Player::GetInstance()->GetIsSpecial();
+}

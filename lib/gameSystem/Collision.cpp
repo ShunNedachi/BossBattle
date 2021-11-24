@@ -39,3 +39,39 @@ bool Collision::Attack2OBJ(const Object& obj,const AttackBase& attack)
 
 	return false;
 }
+
+void Collision::Player2Enemy(Player& player,Enemy& enemy,bool knockback)
+{
+	// 当たり判定用　定数値
+	// 位置情報の獲得
+	const DirectX::XMFLOAT3 PLAYER_POS = player.GetPos();
+	const DirectX::XMFLOAT3 ENEMY_POS = enemy.GetPosition();
+	const AttackBase* PLAYER_ATTACK = player.GetAttack();
+	const AttackBase* PLAYER_SPECIAL_ATTACK = player.GetSpecialAttack();
+	const DirectX::XMFLOAT3 PLAYER_ATTACK_POS = player.GetAttackPos();
+	const Object* ENEMY_OBJ = enemy.GetOBJ();
+	// サイズ用
+	const float PLAYER_RADIUS = player.GetRadius();
+	const float ENEMY_RADIUS = enemy.GetRadius();
+	// ダメージ　状態　量の取得
+	const bool ENEMY_ISDAMAGE = enemy.GetIsDamage();
+	const bool PLAYER_ISDAMAGE = player.GetIsDamage();
+	const int PLAYER_DAMAGE = player.GetDamage();
+	const float PLAYER_SPECIAL_DAMAGE = player.GetSpecialDamage();
+	const int ENEMY_DAMAGE = enemy.GetDamage();
+
+	// playerAttack 2 enemy
+	if (Collision::Attack2OBJ(*ENEMY_OBJ, *PLAYER_ATTACK))
+	{
+		if (!ENEMY_ISDAMAGE)enemy.RecieveDamage(PLAYER_ATTACK_POS, PLAYER_DAMAGE,knockback);
+	}
+	else if (Collision::Attack2OBJ(*ENEMY_OBJ, *PLAYER_SPECIAL_ATTACK))
+	{
+		if (!ENEMY_ISDAMAGE)enemy.RecieveDamage(PLAYER_POS, PLAYER_SPECIAL_DAMAGE,knockback);
+	}
+	// player 2 enemy
+	if (Collision::Sphere2Sphere(PLAYER_POS, ENEMY_POS, PLAYER_RADIUS, ENEMY_RADIUS))
+	{
+		if (!PLAYER_ISDAMAGE)player.RecieveDamage(ENEMY_POS, ENEMY_DAMAGE);
+	}
+}

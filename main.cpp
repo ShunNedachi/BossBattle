@@ -57,7 +57,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		xinput->Update();
 
 		// exe終了用
-		if (xinput->TriggerButtom(0, xinput_BACK))break;
+		if (xinput->TriggerButton(0)& XINPUT_BUTTON_BACK)break;
 
 		// 各シーンのupdate
 		sceneManager->Update();

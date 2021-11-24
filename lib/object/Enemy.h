@@ -25,8 +25,9 @@ public:
 	/// ダメージを受けた時の処理
 	/// </summary>
 	/// <param name="pos">攻撃者の位置</param>
-	/// <param name="damage"></param>
-	void RecieveDamage(XMFLOAT3 pos, float damage);
+	/// <param name="damage">受けたダメージ</param>
+	/// <param name="knockback">ノックバックするのか</param>
+	void RecieveDamage(XMFLOAT3 pos, float damage,bool knockback = true);
 
 
 	// setter
@@ -46,7 +47,7 @@ public:
 	int GetDamage() { return damage; }
 	bool GetIsDamage() { return isDamage; }
 
-	int GetHealth() { return health; }
+	float GetHealth() { return health; }
 	float GetEXP() { return experience; }
 
 	// 攻撃判定用
@@ -62,7 +63,7 @@ protected:
 	XMFLOAT3 rotation = { 0,0,0 };
 
 	// ステータス用
-	float health = 10;
+	float health = 3;
 	float experience = 10;
 
 	// ダメージをくらっているのかの判定

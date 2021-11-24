@@ -66,6 +66,8 @@ public:
 	float StartEeaging(int easingFlag);
 	void Restart() { init = true; }
 
+
+private:
 	float EaseIn();
 	float EaseOut();
 	float EaseInOut();

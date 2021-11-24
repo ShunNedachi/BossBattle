@@ -88,7 +88,7 @@ void Xinput::Update()
 	else pad.controller4 = false;
 }
 
-bool Xinput::PushButtom(int controller, short buttom)
+buttonState Xinput::PushButton(int controller)
 {
 	int count = -1;
 	
@@ -116,127 +116,95 @@ bool Xinput::PushButtom(int controller, short buttom)
 
 	if (count == -1)return false;
 
+	buttonState result = 0;
+
 	// Aボタン入力時
-	if (buttom == xinput_A)
+	if (state[count].Gamepad.wButtons & XINPUT_GAMEPAD_A)
 	{
-		if (state[count].Gamepad.wButtons & XINPUT_GAMEPAD_A)
-		{
-			return true;
-		}
+		result += XINPUT_BUTTON_A;
 	}
+	
 	// Bボタン入力時
-	if (buttom == xinput_B)
+	if (state[count].Gamepad.wButtons & XINPUT_GAMEPAD_B)
 	{
-		if (state[count].Gamepad.wButtons & XINPUT_GAMEPAD_B)
-		{
-			return true;
-		}
+		result += XINPUT_BUTTON_B;
 	}
+	
 	// Xボタン入力時
-	if (buttom == xinput_X)
+	if (state[count].Gamepad.wButtons & XINPUT_GAMEPAD_X)
 	{
-		if (state[count].Gamepad.wButtons & XINPUT_GAMEPAD_X)
-		{
-			return true;
-		}
-	}
-	// Yボタン入力時
-	if (buttom == xinput_Y)
-	{
-		if (state[count].Gamepad.wButtons & XINPUT_GAMEPAD_Y)
-		{
-			return true;
-		}
-	}
-	// Rボタン入力時
-	if (buttom == xinput_R)
-	{
-		if (state[count].Gamepad.wButtons & XINPUT_GAMEPAD_RIGHT_SHOULDER)
-		{
-			return true;
-		}
-	}
-	// Lボタン入力時
-	if (buttom == xinput_L)
-	{
-		if (state[count].Gamepad.wButtons & XINPUT_GAMEPAD_LEFT_SHOULDER)
-		{
-			return true;
-		}
-	}
-	// R3ボタン入力時
-	if (buttom == xinput_R3)
-	{
-		if (state[count].Gamepad.wButtons & XINPUT_GAMEPAD_RIGHT_THUMB)
-		{
-			return true;
-		}
-	}
-	// L3ボタン入力時
-	if (buttom == xinput_L3)
-	{
-		if (state[count].Gamepad.wButtons & XINPUT_GAMEPAD_LEFT_THUMB)
-		{
-			return true;
-		}
-	}
-	// Lトリガー入力時
-	if (buttom == xinput_LT)
-	{
-		if (state[count].Gamepad.bLeftTrigger > XINPUT_GAMEPAD_TRIGGER_THRESHOLD)
-		{
-			// 左トリガーが押された
-			return true;
-		}
-	}
-	// Rトリガー入力時
-	if (buttom == xinput_RT)
-	{
-		if (state[count].Gamepad.bRightTrigger > XINPUT_GAMEPAD_TRIGGER_THRESHOLD)
-		{
-			return true;
-		}
+		result += XINPUT_BUTTON_X;
 	}
 
+	// Yボタン入力時
+	if (state[count].Gamepad.wButtons & XINPUT_GAMEPAD_Y)
+	{
+		result += XINPUT_BUTTON_Y;
+	}
+
+	// Rボタン入力時
+	if (state[count].Gamepad.wButtons & XINPUT_GAMEPAD_RIGHT_SHOULDER)
+	{
+		result += XINPUT_BUTTON_R;
+	}
+	
+	// Lボタン入力時
+	if (state[count].Gamepad.wButtons & XINPUT_GAMEPAD_LEFT_SHOULDER)
+	{
+		result += XINPUT_BUTTON_L;
+	}
+	// R3ボタン入力時
+	if (state[count].Gamepad.wButtons & XINPUT_GAMEPAD_RIGHT_THUMB)
+	{
+		result += XINPUT_BUTTON_R3;
+	}
+	
+	// L3ボタン入力時
+	if (state[count].Gamepad.wButtons & XINPUT_GAMEPAD_LEFT_THUMB)
+	{
+		result += XINPUT_BUTTON_L3;
+	}
+	
+	// Lトリガー入力時
+	if (state[count].Gamepad.bLeftTrigger > XINPUT_GAMEPAD_TRIGGER_THRESHOLD)
+	{
+		// 左トリガーが押された
+		result += XINPUT_BUTTON_LT;
+	}
+	
+	// Rトリガー入力時
+	if (state[count].Gamepad.bRightTrigger > XINPUT_GAMEPAD_TRIGGER_THRESHOLD)
+	{
+		result += XINPUT_BUTTON_RT;
+	}
+	
+
 	// START入力時
-	if (buttom == xinput_START)
-	{
-		if (state[count].Gamepad.wButtons & XINPUT_GAMEPAD_START)return true;
-	}
+	if (state[count].Gamepad.wButtons & XINPUT_GAMEPAD_START)result += XINPUT_BUTTON_START;
+	
 	// BACK入力時
-	if (buttom == xinput_BACK)
-	{
-		if (state[count].Gamepad.wButtons & XINPUT_GAMEPAD_BACK)return true;
-	}
+	if (state[count].Gamepad.wButtons & XINPUT_GAMEPAD_BACK)result += XINPUT_BUTTON_BACK;
+	
 
 
 	// 上入力時
-	if (buttom == xinput_UP)
-	{
-		if (state[count].Gamepad.wButtons & XINPUT_GAMEPAD_DPAD_UP)return true;
-	}
+	if (state[count].Gamepad.wButtons & XINPUT_GAMEPAD_DPAD_UP)result += XINPUT_BUTTON_UP;
 
 	// 下入力時
-	if (buttom == xinput_DOWN)
-	{
-		if (state[count].Gamepad.wButtons & XINPUT_GAMEPAD_DPAD_DOWN)return true;
-	}
+	if (state[count].Gamepad.wButtons & XINPUT_GAMEPAD_DPAD_DOWN)result += XINPUT_BUTTON_DOWN;
+	
 
 	// 左入力時
-	if (buttom == xinput_LEFT)
-	{
-		if (state[count].Gamepad.wButtons & XINPUT_GAMEPAD_DPAD_LEFT) return true;
-	}
+	if (state[count].Gamepad.wButtons & XINPUT_GAMEPAD_DPAD_LEFT)result += XINPUT_BUTTON_LEFT;
+	
 	// 右入力時
-	if (buttom == xinput_RIGHT)
-	{
-		if (state[count].Gamepad.wButtons & XINPUT_GAMEPAD_DPAD_RIGHT)return true;
-	}
+	if (state[count].Gamepad.wButtons & XINPUT_GAMEPAD_DPAD_RIGHT)result += XINPUT_BUTTON_RIGHT;
+	
 
-	return false;
+	return result;
 }
 
-bool Xinput::TriggerButtom(int controller, short buttom)
+buttonState Xinput::TriggerButton(int controller)
 {
 	bool forTrigger = false;
 	int count = -1;
@@ -264,207 +232,175 @@ bool Xinput::TriggerButtom(int controller, short buttom)
 	}
 	if (count == -1)return false;
 
+	buttonState  result = 0;
 
 	// Aボタン入力時
-	if (buttom == xinput_A)
-	{
-		if (pastState[count].Gamepad.wButtons & XINPUT_GAMEPAD_A){}
-		else forTrigger = true;
+	if (pastState[count].Gamepad.wButtons & XINPUT_GAMEPAD_A) { forTrigger = false; }
+	else forTrigger = true;
 
-		if (forTrigger &&
-			state[count].Gamepad.wButtons & XINPUT_GAMEPAD_A)
-		{
-			return true;
-		}
+	if (forTrigger &&
+		state[count].Gamepad.wButtons & XINPUT_GAMEPAD_A)
+	{
+		result += XINPUT_BUTTON_A;
 	}
 	// Bボタン入力時
-	if (buttom == xinput_B)
-	{
-		if (pastState[count].Gamepad.wButtons & XINPUT_GAMEPAD_B) {}
-		else forTrigger = true;
+	if (pastState[count].Gamepad.wButtons & XINPUT_GAMEPAD_B) { forTrigger = false; }
+	else forTrigger = true;
 
-		if (forTrigger &&
-			state[count].Gamepad.wButtons & XINPUT_GAMEPAD_B)
-		{
-			return true;
-		}
-	}	
+	if (forTrigger &&
+		state[count].Gamepad.wButtons & XINPUT_GAMEPAD_B)
+	{
+		result += XINPUT_BUTTON_B;
+	}
+	
+
 	// Xボタン入力時
-	if (buttom == xinput_X)
-	{
-		if (pastState[count].Gamepad.wButtons & XINPUT_GAMEPAD_X) {}
+	if (pastState[count].Gamepad.wButtons & XINPUT_GAMEPAD_X) { forTrigger = false; }
 		else forTrigger = true;
 
-		if (forTrigger &&
-			state[count].Gamepad.wButtons & XINPUT_GAMEPAD_X)
-		{
-			return true;
-		}
+	if (forTrigger &&
+		state[count].Gamepad.wButtons & XINPUT_GAMEPAD_X)
+	{
+		result += XINPUT_BUTTON_X;
 	}
+
 	// Yボタン入力時
-	if (buttom == xinput_Y)
-	{
-		if (pastState[count].Gamepad.wButtons & XINPUT_GAMEPAD_Y) {}
-		else forTrigger = true;
+	if (pastState[count].Gamepad.wButtons & XINPUT_GAMEPAD_Y) { forTrigger = false; }
+	else forTrigger = true;
 
-		if (forTrigger &&
-			state[count].Gamepad.wButtons & XINPUT_GAMEPAD_Y)
-		{
-			return true;
-		}
-	}	
+	if (forTrigger &&
+		state[count].Gamepad.wButtons & XINPUT_GAMEPAD_Y)
+	{
+		result += XINPUT_BUTTON_Y;
+	}
+	
 	// Rボタン入力時
-	if (buttom == xinput_R)
-	{
-		if (pastState[count].Gamepad.wButtons & XINPUT_GAMEPAD_RIGHT_SHOULDER) {}
-		else forTrigger = true;
+	if (pastState[count].Gamepad.wButtons & XINPUT_GAMEPAD_RIGHT_SHOULDER) { forTrigger = false; }
+	else forTrigger = true;
 
-		if (forTrigger &&
-			state[count].Gamepad.wButtons & XINPUT_GAMEPAD_RIGHT_SHOULDER)
-		{
-			return true;
-		}
+	if (forTrigger &&
+		state[count].Gamepad.wButtons & XINPUT_GAMEPAD_RIGHT_SHOULDER)
+	{
+		result += XINPUT_BUTTON_R;
 	}
+	
 	// Lボタン入力時
-	if (buttom == xinput_L)
-	{
-		if (pastState[count].Gamepad.wButtons & XINPUT_GAMEPAD_LEFT_SHOULDER) {}
-		else forTrigger = true;
+	if (pastState[count].Gamepad.wButtons & XINPUT_GAMEPAD_LEFT_SHOULDER) { forTrigger = false; }
+	else forTrigger = true;
 
-		if (forTrigger &&
-			state[count].Gamepad.wButtons & XINPUT_GAMEPAD_LEFT_SHOULDER)
-		{
-			return true;
-		}
+	if (forTrigger &&
+		state[count].Gamepad.wButtons & XINPUT_GAMEPAD_LEFT_SHOULDER)
+	{
+		result += XINPUT_BUTTON_L;
 	}
+	
 	// R3ボタン入力時
-	if (buttom == xinput_R3)
-	{
-		if (pastState[count].Gamepad.wButtons & XINPUT_GAMEPAD_RIGHT_THUMB) {}
-		else forTrigger = true;
+	if (pastState[count].Gamepad.wButtons & XINPUT_GAMEPAD_RIGHT_THUMB) { forTrigger = false; }
+	else forTrigger = true;
 
-		if (forTrigger &&
-			state[count].Gamepad.wButtons & XINPUT_GAMEPAD_RIGHT_THUMB)
-		{
-			return true;
-		}
-	}	
+	if (forTrigger &&
+		state[count].Gamepad.wButtons & XINPUT_GAMEPAD_RIGHT_THUMB)
+	{
+		result += XINPUT_BUTTON_R3;
+	}
+		
 	// L3ボタン入力時
-	if (buttom == xinput_L3)
-	{
-		if (pastState[count].Gamepad.wButtons & XINPUT_GAMEPAD_LEFT_THUMB) {}
-		else forTrigger = true;
+	if (pastState[count].Gamepad.wButtons & XINPUT_GAMEPAD_LEFT_THUMB) { forTrigger = false; }
+	else forTrigger = true;
 
-		if (forTrigger &&
-			state[count].Gamepad.wButtons & XINPUT_GAMEPAD_LEFT_THUMB)
-		{
-			return true;
-		}
+	if (forTrigger &&
+		state[count].Gamepad.wButtons & XINPUT_GAMEPAD_LEFT_THUMB)
+	{
+		result += XINPUT_BUTTON_L3;
 	}
+	
 	// Lトリガー入力時
-	if (buttom == xinput_LT)
-	{
-		if(pastState[count].Gamepad.bLeftTrigger > XINPUT_GAMEPAD_TRIGGER_THRESHOLD){}
-		else forTrigger = true;
+	if(pastState[count].Gamepad.bLeftTrigger > XINPUT_GAMEPAD_TRIGGER_THRESHOLD){ forTrigger = false; }
+	else forTrigger = true;
 
-		if (forTrigger &&
-			state[count].Gamepad.bLeftTrigger > XINPUT_GAMEPAD_TRIGGER_THRESHOLD)
-		{
-			return true;
-		}
+	if (forTrigger &&
+		state[count].Gamepad.bLeftTrigger > XINPUT_GAMEPAD_TRIGGER_THRESHOLD)
+	{
+		result += XINPUT_BUTTON_LT;
 	}
+	
 	// Rトリガー入力時
-	if(buttom == xinput_RT)
-	{
-		if (pastState[count].Gamepad.bRightTrigger > XINPUT_GAMEPAD_TRIGGER_THRESHOLD){}
-		else forTrigger = true;
+	if (pastState[count].Gamepad.bRightTrigger > XINPUT_GAMEPAD_TRIGGER_THRESHOLD){ forTrigger = false; }
+	else forTrigger = true;
 
-		if (forTrigger &&
-			state[count].Gamepad.bRightTrigger > XINPUT_GAMEPAD_TRIGGER_THRESHOLD)
-		{
-			return true;
-		}
+	if (forTrigger &&
+		state[count].Gamepad.bRightTrigger > XINPUT_GAMEPAD_TRIGGER_THRESHOLD)
+	{
+		result += XINPUT_BUTTON_RT;
 	}
+	
 
 	// START入力時
-	if (buttom == xinput_START)
-	{
-		if (pastState[count].Gamepad.wButtons & XINPUT_GAMEPAD_START) {}
-		else forTrigger = true;
+	if (pastState[count].Gamepad.wButtons & XINPUT_GAMEPAD_START) { forTrigger = false; }
+	else forTrigger = true;
 
-		if (forTrigger &&
-			state[count].Gamepad.wButtons & XINPUT_GAMEPAD_START)
-		{
-			return true;
-		}
+	if (forTrigger &&
+		state[count].Gamepad.wButtons & XINPUT_GAMEPAD_START)
+	{
+		result += XINPUT_BUTTON_START;
 	}
 
-	// START入力時
-	if (buttom == xinput_BACK)
-	{
-		if (pastState[count].Gamepad.wButtons & XINPUT_GAMEPAD_BACK) {}
-		else forTrigger = true;
+	// BACK入力時
+	if (pastState[count].Gamepad.wButtons & XINPUT_GAMEPAD_BACK) { forTrigger = false; }
+	else forTrigger = true;
 
-		if (forTrigger &&
-			state[count].Gamepad.wButtons & XINPUT_GAMEPAD_BACK)
-		{
-			return true;
-		}
+	if (forTrigger &&
+		state[count].Gamepad.wButtons & XINPUT_GAMEPAD_BACK)
+	{
+		result += XINPUT_BUTTON_BACK;
 	}
+	
 
 	// 上入力時
-	if (buttom == xinput_UP)
-	{
-		if (pastState[count].Gamepad.wButtons & XINPUT_GAMEPAD_DPAD_UP) {}
-		else forTrigger = true;
+	if (pastState[count].Gamepad.wButtons & XINPUT_GAMEPAD_DPAD_UP) { forTrigger = false; }
+	else forTrigger = true;
 
-		if (forTrigger &&
-			state[count].Gamepad.wButtons & XINPUT_GAMEPAD_DPAD_UP)
-		{
-			return true;
-		}
+	if (forTrigger &&
+		state[count].Gamepad.wButtons & XINPUT_GAMEPAD_DPAD_UP)
+	{
+		result += XINPUT_BUTTON_UP;
 	}
+
 	// 下入力時
-	if (buttom == xinput_DOWN)
-	{
-		if (pastState[count].Gamepad.wButtons & XINPUT_GAMEPAD_DPAD_DOWN) {}
-		else forTrigger = true;
+	if (pastState[count].Gamepad.wButtons & XINPUT_GAMEPAD_DPAD_DOWN) { forTrigger = false; }
+	else forTrigger = true;
 
-		if (forTrigger &&
-			state[count].Gamepad.wButtons & XINPUT_GAMEPAD_DPAD_DOWN)
-		{
-			return true;
-		}
+	if (forTrigger &&
+		state[count].Gamepad.wButtons & XINPUT_GAMEPAD_DPAD_DOWN)
+	{
+		result += XINPUT_BUTTON_DOWN;
 	}
+	
 	// 左入力時
-	if (buttom == xinput_LEFT)
-	{
-		if (pastState[count].Gamepad.wButtons & XINPUT_GAMEPAD_DPAD_LEFT) {}
-		else forTrigger = true;
+	if (pastState[count].Gamepad.wButtons & XINPUT_GAMEPAD_DPAD_LEFT) { forTrigger = false; }
+	else forTrigger = true;
 
-		if (forTrigger &&
-			state[count].Gamepad.wButtons & XINPUT_GAMEPAD_DPAD_LEFT)
-		{
-			return true;
-		}
+	if (forTrigger &&
+		state[count].Gamepad.wButtons & XINPUT_GAMEPAD_DPAD_LEFT)
+	{
+		result += XINPUT_BUTTON_LEFT;
 	}
+	
 	// 右入力時
-	if (buttom == xinput_RIGHT)
+	if (pastState[count].Gamepad.wButtons & XINPUT_GAMEPAD_DPAD_RIGHT) { forTrigger = false; }
+	else forTrigger = true;
+
+	if (forTrigger &&
+		state[count].Gamepad.wButtons & XINPUT_GAMEPAD_DPAD_RIGHT)
 	{
-		if (pastState[count].Gamepad.wButtons & XINPUT_GAMEPAD_DPAD_RIGHT) {}
-		else forTrigger = true;
-
-		if (forTrigger &&
-			state[count].Gamepad.wButtons & XINPUT_GAMEPAD_DPAD_RIGHT)
-		{
-			return true;
-		}
+		result += XINPUT_BUTTON_RIGHT;
 	}
+	
 
-	return false;
+	return result;
 }
 
-int Xinput::MoveStick(int controller, short stick)
+stickState Xinput::MoveStick(int controller, short stick)
 {
 	int count = -1;
 
@@ -492,9 +428,9 @@ int Xinput::MoveStick(int controller, short stick)
 	}
 	if (count == -1)return 0;
 
-	if (stick == xinput_LS)
+	if (stick == XINPUT_BUTTON_LS)
 	{
-		int moveState = 0;
+		char moveState = 0;
 
 		// デッドゾーン
 		if ((state[count].Gamepad.sThumbLX < XINPUT_GAMEPAD_LEFT_THUMB_DEADZONE &&
@@ -526,9 +462,9 @@ int Xinput::MoveStick(int controller, short stick)
 
 		return moveState;
 	}
-	else if (stick == xinput_RS)
+	else if (stick == XINPUT_BUTTON_RS)
 	{
-		int moveState = 0;
+		char moveState = 0;
 
 		// デッドゾーン
 		if ((state[count].Gamepad.sThumbRX < XINPUT_GAMEPAD_RIGHT_THUMB_DEADZONE &&

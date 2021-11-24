@@ -33,14 +33,11 @@ void GameScene::Update()
 	Input* input = Input::GetInstance();
 	Xinput* xinput = Xinput::GetInstance();
 
-
-	camera->UpdateFollow(objectManager->GetPlayerPos());
+	camera->Follow(objectManager->GetPlayerPos());
+	camera->Update();
 	objectManager->Update();
 
-
-	//if (IsNext())NextScene(SceneManager::GetInstance());
 	//// ƒV[ƒ“•ÏX
-	//if (objectManager->GetPlayerDead())isNext = true;
 	if (objectManager->GetPlayerDead())NextScene(SceneManager::GetInstance());
 	else if (objectManager->GetIsClear())NextScene(SceneManager::GetInstance());
 

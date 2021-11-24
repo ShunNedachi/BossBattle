@@ -1,4 +1,5 @@
 #include "Enemy.h"
+#include"GameFunction.h"
 
 void Enemy::Init()
 {
@@ -10,27 +11,46 @@ void Enemy::Init()
 	scale = { 5,5,5 };
 	obj->SetPosition(position);
 	obj->SetScale(scale);
-	obj->SetRadius(5);
+	obj->SetRadius(2.5f);
 }
 
 void Enemy::Update()
 {
-
-	// ダメージ状態時の処理
-	if (isDamage)
+	//	playerが必殺技中のとき動作を止める
+	if (!GameFunction::GetPlayerIsSpecial())
 	{
-		damageCount++;
-		obj->SetColor({ 0,1,1 });
+		const float SPEED = 0.1f;
 
-		// ダメージ状態解除条件
-		if (damageCount >= DAMAGE_FRAME)
+		// 雑魚敵用行動　プレイヤーに追従
+			// 追従用にプレイヤーの位置を取ってくる
+		XMFLOAT3 playerPos = GameFunction::GetPlayerPos();
+
+		// 移動するベクトルの計算 (yはとりあえず固定値)
+		XMVECTOR moveV = { playerPos.x - position.x,0,playerPos.z - position.z };
+		moveV = DirectX::XMVector3Normalize(moveV);
+
+		position.x += moveV.m128_f32[0] * SPEED;
+		position.z += moveV.m128_f32[2] * SPEED;
+
+
+
+		// ダメージ状態時の処理
+		if (isDamage)
 		{
-			isDamage = false;
-			damageCount = 0;
-			obj->SetColor({ 1,1,1 });
-		}
-	}
+			damageCount++;
+			obj->SetColor({ 0,1,1 });
 
+			// ダメージ状態解除条件
+			if (damageCount >= DAMAGE_FRAME)
+			{
+				isDamage = false;
+				damageCount = 0;
+				obj->SetColor({ 1,1,1 });
+			}
+		}
+
+
+	}
 	obj->SetPosition(position);
 	obj->SetScale(scale);
 	obj->Update();
@@ -48,7 +68,7 @@ void Enemy::Destroy()
 	obj = nullptr;
 }
 
-void Enemy::RecieveDamage(XMFLOAT3 pos, float damage)
+void Enemy::RecieveDamage(XMFLOAT3 pos, float damage,bool knockback)
 {
 	// 
 	isDamage = true;
@@ -64,9 +84,11 @@ void Enemy::RecieveDamage(XMFLOAT3 pos, float damage)
 	movePos = DirectX::XMVector3Normalize(movePos);
 
 	// ノックバック処理
-	position.x -= movePos.m128_f32[0] * 10;
-	position.z -= movePos.m128_f32[2] * 10;
+	if (knockback)
+	{
+		position.x -= movePos.m128_f32[0] * 10;
+		position.z -= movePos.m128_f32[2] * 10;
 
-	obj->SetPosition(position);
-
+		obj->SetPosition(position);
+	}
 }

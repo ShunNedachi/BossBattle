@@ -1,5 +1,8 @@
 #pragma once
 #include"Object.h"
+#include"Player.h"
+#include"Enemy.h"
+#include"Boss.h"
 #include<DirectXMath.h>
 
 class AttackBase;
@@ -26,5 +29,14 @@ public:
 	/// <param name="attack">”»’è‚µ‚½‚¢UŒ‚</param>
 	/// <returns></returns>
 	static bool Attack2OBJ(const Object& obj,const AttackBase& attack);
+
+
+	/// <summary>
+	/// player‚Æenemy‚Ì“–‚½‚è”»’è—p
+	/// </summary>
+	/// <param name="player">player</param>
+	/// <param name="enemy">enemy</param>
+	/// <param name="knockback">knockback</param>
+	static void Player2Enemy(Player& player,Enemy& enemy,bool knockback);
 };
 

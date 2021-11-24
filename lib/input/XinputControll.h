@@ -5,47 +5,50 @@
 #pragma comment(lib,"xinput.lib")
 
 
-#pragma region define
+#pragma region Define
 
 	// コントローラーのボタン
-	#define xinput_X 0
-	#define xinput_Y 1
-	#define xinput_A 2
-	#define xinput_B 3
-	#define xinput_R 4
-	#define xinput_L 5
-	#define xinput_R3 6
-	#define xinput_L3 7
-	#define xinput_LT 8
-	#define xinput_RT 9
-	#define xinput_LS 10
-	#define xinput_RS 11
-	#define xinput_START 12
-	#define xinput_BACK 13
-
-
+	// 0x00000000
+	#define XINPUT_BUTTON_X 0x0001
+	#define XINPUT_BUTTON_Y 0x0002
+	#define XINPUT_BUTTON_A 0x0004
+	#define XINPUT_BUTTON_B 0x0008
+	#define XINPUT_BUTTON_R 0x0010
+	#define XINPUT_BUTTON_L 0x0020
+	#define XINPUT_BUTTON_R3 0x0040
+	#define XINPUT_BUTTON_L3 0x0080
+	#define XINPUT_BUTTON_LT 0x0100
+	#define XINPUT_BUTTON_RT 0x0200
+	#define XINPUT_BUTTON_START 0x0400
+	#define XINPUT_BUTTON_BACK 0x0800
 	// コントローラーの十字キー
-	#define xinput_UP 14
-	#define xinput_DOWN 15
-	#define xinput_LEFT 16
-	#define xinput_RIGHT 17
+	#define XINPUT_BUTTON_UP 0x1000
+	#define XINPUT_BUTTON_DOWN 0x2000
+	#define XINPUT_BUTTON_LEFT 0x4000
+	#define XINPUT_BUTTON_RIGHT 0x8000
 
-	#define XINPUT_STICK_LEFT 0x00000001
-	#define XINPUT_STICK_RIGHT 0x00000002
-	#define XINPUT_STICK_UP 0x00000010
-	#define XINPUT_STICK_DOWN 0x00000020
+	// 使用スティック識別用
+	#define XINPUT_BUTTON_LS 0x00000400
+	#define XINPUT_BUTTON_RS 0x00000800
+	#define XINPUT_STICK_LEFT 0x01
+	#define XINPUT_STICK_RIGHT 0x02
+	#define XINPUT_STICK_UP 0x04
+	#define XINPUT_STICK_DOWN 0x08
 
+	typedef unsigned char stickState;
+	typedef unsigned short buttonState;
+
+
+	// 接続した、コントローラーの番号を識別
+	struct SetController
+	{
+		bool controller1 = false;
+		bool controller2 = false;
+		bool controller3 = false;
+		bool controller4 = false;
+	};
 	#pragma endregion
 
-
-// 接続した、コントローラーの番号を識別
-struct SetController
-{
-	bool controller1 = false;
-	bool controller2 = false;
-	bool controller3 = false;
-	bool controller4 = false;
-};
 
 class Xinput
 {
@@ -69,11 +72,11 @@ public:
 	void Update();
 
 	// ボタンが押されたかどうか
-	bool PushButtom(int controller, short buttom);
-	bool TriggerButtom(int controller, short buttom);
+	buttonState PushButton(int controller);
+	buttonState TriggerButton(int controller);
 
 	// スティックを動かしたかを判定する
-	int MoveStick(int controller,short stick);
+	stickState MoveStick(int controller,short stick);
 
 
 	// 接続中のコントローラー数を返す

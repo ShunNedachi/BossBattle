@@ -1,5 +1,6 @@
 #include "Player.h"
 #include"SpriteLoadDefine.h"
+#include"Setting.h"
 
 // 静的変数の実体
 Player* Player::instance = nullptr;
@@ -20,13 +21,45 @@ void Player::Destroy()
 	if (objPlayer != nullptr)delete objPlayer;
 	objPlayer = nullptr;
 
-	if (attack != nullptr)delete attack;
-	attack = nullptr;
+	if (attack != nullptr)
+	{
+		delete attack;
+		delete attackObj;
+
+		attack = nullptr;
+		attackObj = nullptr;
+	}
+
+	if (specialAttack != nullptr)
+	{
+		delete specialAttack;
+		delete specialAttackObj;
+
+		specialAttack = nullptr;
+		specialAttackObj = nullptr;
+	}
+
 
 	// 体力
 	delete healthBarSprite;
 	healthBarSprite = nullptr;
 	for (auto x : healthSprite)
+	{
+		delete x;
+		x = nullptr;
+	}
+
+	// 経験値
+	delete expBarSprite;
+	expBarSprite = nullptr;
+	for (auto x : expSprite)
+	{
+		delete x;
+		x = nullptr;
+	}
+
+	// レベル
+	for (auto x : numberSprite)
 	{
 		delete x;
 		x = nullptr;
@@ -80,7 +113,7 @@ void Player::Init(const String& filename)
 	}
 
 	// レベル用
-	for (int i = 0; i < 9; i++)
+	for (int i = 0; i < 10; i++)
 	{
 		Sprite2D* temp = new Sprite2D(0.5f, 0.5f);
 		temp->CreateSprite(number0 + i);
@@ -94,12 +127,20 @@ void Player::Init(const String& filename)
 
 	// 攻撃関係
 
-	attack = new AttackBase(0, 10, 10);
+	attack = new AttackBase(0, 10, 5);
 	attackObj = new Object(NORMAL,"sphere");
 	attackObj->SetScale({ 2,2,2 });
 	attackObj->SetRadius(2);
 
 	attack->SetObject(attackObj);
+
+	// 必殺技用
+	specialAttack = new AttackBase(1.5f * GAME_FRAME, 1, 10);
+
+	specialAttackObj = new Object(NORMAL, "sphere");
+	specialAttackObj->SetScale({ 40,40,40 });
+	specialAttackObj->SetRadius(40);
+	specialAttack->SetObject(specialAttackObj);
 	// ここまで
 }
 
@@ -109,11 +150,10 @@ void Player::Update()
 	Xinput* xinput = Xinput::GetInstance();
 
 	
-	const bool XINPUT_TRIGGER_A = xinput->TriggerButtom(0, xinput_A);
-	const bool XINPUT_TRIGGER_Y = xinput->TriggerButtom(0, xinput_Y);
+	const buttonState XINPUT_TRIGGER = xinput->TriggerButton(0);
 
 	// 移動処理　後で関数化して処理を分かりやすく
-	const int XINPUT_MOVE_STICK = xinput->MoveStick(0, xinput_LS);
+	const stickState XINPUT_MOVE_STICK = xinput->MoveStick(0, XINPUT_BUTTON_LS);
 
 	// 入力確認
 	if (XINPUT_MOVE_STICK & XINPUT_STICK_UP ||
@@ -122,7 +162,7 @@ void Player::Update()
 		XINPUT_MOVE_STICK & XINPUT_STICK_RIGHT)
 	{
 		//	攻撃中じゃないときに移動可能
-		if (!attack->GetAttackStart())
+		if (!attack->GetAttackStart() && !specialAttack->GetAttackStart())
 		{
 			move = {0,0,0};
 			XMFLOAT3 attackPos = position;
@@ -194,6 +234,8 @@ void Player::Update()
 
 			objPlayer->SetPosition(position);
 			attackObj->SetPosition(attackPos);
+			// 必殺技の位置はplayerの位置
+			specialAttackObj->SetPosition(position);
 
 		}
 	}
@@ -201,15 +243,15 @@ void Player::Update()
 
 	//// 回転設定用 　yに-90しているのはモデルの初期値に対するものあとで変更
 	//// 攻撃中は回転を止める
-	if(!attack->GetAttackStart())attackObj->SetRotation({ 0, -1 *Camera::GetPhi()- 90,0 });
+	//if(!attack->GetAttackStart())attackObj->SetRotation({ 0, -1 *Camera::GetPhi()- 90,0 });
 
 
 
 
 	// 攻撃用処理
 	
-	// 通常攻撃
-	if (XINPUT_TRIGGER_A)
+	// 通常攻撃 ボタンを押したとき　必殺技を使用していないとき
+	if (XINPUT_TRIGGER & XINPUT_BUTTON_A && !specialAttack->GetAttackStart())
 	{
 		// 攻撃用見た目オブジェクトの位置変更
 		XMFLOAT3 eyeDir = Camera::GetEyeDir();
@@ -223,18 +265,23 @@ void Player::Update()
 
 		attack->SetAttackStart();
 	}
-
-	// 必殺技用
-	if (XINPUT_TRIGGER_Y)
+	else if (XINPUT_TRIGGER & XINPUT_BUTTON_Y && !attack->GetAttackStart()) // ボタンを押したとき　攻撃をしていないとき
 	{
 		const float DAMAGE = 2.5f;
 		
 		// レベルを消費して威力を上昇
-		float totalDamage = DAMAGE * level + experience * 0.08f;
+		specialDamage = DAMAGE * level + experience * 0.08f;
 		level = 0;
 		experience = 0;
+		
+		specialAttack->SetAttackStart();
+		//Camera::GetInstance()->SetZoomState(5, 0.5f);
+		
 
 	}
+
+	if (specialAttack->GetAttackStart())isSpecial = true;
+	else isSpecial = false;
 
 	// ここまで
 
@@ -256,10 +303,7 @@ void Player::Update()
 	}
 
 	// 死んでるかどうかの判定
-	if (health <= 0)
-	{
-		isDead = true;
-	}
+	if (health <= 0)isDead = true;
 
 
 	//	更新
@@ -268,6 +312,8 @@ void Player::Update()
 
 	attackObj->Update();
 	attack->Update();
+
+	specialAttack->Update();
 }
 
 void Player::Draw()
@@ -276,7 +322,7 @@ void Player::Draw()
 	objPlayer->Draw();
 
 	if (attack->GetIsAttack())attackObj->Draw();
-
+	if (specialAttack->GetIsAttack())specialAttackObj->Draw();
 
 	// 体力バー用
 	for (int i = 0; i < health; i++)

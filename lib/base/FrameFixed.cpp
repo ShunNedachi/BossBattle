@@ -1,4 +1,5 @@
 #include "FrameFixed.h"
+#include"Setting.h"
 #include<time.h>
 
 int FrameFixed::FPS = 60;
@@ -27,7 +28,7 @@ void FrameFixed::PreWait()
 	{
 		startTime = clock();
 	}
-	if (count == 60)
+	if (count == GAME_FRAME)
 	{
 		startTime = clock();
 		count = 0;
@@ -39,7 +40,7 @@ void FrameFixed::PreWait()
 void FrameFixed::PostWait()
 {
 	TookTime = clock() - startTime;
-	WaitTime = count * 1000 / FPS - TookTime;
+	WaitTime = count * 1000 / GAME_FRAME - TookTime;
 	if (WaitTime > 0)
 	{
 		Sleep(WaitTime);

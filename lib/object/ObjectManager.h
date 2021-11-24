@@ -26,6 +26,8 @@ private:
 	void operator=(const ObjectManager& obj) {}
 	ObjectManager(const ObjectManager& obj) {}
 
+	// private関数
+	void CheckArray();
 
 public:
 
@@ -105,7 +107,7 @@ private:
 	static std::vector<Sprite2D*> spriteArray;
 
 	// ロードされているファイルデータを保存
-	static std::vector<std::string> loadedFileArray;
+	//static std::vector<std::string> loadedFileArray;
 
 	static Player* player;
 

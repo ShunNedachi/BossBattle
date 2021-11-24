@@ -56,7 +56,6 @@ public:
 	XMFLOAT3 GetAttackPos() { return attack->GetAttackPos(); }
 	float GetRadius() { return objPlayer->GetRadius(); }
 	bool GetIsDamage() { return isDamage; }
-	int GetDamage() { return damage; }
 	bool GetIsDead() { return isDead; }
 	
 	// 経験値用
@@ -65,6 +64,10 @@ public:
 	// 攻撃判定用
 	AttackBase* GetAttack() { return attack; }
 	Object* GetOBJ() { return objPlayer; }
+	AttackBase* GetSpecialAttack() { return specialAttack; }
+	int GetDamage() { return damage; }
+	float GetSpecialDamage() { return specialDamage; }
+	bool GetIsSpecial() { return isSpecial; }
 
 
 private:
@@ -98,6 +101,10 @@ private:
 
 	// ステータス状態
 	bool isDead = false;
+
+	// 必殺技使用時かどうか
+	bool isSpecial = false;
+
 	// ダメージをくらっているのかの判定
 	bool isDamage = false;
 	// ダメージ状態の経過フレーム数
@@ -120,6 +127,11 @@ private:
 	// 攻撃用
 	AttackBase* attack;
 	Object* attackObj;
+
+	// 必殺技用
+	AttackBase* specialAttack;
+	Object* specialAttackObj;
+	float specialDamage = 0;
 
 	// プレイヤーの正面ベクトル
 	XMVECTOR move;
