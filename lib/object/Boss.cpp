@@ -85,6 +85,8 @@ void Boss::Destroy()
 		enemys.shrink_to_fit();
 	}
 
+	DeleteAttack();
+
 	delete obj;
 	obj = nullptr;
 }
@@ -99,6 +101,15 @@ void Boss::AddEnemy(XMFLOAT3 position, XMFLOAT3 scale,XMFLOAT3 rotation)
 	temp->SetRadius(scale.x / 2);
 
 	enemys.push_back(temp);
+}
+
+void Boss::DeleteAttack()
+{
+	if (attack)
+	{
+		delete attack;
+		attack = nullptr;
+	}
 }
 
 // AI‹““®
@@ -143,6 +154,7 @@ void Boss::Action()
 		break;
 	}
 
+	// s“®•ÏX@ğŒ‚É‚æ‚Á‚Äƒpƒ^[ƒ“•ÏX
 	if (result)
 	{
 		if (pattern != BossPattern::Rush)pattern = (BossPattern)((int)pattern + 1);
@@ -252,6 +264,7 @@ bool Boss::ActionRush()
 
 	rushCount++;
 
+	// “Ëi‚Ì‘Ò‹@’†‚È‚ç
 	if (rushCount >= rushWaitFrame && !isRush)
 	{
 		isRush = true;
@@ -292,6 +305,75 @@ bool Boss::ActionRush()
 		isRush = false;
 	}
 	else actionCount++;
+
+	return endFlg;
+}
+
+bool Boss::ActionSpecial()
+{
+	return false;
+}
+
+bool Boss::ActionBless()
+{
+	bool endFlg = false;
+
+	// UŒ‚ŠÖŒW‰Šú‰»ˆ—
+	if (initAttack)
+	{
+		
+
+		// Š®—¹‚µ‚½‚çfalse‚É
+		initAttack = false;
+	}
+
+	return endFlg;
+}
+
+bool Boss::ActionLightning()
+{
+	bool endFlg = false;
+
+	// UŒ‚ŠÖŒW‰Šú‰»ˆ—
+	if (initAttack)
+	{
+
+
+		// Š®—¹‚µ‚½‚çfalse‚É
+		initAttack = false;
+	}
+
+	return endFlg;
+}
+
+bool Boss::ActionFallConmbo()
+{
+	bool endFlg = false;
+
+	// UŒ‚ŠÖŒW‰Šú‰»ˆ—
+	if (initAttack)
+	{
+
+
+		// Š®—¹‚µ‚½‚çfalse‚É
+		initAttack = false;
+	}
+
+	return endFlg;
+}
+
+bool Boss::ActionFlyBless()
+{
+	bool endFlg = false;
+
+	// UŒ‚ŠÖŒW‰Šú‰»ˆ—
+	if (initAttack)
+	{
+
+
+		// Š®—¹‚µ‚½‚çfalse‚É
+		initAttack = false;
+	}
 
 	return endFlg;
 }

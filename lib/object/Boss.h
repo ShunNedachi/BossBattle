@@ -2,6 +2,7 @@
 #include "Enemy.h"
 #include"Sprite2D.h"
 #include"Setting.h"
+#include"AttackBase.h"
 #include<vector>
 
 #define STATE_SLEEP 0x000
@@ -35,6 +36,9 @@ public:
     void AddEnemy(XMFLOAT3 position = { 0,0,0 }, XMFLOAT3 scale = { 1,1,1 },
         XMFLOAT3 rotation = { 0,0,0 });
 
+    // 攻撃の解放処理用
+    void DeleteAttack();
+
     std::vector<Enemy*> GetEnemys() { return enemys; }
 
    
@@ -52,8 +56,17 @@ private:
     bool ActionRush();
 
     // 後でパターンに組み込み
-    bool ActionRangeAttack();
-    //bool Action
+
+    // 特殊行動用  後で追加予定
+    bool ActionSpecial();
+
+    // 遠距離攻撃用
+    bool ActionBless();
+    bool ActionLightning();
+    // 飛行攻撃(ジャンプ攻撃用)
+    bool ActionFallConmbo();
+    bool ActionFlyBless();
+
 
 private:
 
@@ -98,6 +111,11 @@ private:
     int rushCount = 0;
     // 突進しているのかどうか
     bool isRush = false;
+
+    // 初期化が必要な攻撃用
+    bool initAttack = true;
+    // 遠距離攻撃用
+    AttackBase* attack = nullptr;
 };
 
 
