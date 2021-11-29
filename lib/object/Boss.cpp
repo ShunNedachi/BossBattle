@@ -30,10 +30,20 @@ void Boss::Update()
 			enemys.erase(enemys.begin() + i);
 		}
 	}
-	for (int i = 0; i < enemys.size(); i++)
+	// attackObjsの中身にnullがあるかの確認
+	for (auto itr = attackObjs.begin(); itr < attackObjs.end();)
 	{
-		enemys[i]->Update();
+		if (*itr == nullptr)
+		{
+			itr = attackObjs.erase(itr);
+		}
+		else
+		{
+			itr++;
+		}
+
 	}
+
 
 	if (!GameFunction::GetPlayerIsSpecial())
 	{
@@ -52,11 +62,13 @@ void Boss::Update()
 				damageCount = 0;
 				obj->SetColor({ 1,1,1 });
 			}
-
 		}
-
 	}
 
+	for (int i = 0; i < enemys.size(); i++)
+	{
+		enemys[i]->Update();
+	}
 	obj->Update();
 	obj->SetPosition(position);
 }
@@ -68,6 +80,11 @@ void Boss::Draw()
 	for (int i = 0; i < enemys.size(); i++)
 	{
 		enemys[i]->Draw();
+	}
+
+	for (int i = 0; i < attackObjs.size(); i++)
+	{
+		attackObjs[i]->Draw();
 	}
 }
 
@@ -105,11 +122,7 @@ void Boss::AddEnemy(XMFLOAT3 position, XMFLOAT3 scale,XMFLOAT3 rotation)
 
 void Boss::DeleteAttack()
 {
-	if (attack)
-	{
-		delete attack;
-		attack = nullptr;
-	}
+
 }
 
 // AI挙動
@@ -150,6 +163,12 @@ void Boss::Action()
 		result = ActionRush();
 		break;
 
+		//　遠距離攻撃状態
+	case BossPattern::Bless:
+
+		result = ActionBless();
+		break;
+
 	default:
 		break;
 	}
@@ -157,8 +176,10 @@ void Boss::Action()
 	// 行動変更時　条件によってパターン変更
 	if (result)
 	{
-		if (pattern != BossPattern::Rush)pattern = (BossPattern)((int)pattern + 1);
-		else pattern = BossPattern::Stop;
+		// debug用に一旦コメント
+
+		//if (pattern != BossPattern::Bless)pattern = (BossPattern)((int)pattern + 1);
+		//else pattern = BossPattern::Stop;
 	}
 }
 
@@ -311,7 +332,9 @@ bool Boss::ActionRush()
 
 bool Boss::ActionSpecial()
 {
-	return false;
+	bool endFlg = false;
+
+	return endFlg;
 }
 
 bool Boss::ActionBless()
@@ -319,12 +342,67 @@ bool Boss::ActionBless()
 	bool endFlg = false;
 
 	// 攻撃関係初期化処理
-	if (initAttack)
-	{
-		
+	//if (initAttack)
+	//{
+	//	// 攻撃情報の生成
+	//	attack = new AttackBase(1 * GAME_FRAME, 1 * GAME_FRAME, 10);
+	//	// 完了したらfalseに
+	//	initAttack = false;
+	//}
 
-		// 完了したらfalseに
-		initAttack = false;
+
+	// 攻撃処理
+	const int BLESS_TIMING = actionCount % blessWaitFrame;
+
+	// blessのタイミングになったら攻撃
+	if (BLESS_TIMING == 0)
+	{
+		// 攻撃方向の決定
+		XMFLOAT3 playerPos = GameFunction::GetPlayerPos();
+		XMVECTOR v = { playerPos.x - position.x,playerPos.y - position.y,playerPos.z - position.z,0 };
+		v = DirectX::XMVector3Normalize(v);
+		// 方向の決定
+		blessV.push_back(XMFLOAT3(v.m128_f32[0],v.m128_f32[1],v.m128_f32[2]));
+
+		// 攻撃オブジェクトの生成
+		Object* temp = new Object(NORMAL,"sphere");
+		temp->SetPosition(position);
+		temp->SetRadius(0.5f);
+
+		attackObjs.push_back(temp);
+
+	}
+	
+	actionCount++;
+
+	// 攻撃の移動処理
+	if (attackObjs.size() > 0)
+	{
+		for (int i = 0; i < attackObjs.size(); i++)
+		{
+			XMFLOAT3 tempPos = attackObjs[i]->GetPosition();
+
+			tempPos.x += blessV[i].x;
+			tempPos.y += blessV[i].y;
+			tempPos.z += blessV[i].z;
+
+			attackObjs[i]->SetPosition(tempPos);
+			attackObjs[i]->Update();
+		}
+	}
+
+	//　攻撃フレームを過ぎたら
+	if (blessFrame <= actionCount)
+	{
+		endFlg = true;
+		actionCount = 0;
+	}
+
+	// 終了条件を満たしていたらオブジェクトを消す
+	if (endFlg)
+	{
+		// とりあえず終わったのがわかるようにパターンが終了したら弾を消す
+		DestroyAttackArray();
 	}
 
 	return endFlg;
@@ -376,4 +454,19 @@ bool Boss::ActionFlyBless()
 	}
 
 	return endFlg;
+}
+
+void Boss::DestroyAttackArray()
+{
+	for (auto x : attackObjs)
+	{
+		delete x;
+		x = nullptr;
+	}
+
+	attackObjs.clear();
+	attackObjs.shrink_to_fit();
+
+	blessV.clear();
+	blessV.shrink_to_fit();
 }

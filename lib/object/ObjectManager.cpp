@@ -1,6 +1,7 @@
 #include "ObjectManager.h"
 #include"Collision.h"
 #include<string>
+#include"GameFunction.h"
 
 // 静的メンバ変数
 ObjectManager* ObjectManager::instance = nullptr;
@@ -111,6 +112,35 @@ void ObjectManager::Update()
 	// 配列チェック
 	CheckArray();
 
+	// 当たり判定処理 敵がいるとき
+	if (boss)
+	{
+		// player 2 boss
+		Collision::Player2Enemy(*player, *boss,false);
+		for (auto x : boss->GetEnemys())
+		{
+			Collision::Player2Enemy(*player, *x,true);
+		}
+
+		// 遠距離攻撃の判定用
+		std::vector<Object*>* bullet = boss->GetAttackObjPointer();
+		const float BULLET_DAMAGE = boss->GetBlessDamage();
+		if (bullet->size() > 0)
+		{
+			for (int i = 0; i < bullet->size(); i++)
+			{
+				// 弾とプレイヤーが当たったらオブジェクトを消す
+				if (Collision::Player2SphereOBJ(*player, *bullet->at(i),BULLET_DAMAGE))
+				{
+					delete bullet->at(i);
+					bullet->at(i) = nullptr;
+				}
+			}
+
+		}
+	}
+
+
 	// player用
 	if(player)player->Update();
 	
@@ -126,18 +156,6 @@ void ObjectManager::Update()
 			isClear = true;
 		}
 	}
-
-	// 当たり判定処理 敵がいるとき
-	if (boss)
-	{
-		// player 2 boss
-		Collision::Player2Enemy(*player, *boss,false);
-		for (auto x : boss->GetEnemys())
-		{
-			Collision::Player2Enemy(*player, *x,true);
-		}
-	}
-
 	// ここまで
 
 }

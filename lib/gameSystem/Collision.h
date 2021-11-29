@@ -34,9 +34,11 @@ public:
 	/// <summary>
 	/// playerとenemyの当たり判定用
 	/// </summary>
-	/// <param name="player">player</param>
-	/// <param name="enemy">enemy</param>
-	/// <param name="knockback">knockback</param>
+	/// <param name="player">playerの情報</param>
+	/// <param name="enemy">enemyの情報</param>
+	/// <param name="knockback">playerがノックバックするのかどうか</param>
 	static void Player2Enemy(Player& player,Enemy& enemy,bool knockback);
+
+	static bool Player2SphereOBJ(Player& player,Object& obj,float damage);
 };
 

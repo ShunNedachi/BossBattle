@@ -1,4 +1,5 @@
 #include<DirectXMath.h>
+#include"Enemy.h"
 #pragma once
 
 // クラス間での情報交換や値の受け渡しをobjectManagerを通さず行う

@@ -52,6 +52,8 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		// フレームレート固定
 		frameFixed->PreWait();
 
+		#pragma region 更新処理
+
 		// 更新
 		input->Update();
 		xinput->Update();
@@ -61,7 +63,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 		// 各シーンのupdate
 		sceneManager->Update();
-
+	#pragma endregion
 
 		#pragma region 描画処理
 

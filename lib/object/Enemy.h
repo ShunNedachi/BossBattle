@@ -53,7 +53,8 @@ public:
 	// 攻撃判定用
 	//AttackBase* GetAttack() { return attack; }
 	Object* GetOBJ() { return obj; }
-
+	std::vector<Object*> GetAttackObj() { return attackObjs; }
+	std::vector<Object*>* GetAttackObjPointer() { return &attackObjs; }
 
 protected:
 	Object* obj = nullptr;
@@ -75,6 +76,9 @@ protected:
 
 	// 仮設定のダメージ量
 	int damage = 1;
+
+	std::vector<Object*> attackObjs;
+
 
 };
 

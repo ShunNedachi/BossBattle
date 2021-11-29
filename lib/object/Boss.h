@@ -20,6 +20,7 @@ private:
         Sleep,
         Follow,
         Rush,
+        Bless,
     };
 
 
@@ -41,7 +42,7 @@ public:
 
     std::vector<Enemy*> GetEnemys() { return enemys; }
 
-   
+    float GetBlessDamage() { return blessDamage; }
 
 private:
 
@@ -68,6 +69,8 @@ private:
     bool ActionFlyBless();
 
 
+    void DestroyAttackArray();
+
 private:
 
     // 召喚する敵の配列
@@ -78,7 +81,7 @@ private:
     Sprite2D* hpSprite;
 
     // 行動状況用
-    BossPattern pattern = BossPattern::Stop;
+    BossPattern pattern = BossPattern::Bless;
 
     // 経過フレーム計測用
     int actionCount = 0;
@@ -114,8 +117,20 @@ private:
 
     // 初期化が必要な攻撃用
     bool initAttack = true;
+
+
     // 遠距離攻撃用
-    AttackBase* attack = nullptr;
+    // bless用
+    
+    //  bless発射用待機フレーム
+    int blessFrame = 10 * GAME_FRAME;
+    int blessWaitFrame = 3 * GAME_FRAME;
+    // 発射方向
+    std::vector<XMFLOAT3> blessV;
+    //
+    float blessDamage = 1;
+
+
 };
 
 

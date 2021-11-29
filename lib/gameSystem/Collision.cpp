@@ -31,7 +31,7 @@ bool Collision::Attack2OBJ(const Object& obj,const AttackBase& attack)
 	DirectX::XMFLOAT3 size = tempObj.GetSize();
 	float r = tempObj.GetRadius();
 
-
+	
 	if (tempAttack.Hit(position,size,r))
 	{
 		return true;
@@ -74,4 +74,27 @@ void Collision::Player2Enemy(Player& player,Enemy& enemy,bool knockback)
 	{
 		if (!PLAYER_ISDAMAGE)player.RecieveDamage(ENEMY_POS, ENEMY_DAMAGE);
 	}
+}
+
+bool Collision::Player2SphereOBJ(Player& player,Object& obj,float damage)
+{
+	// Ÿ‰ñ‚±‚±‚©‚ç“G‚Ì‰“‹——£UŒ‚‚Æ‚Ì”»’è‚ğæ‚é
+	DirectX::XMFLOAT3 playerPos = player.GetPos();
+	DirectX::XMFLOAT3 objPos = obj.GetPosition();
+	float playerSize = player.GetRadius();
+	float objSize = obj.GetRadius();
+	const bool PLAYER_ISDAMAGE = player.GetIsDamage();
+
+	if (Collision::Sphere2Sphere(playerPos, objPos, playerSize, objSize))
+	{
+		if (!PLAYER_ISDAMAGE)
+		{
+			player.RecieveDamage(objPos, damage);
+		}
+
+		return true;
+	}
+
+
+	return false;
 }

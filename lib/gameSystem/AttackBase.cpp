@@ -84,8 +84,7 @@ bool AttackBase::Hit(XMFLOAT3 pos, XMFLOAT3 size, float r)
 		// ‰Šú’l‚ª“ü‚Á‚Ä‚¢‚½ê‡’Ê‚ç‚È‚¢
 		if (size.x != 0 && size.y != 0 && size.z != 0)
 		{
-
-			// ‹éŒ`‚Ìˆ—(Œã’öOBB‚ð“ü‚ê‚é)
+			// ‹éŒ`‚Ìˆ—(Œã’öOBB‚ð“ü‚ê‚é—\’è)
 
 		}
 		else if (r != 0)// ”»’è‚ª‹…‚Ìê‡

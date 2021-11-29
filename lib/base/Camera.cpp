@@ -118,7 +118,7 @@ void Camera::SetEyeLerp()
 	XMVECTOR eyeV = { eye.x,eye.y,eye.z,0 };
 	XMVECTOR endEyeV = { endEye.x,endEye.y,endEye.z,0 };
 	
-	result = DirectX::XMVectorLerp(eyeV, endEyeV,0.2f);
+	result = DirectX::XMVectorLerp(eyeV, endEyeV,0.25f);
 
 	DirectX::XMStoreFloat3(&eye, result);
 

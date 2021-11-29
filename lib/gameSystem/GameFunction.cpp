@@ -42,3 +42,5 @@ bool GameFunction::GetPlayerIsSpecial()
 {
 	return Player::GetInstance()->GetIsSpecial();
 }
+
+
