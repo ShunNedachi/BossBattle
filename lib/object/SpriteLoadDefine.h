@@ -6,6 +6,8 @@
 #define playerHealth 1
 #define playerExpBar 2
 #define playerExp 3
+#define bossHealthBar 4
+#define bossHealth 5
 
 #define number0 10
 #define number1 11

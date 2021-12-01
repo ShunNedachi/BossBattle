@@ -21,6 +21,7 @@ private:
         Follow,
         Rush,
         Bless,
+        FlyCombo,
     };
 
 
@@ -43,6 +44,9 @@ public:
     std::vector<Enemy*> GetEnemys() { return enemys; }
 
     float GetBlessDamage() { return blessDamage; }
+
+    // 初期の待機状態かどうかを返す
+    bool GetIsInit() { return isInit; }
 
 private:
 
@@ -79,9 +83,16 @@ private:
     //int pattern = 0;
 
     Sprite2D* hpSprite;
+    Sprite2D* hpBarSprite;
+    const float MAX_HEALTH = 10;
+    const float HEALTH_SIZE = 800;
+    // 最大HPにおける1HPの割合
+    const float ONE_HEALTH_SIZE = HEALTH_SIZE / MAX_HEALTH;
 
     // 行動状況用
-    BossPattern pattern = BossPattern::Bless;
+    BossPattern pattern = BossPattern::FlyCombo;
+    bool isInit = false;
+    int initFrame = 5 * GAME_FRAME;
 
     // 経過フレーム計測用
     int actionCount = 0;
@@ -124,13 +135,27 @@ private:
     
     //  bless発射用待機フレーム
     int blessFrame = 10 * GAME_FRAME;
-    int blessWaitFrame = 3 * GAME_FRAME;
+    int blessWaitFrame = 1 * GAME_FRAME;
     // 発射方向
     std::vector<XMFLOAT3> blessV;
     //
     float blessDamage = 1;
 
+    // 飛行状態用
+    int flyFrame = 10 * GAME_FRAME; // デバッグ用に時間を10 ⇒　1
+    //int flyToUpFrame = 1 * GAME_FRAME;
+    //int flyToDownFrame = 1 * GAME_FRAME;
+    // 落下攻撃する頻度
+    int flyAttackFrame = 1 * GAME_FRAME;
+    float flyAttackDamage = 1;
 
+    // 飛行時最大値
+    const float MAX_FLY_POS = 50;
+    bool startFly = true;
+    bool endFly = false;
+    bool initEndFly = true;
+    bool isFly = false; // 飛行状態解除時に攻撃中かどうか確認用
+    Easing flyEasing;
 };
 
 

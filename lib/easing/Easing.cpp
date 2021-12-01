@@ -8,6 +8,7 @@ void Easing::SetState(float time, float startValue, float endValue)
 	this->endValue = endValue;
 	difference = endValue - startValue;
 	init = true;
+	endFlg = false;
 }
 
 float Easing::StartEeaging(int easingFlag)
@@ -62,7 +63,11 @@ float Easing::EaseIn()
 
 	float result = difference * rate * rate + startValue;
 
-	if (elapsedTime > time)return endValue;
+	if (elapsedTime > time)
+	{
+		endFlg = true;
+		return endValue;
+	}
 	return  result;
 }
 
@@ -87,7 +92,11 @@ float Easing::EaseOut()
 
 	float result = difference * EaseOut_Calc(rate) + startValue;
 
-	if (elapsedTime > time)return endValue;
+	if (elapsedTime > time)
+	{
+		endFlg = true;
+		return endValue;
+	}
 	return  result;
 }
 
@@ -112,7 +121,12 @@ float Easing::EaseInOut()
 
 	float result = difference * EaseInOut_Calc(rate) + startValue;
 
-	if (elapsedTime > time)return endValue;
+	if (elapsedTime > time)
+	{
+		endFlg = true;
+		return endValue;
+	}
+
 	return  result;
 }
 
@@ -137,7 +151,12 @@ float Easing::EaseInQuad()
 
 	float result = difference * EaseInQuad_Calc(rate) + startValue;
 
-	if (elapsedTime > time)return endValue;
+	if (elapsedTime > time)
+	{
+		endFlg = true;
+		return endValue;
+	}
+
 	return  result;
 
 }
@@ -163,7 +182,12 @@ float Easing::EaseOutQuad()
 
 	float result = difference * EaseOutQuad_Calc(rate) + startValue;
 
-	if (elapsedTime > time)return endValue;
+	if (elapsedTime > time)
+	{
+		endFlg = true;
+		return endValue;
+	}
+
 	return  result;
 
 }
@@ -197,7 +221,12 @@ float Easing::EaseInOutQuad()
 
 	float result = difference * EaseInOutQuad_Calc(rate) + startValue;
 
-	if (elapsedTime > time)return endValue;
+	if (elapsedTime > time)
+	{
+		endFlg = true;
+		return endValue;
+	}
+
 	return  result;
 
 }
@@ -223,7 +252,12 @@ float Easing::EaseInCubic()
 
 	float result = difference * EaseInCubic_Calc(rate) + startValue;
 
-	if (elapsedTime > time)return endValue;
+	if (elapsedTime > time)
+	{
+		endFlg = true;
+		return endValue;
+	}
+
 	return  result;
 
 }
@@ -249,7 +283,12 @@ float Easing::EaseOutCubic()
 
 	float result = difference * EaseOutCubic_Calc(rate) + startValue;
 
-	if (elapsedTime > time)return endValue;
+	if (elapsedTime > time)
+	{
+		endFlg = true;
+		return endValue;
+	}
+
 	return  result;
 
 }
@@ -282,7 +321,12 @@ float Easing::EaseInOutCubic()
 
 	float result = difference * EaseInOutCubic_Calc(rate) + startValue;
 
-	if (elapsedTime > time)return endValue;
+	if (elapsedTime > time)
+	{
+		endFlg = true;
+		return endValue;
+	}
+
 	return  result;
 
 }
@@ -308,7 +352,12 @@ float Easing::EaseInQuart()
 
 	float result = difference * EaseInQuart_Calc(rate) + startValue;
 
-	if (elapsedTime > time)return endValue;
+	if (elapsedTime > time)
+	{
+		endFlg = true;
+		return endValue;
+	}
+
 	return  result;
 
 }
@@ -334,7 +383,12 @@ float Easing::EaseOutQuart()
 
 	float result = difference * EaseOutQuart_Calc(rate) + startValue;
 
-	if (elapsedTime > time)return endValue;
+	if (elapsedTime > time)
+	{
+		endFlg = true;
+		return endValue;
+	}
+
 	return  result;
 
 }
@@ -367,7 +421,12 @@ float Easing::EaseInOutQuart()
 
 	float result = difference * EaseInOutQuart_Calc(rate) + startValue;
 
-	if (elapsedTime > time)return endValue;
+	if (elapsedTime > time)
+	{
+		endFlg = true;
+		return endValue;
+	}
+
 	return  result;
 
 }
@@ -393,7 +452,12 @@ float Easing::EaseInQuint()
 
 	float result = difference * EaseInQuint_Calc(rate) + startValue;
 
-	if (elapsedTime > time)return endValue;
+	if (elapsedTime > time)
+	{
+		endFlg = true;
+		return endValue;
+	}
+
 	return  result;
 }
 
@@ -418,7 +482,12 @@ float Easing::EaseOutQuint()
 
 	float result = difference * EaseOutQuint_Calc(rate) + startValue;
 
-	if (elapsedTime > time)return endValue;
+	if (elapsedTime > time)
+	{
+		endFlg = true;
+		return endValue;
+	}
+
 	return  result;
 }
 
@@ -450,7 +519,12 @@ float Easing::EaseInOutQuint()
 
 	float result = difference * EaseInOutQuint_Calc(rate) + startValue;
 
-	if (elapsedTime > time)return endValue;
+	if (elapsedTime > time)
+	{
+		endFlg = true;
+		return endValue;
+	}
+
 	return  result;
 }
 
@@ -482,7 +556,12 @@ float Easing::EaseInExpo()
 
 	float result = difference * EaseInExpo_Calc(rate) + startValue;
 
-	if (elapsedTime > time)return endValue;
+	if (elapsedTime > time)
+	{
+		endFlg = true;
+		return endValue;
+	}
+
 	return  result;
 }
 
@@ -514,7 +593,12 @@ float Easing::EaseOutExpo()
 
 	float result = difference * EaseOutExpo_Calc(rate) + startValue;
 
-	if (elapsedTime > time)return endValue;
+	if (elapsedTime > time)
+	{
+		endFlg = true;
+		return endValue;
+	}
+
 	return  result;
 }
 
@@ -554,7 +638,12 @@ float Easing::EaseInOutExpo()
 
 	float result = difference * EaseInOutExpo_Calc(rate) + startValue;
 
-	if (elapsedTime > time)return endValue;
+	if (elapsedTime > time)
+	{
+		endFlg = true;
+		return endValue;
+	}
+
 	return  result;
 }
 
@@ -579,7 +668,12 @@ float Easing::EaseInCirc()
 
 	float result = difference * EaseInCirc_Calc(rate) + startValue;
 
-	if (elapsedTime > time)return endValue;
+	if (elapsedTime > time)
+	{
+		endFlg = true;
+		return endValue;
+	}
+
 	return  result;
 }
 
@@ -604,7 +698,12 @@ float Easing::EaseOutCirc()
 
 	float result = difference * EaseOutCirc_Calc(rate) + startValue;
 
-	if (elapsedTime > time)return endValue;
+	if (elapsedTime > time)
+	{
+		endFlg = true;
+		return endValue;
+	}
+
 	return  result;
 }
 
@@ -636,7 +735,12 @@ float Easing::EaseInOutCirc()
 
 	float result = difference * EaseInOutCirc_Calc(rate) + startValue;
 
-	if (elapsedTime > time)return endValue;
+	if (elapsedTime > time)
+	{
+		endFlg = true;
+		return endValue;
+	}
+
 	return  result;
 }
 
@@ -665,7 +769,12 @@ float Easing::EaseInBack()
 
 	float result = difference * EaseInBack_Calc(rate) + startValue;
 
-	if (elapsedTime > time)return endValue;
+	if (elapsedTime > time)
+	{
+		endFlg = true;
+		return endValue;
+	}
+
 	return  result;
 }
 
@@ -693,7 +802,12 @@ float Easing::EaseOutBack()
 
 	float result = difference * EaseOutBack_Calc(rate) + startValue;
 
-	if (elapsedTime > time)return endValue;
+	if (elapsedTime > time)
+	{
+		endFlg = true;
+		return endValue;
+	}
+
 	return  result;
 }
 
@@ -727,7 +841,12 @@ float Easing::EaseInOutBack()
 
 	float result = difference * EaseInOutBack_Calc(rate) + startValue;
 
-	if (elapsedTime > time)return endValue;
+	if (elapsedTime > time)
+	{
+		endFlg = true;
+		return endValue;
+	}
+
 	return  result;
 }
 
@@ -764,7 +883,12 @@ float Easing::EaseInElastic()
 
 	float result = difference * EaseInElastic_Calc(rate) + startValue;
 
-	if (elapsedTime > time)return endValue;
+	if (elapsedTime > time)
+	{
+		endFlg = true;
+		return endValue;
+	}
+
 	return  result;
 }
 
@@ -801,7 +925,12 @@ float Easing::EaseOutElastic()
 
 	float result = difference * EaseOutElastic_Calc(rate) + startValue;
 
-	if (elapsedTime > time)return endValue;
+	if (elapsedTime > time)
+	{
+		endFlg = true;
+		return endValue;
+	}
+
 	return  result;
 }
 
@@ -842,7 +971,12 @@ float Easing::EaseInOutElastic()
 
 	float result = difference * EaseInOutElastic_Calc(rate) + startValue;
 
-	if (elapsedTime > time)return endValue;
+	if (elapsedTime > time)
+	{
+		endFlg = true;
+		return endValue;
+	}
+
 	return  result;
 }
 
@@ -868,7 +1002,12 @@ float Easing::EaseInBounce()
 
 	float result = difference * EaseInBounce_Calc(rate) + startValue;
 
-	if (elapsedTime > time)return endValue;
+	if (elapsedTime > time)
+	{
+		endFlg = true;
+		return endValue;
+	}
+
 	return  result;
 }
 
@@ -911,7 +1050,12 @@ float Easing::EaseOutBounce()
 
 	float result = difference * EaseOutBounce_Calc(rate) + startValue;
 
-	if (elapsedTime > time)return endValue;
+	if (elapsedTime > time)
+	{
+		endFlg = true;
+		return endValue;
+	}
+
 	return  result;
 }
 
@@ -943,7 +1087,12 @@ float Easing::EaseInOutBounce()
 
 	float result = difference * EaseInOutBounce_Calc(rate) + startValue;
 
-	if (elapsedTime > time)return endValue;
+	if (elapsedTime > time)
+	{
+		endFlg = true;
+		return endValue;
+	}
+
 	return  result;
 }
 

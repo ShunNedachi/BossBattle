@@ -13,4 +13,9 @@ namespace GameFunction
 	DirectX::XMFLOAT3 GetPlayerPos();
 	bool GetPlayerIsSpecial();
 
+
+	// ”O‚Ì‚½‚ßˆ—‹æ•ª—p
+	void LoadPlayerTexture();
+	void LoadBossTexture();
+	void LoadNumberTexture();
 }

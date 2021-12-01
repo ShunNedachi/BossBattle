@@ -33,8 +33,24 @@ void GameScene::Update()
 	Input* input = Input::GetInstance();
 	Xinput* xinput = Xinput::GetInstance();
 
-	camera->Follow(objectManager->GetPlayerPos());
+	// カメラの挙動
+	if (objectManager->GetIsInitBoss())
+	{
+		// playerに追従
+		camera->Follow(objectManager->GetPlayerPos());
+	}
+	else
+	{
+		// 敵の登場タイミングで敵にカメラを追従
+		camera->Follow(objectManager->GetBossPosition());
+		camera->SetPhi(300);
+		camera->SetTheta(20);
+		camera->SetR(5);
+	}
+
 	camera->Update();
+
+
 	objectManager->Update();
 
 	//// シーン変更

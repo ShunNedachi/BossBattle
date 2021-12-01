@@ -1,5 +1,7 @@
 #include "Boss.h"
 #include"GameFunction.h"
+#include"SpriteLoadDefine.h"
+#include"Setting.h"
 
 void Boss::Init()
 {
@@ -13,7 +15,19 @@ void Boss::Init()
 	obj->SetScale(scale);
 	obj->SetRadius(2.5f);
 
-	health = 10;
+	//health = MAX_HEALTH;
+
+	hpSprite = new Sprite2D(0, 0.5f);
+	hpSprite->CreateSprite(bossHealth);
+	//hpSprite->Resize(ONE_HEALTH_SIZE * MAX_HEALTH, 50);
+	hpSprite->Resize(0, 50);
+	hpSprite->SetPosition({ WINDOW_WIDTH / 2 - 400,650 });
+
+	hpBarSprite = new Sprite2D(0.5f, 0.5f);
+	hpBarSprite->CreateSprite(bossHealthBar);
+	hpBarSprite->Resize(ONE_HEALTH_SIZE * MAX_HEALTH, 50);
+	hpBarSprite->SetPosition({ WINDOW_WIDTH / 2 ,650 });
+
 }
 
 void Boss::Update()
@@ -44,31 +58,54 @@ void Boss::Update()
 
 	}
 
-
-	if (!GameFunction::GetPlayerIsSpecial())
+	// ゲーム開始直後の状態
+	if (!isInit)
 	{
-		Action();
-
-		// ダメージ状態時の処理
-		if (isDamage)
+		if (actionCount > initFrame)
 		{
-			damageCount++;
-			obj->SetColor({ 0,1,1 });
+			isInit = true;
+			actionCount = 0;
+		}
 
-			// ダメージ状態解除条件
-			if (damageCount >= DAMAGE_FRAME)
+		if (health < MAX_HEALTH)
+		{
+			health += 0.05f;
+			hpSprite->Resize(ONE_HEALTH_SIZE * health, 50);
+		}
+
+		actionCount++;
+	}
+	else
+	{
+		if (!GameFunction::GetPlayerIsSpecial())
+		{
+			Action();
+
+			// ダメージ状態時の処理
+			if (isDamage)
 			{
-				isDamage = false;
-				damageCount = 0;
-				obj->SetColor({ 1,1,1 });
+				damageCount++;
+				obj->SetColor({ 0,1,1 });
+
+				hpSprite->Resize(ONE_HEALTH_SIZE * health, 50);
+
+				// ダメージ状態解除条件
+				if (damageCount >= DAMAGE_FRAME)
+				{
+					isDamage = false;
+					damageCount = 0;
+					obj->SetColor({ 1,1,1 });
+				}
+			}
+
+			for (int i = 0; i < enemys.size(); i++)
+			{
+				enemys[i]->Update();
 			}
 		}
 	}
 
-	for (int i = 0; i < enemys.size(); i++)
-	{
-		enemys[i]->Update();
-	}
+
 	obj->Update();
 	obj->SetPosition(position);
 }
@@ -86,6 +123,9 @@ void Boss::Draw()
 	{
 		attackObjs[i]->Draw();
 	}
+
+	hpSprite->Draw();
+	hpBarSprite->Draw();
 }
 
 void Boss::Destroy()
@@ -167,6 +207,12 @@ void Boss::Action()
 	case BossPattern::Bless:
 
 		result = ActionBless();
+		break;
+
+		// ジャンプ攻撃用
+	case BossPattern::FlyCombo:
+
+		result = ActionFallConmbo();
 		break;
 
 	default:
@@ -382,9 +428,9 @@ bool Boss::ActionBless()
 		{
 			XMFLOAT3 tempPos = attackObjs[i]->GetPosition();
 
-			tempPos.x += blessV[i].x;
-			tempPos.y += blessV[i].y;
-			tempPos.z += blessV[i].z;
+			tempPos.x += blessV[i].x * 2;
+			tempPos.y += blessV[i].y * 2;
+			tempPos.z += blessV[i].z * 2;
 
 			attackObjs[i]->SetPosition(tempPos);
 			attackObjs[i]->Update();
@@ -403,6 +449,92 @@ bool Boss::ActionBless()
 	{
 		// とりあえず終わったのがわかるようにパターンが終了したら弾を消す
 		DestroyAttackArray();
+
+		//blessV.clear();
+		//blessV.shrink_to_fit();
+	}
+
+	return endFlg;
+}
+
+
+bool Boss::ActionFallConmbo()
+{
+	bool endFlg = false;
+
+	// 攻撃関係初期化処理
+	if (initAttack)
+	{
+		// easing用
+		flyEasing.SetState(2, position.y, MAX_FLY_POS);
+
+		startFly = true;
+		// 完了したらfalseに
+		initAttack = false;
+	}
+	
+	// 開始時の処理
+	if (startFly)
+	{
+		position.y = flyEasing.StartEeaging(easeInElasticFLAG);
+		
+		if (flyEasing.GetEndFlg())
+		{
+			startFly = false;
+		}
+	}
+	else // 攻撃処理
+	{
+		// 家に帰ってから実装
+
+		actionCount++;
+	}
+
+
+
+
+	// 時間が経過したら終了フラグをtrue
+	if (actionCount >= flyFrame && initEndFly)
+	{
+		endFly = true;
+		flyEasing.SetState(2, position.y, 0);
+		initEndFly = false;
+	}
+
+	if (endFly)
+	{
+		position.y = flyEasing.StartEeaging(easeOutFLAG);
+		
+		if (flyEasing.GetEndFlg())
+		{
+			endFlg = true;
+		}
+	}
+
+	// 終了条件に達していたら
+	if (endFlg)
+	{
+
+		// 初期状態に戻す
+		endFly = false;
+		initEndFly = true;
+		actionCount = 0;
+	}
+
+	return endFlg;
+}
+
+bool Boss::ActionFlyBless()
+{
+	bool endFlg = false;
+
+	// 攻撃関係初期化処理
+	if (initAttack)
+	{
+
+
+		// 完了したらfalseに
+		initAttack = false;
 	}
 
 	return endFlg;
@@ -424,37 +556,6 @@ bool Boss::ActionLightning()
 	return endFlg;
 }
 
-bool Boss::ActionFallConmbo()
-{
-	bool endFlg = false;
-
-	// 攻撃関係初期化処理
-	if (initAttack)
-	{
-
-
-		// 完了したらfalseに
-		initAttack = false;
-	}
-
-	return endFlg;
-}
-
-bool Boss::ActionFlyBless()
-{
-	bool endFlg = false;
-
-	// 攻撃関係初期化処理
-	if (initAttack)
-	{
-
-
-		// 完了したらfalseに
-		initAttack = false;
-	}
-
-	return endFlg;
-}
 
 void Boss::DestroyAttackArray()
 {

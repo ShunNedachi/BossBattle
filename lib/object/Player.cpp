@@ -74,10 +74,11 @@ void Player::Init(const String& filename)
 	// プレイヤーのオブジェクト用
 	objPlayer = new Object(NORMAL,filename);
 
-	position = { 0,0,0 };
+	position = { 0,0,-30 };
 	rotation = { 0,0,0 };
 	scale = { 1,1,1 };
 
+	objPlayer->SetPosition(position);
 	objPlayer->SetScale(scale);
 	objPlayer->SetRadius(1);
 	// ここまで

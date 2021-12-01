@@ -13,13 +13,41 @@ void GameFunction::AddEXP(float exp)
 
 void GameFunction::LoadGameSceneTexture()
 {
-	// プレイヤー関係のスプライトのロード
+	LoadPlayerTexture();
+	LoadBossTexture();
+	LoadNumberTexture();
+}	
+
+DirectX::XMFLOAT3 GameFunction::GetPlayerPos()
+{
+	return Player::GetInstance()->GetPos();
+}
+
+bool GameFunction::GetPlayerIsSpecial()
+{
+	return Player::GetInstance()->GetIsSpecial();
+}
+
+void GameFunction::LoadPlayerTexture()
+{
+	// プレイヤー関係の画像読み込み
+	// 体力
 	Sprite2D::LoadTex(playerHealthBar, TEXT("playerHealth.png"));
 	Sprite2D::LoadTex(playerHealth, TEXT("playerHealth1Dot.png"));
-
+	// 経験値
 	Sprite2D::LoadTex(playerExpBar, TEXT("playerEXPgage.png"));
 	Sprite2D::LoadTex(playerExp, TEXT("playerEXP1dot.png"));
+}
 
+void GameFunction::LoadBossTexture()
+{
+	// ボス用の画像読み込み
+	Sprite2D::LoadTex(bossHealth, TEXT("bossHealth1dot.png"));
+	Sprite2D::LoadTex(bossHealthBar, TEXT("playerHealth.png"));
+}
+
+void GameFunction::LoadNumberTexture()
+{
 	// 数字用読み込み
 	Sprite2D::LoadTex(number0, TEXT("number/0.png"));
 	Sprite2D::LoadTex(number1, TEXT("number/1.png"));
@@ -31,16 +59,6 @@ void GameFunction::LoadGameSceneTexture()
 	Sprite2D::LoadTex(number7, TEXT("number/7.png"));
 	Sprite2D::LoadTex(number8, TEXT("number/8.png"));
 	Sprite2D::LoadTex(number9, TEXT("number/9.png"));
-}	
-
-DirectX::XMFLOAT3 GameFunction::GetPlayerPos()
-{
-	return Player::GetInstance()->GetPos();
-}
-
-bool GameFunction::GetPlayerIsSpecial()
-{
-	return Player::GetInstance()->GetIsSpecial();
 }
 
 

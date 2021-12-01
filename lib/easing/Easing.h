@@ -64,8 +64,12 @@ public:
 	void SetState(float time,float startValue, float endValue);
 
 	float StartEeaging(int easingFlag);
-	void Restart() { init = true; }
+	void Restart() {
+		init = true;
+		endFlg = false;
+	}
 
+	bool GetEndFlg() { return endFlg; }
 
 private:
 	float EaseIn();
@@ -119,5 +123,7 @@ private:
 	bool init = true; // ŠJŽnŽžŠÔ‘ª’è—p
 
 	clock_t startTime;
+
+	bool endFlg = false;
 };
 

@@ -4,7 +4,7 @@
 #include"AttackBase.h"
 #include<string>
 
-// ステータス情報が増えたとき用　必要なら後で.hにファイル分け
+// ステータス情報が増えたとき用特に今は使用なし　必要なら後で.hにファイル分け
 #define STATE_DEAD 0x001
 #define STATE_LIVE 0x002
 

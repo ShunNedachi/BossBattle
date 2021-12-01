@@ -19,7 +19,7 @@ Camera* Camera::GetInstance()
 {
 	if (instance == nullptr)
 	{
-		instance = new Camera;
+		instance = new Camera();
 	}
 
 	return instance;

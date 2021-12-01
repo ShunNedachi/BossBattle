@@ -42,6 +42,12 @@ public:
 
 	bool GetIsClear() { return isClear; }
 
+	bool GetIsInitBoss() {
+		if (boss) { return boss->GetIsInit(); }
+
+		return false;
+	}
+
 	#pragma region PlayerŠÖŒWŠÖ”
 
 	static void AddPlayer(const std::string& filename);
@@ -58,6 +64,10 @@ public:
 
 	void AddEnemy();
 
+	XMFLOAT3 GetBossPosition() { 
+		if (boss) { return boss->GetPosition(); }
+		return { 0,0,0 };
+	}
 
 
 #pragma endregion
