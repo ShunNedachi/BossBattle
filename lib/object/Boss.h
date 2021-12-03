@@ -90,7 +90,7 @@ private:
     const float ONE_HEALTH_SIZE = HEALTH_SIZE / MAX_HEALTH;
 
     // 行動状況用
-    BossPattern pattern = BossPattern::FlyCombo;
+    BossPattern pattern = BossPattern::PopEnemy;
     bool isInit = false;
     int initFrame = 5 * GAME_FRAME;
 
@@ -151,11 +151,16 @@ private:
 
     // 飛行時最大値
     const float MAX_FLY_POS = 50;
+    // 飛行状態の管理用
     bool startFly = true;
     bool endFly = false;
     bool initEndFly = true;
-    bool isFly = false; // 飛行状態解除時に攻撃中かどうか確認用
+
+    bool flyAttackFlg = false; // 攻撃中かどうか確認用
+    bool flyBack = false;
+    // bool isFly = false; // 攻撃中かどうか確認用
     Easing flyEasing;
+    XMVECTOR flyComboV;
 };
 
 

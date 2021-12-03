@@ -223,9 +223,70 @@ void Boss::Action()
 	if (result)
 	{
 		// debug用に一旦コメント
-
+		
+		// 行動パターンの変更をもう少し詳細に
 		//if (pattern != BossPattern::Bless)pattern = (BossPattern)((int)pattern + 1);
 		//else pattern = BossPattern::Stop;
+
+		// playerとの距離に応じて変更
+		XMFLOAT3 playerPos = GameFunction::GetPlayerPos();
+
+		// 計算用
+		const float DIS_X = playerPos.x - position.x;
+		const float DIS_Y = playerPos.y - position.y;
+		const float DIS_Z = playerPos.z - position.z;
+
+		float distance = sqrt(DIS_X * DIS_X + DIS_Y * DIS_Y + DIS_Z * DIS_Z);
+
+		// 距離が一定以上離れているとき
+		if (distance > 20)
+		{
+			// 体力が半分以下の時
+			if (health < MAX_HEALTH / 2)
+			{
+				int randNum = rand() % 5;
+
+				if (randNum == 0) pattern = BossPattern::PopEnemy;
+				else if (randNum == 1)pattern = BossPattern::Sleep;
+				else if (randNum == 2)pattern = BossPattern::Rush;
+				else if (randNum == 3)pattern = BossPattern::Bless;
+				else if (randNum == 4)pattern = BossPattern::FlyCombo;
+
+			}
+			else
+			{
+				int randNum = rand() % 4;
+
+				if (randNum == 0) pattern = BossPattern::PopEnemy;
+				else if (randNum == 1)pattern = BossPattern::Rush;
+				else if (randNum == 2)pattern = BossPattern::Bless;
+				else if (randNum == 3)pattern = BossPattern::FlyCombo;
+
+			}
+		}
+		else
+		{
+			// 体力が半分以下の時
+			if (health < MAX_HEALTH / 2)
+			{
+				int randNum = rand() % 4;
+
+				if (randNum == 0) pattern = BossPattern::PopEnemy;
+				else if (randNum == 1)pattern = BossPattern::Sleep;
+				else if (randNum == 2)pattern = BossPattern::Follow;
+				else if (randNum == 3)pattern = BossPattern::Rush;
+
+			}
+			else
+			{
+				int randNum = rand() % 3;
+
+				if (randNum == 0) pattern = BossPattern::PopEnemy;
+				else if (randNum == 2)pattern = BossPattern::Follow;
+				else if (randNum == 3)pattern = BossPattern::Rush;
+
+			}
+		}
 	}
 }
 
@@ -476,7 +537,7 @@ bool Boss::ActionFallConmbo()
 	// 開始時の処理
 	if (startFly)
 	{
-		position.y = flyEasing.StartEeaging(easeInElasticFLAG);
+		position.y = flyEasing.StartEeaging(easeInFLAG);
 		
 		if (flyEasing.GetEndFlg())
 		{
@@ -486,6 +547,49 @@ bool Boss::ActionFallConmbo()
 	else // 攻撃処理
 	{
 		// 家に帰ってから実装
+		// 上昇した後振ってくる処理
+		const float FLYATTACK_TIMING = actionCount % flyAttackFrame;
+		if (FLYATTACK_TIMING == 0 && !flyAttackFlg)
+		{
+			flyAttackFlg = true;
+			flyBack = false;
+
+			// 落下方向の設定
+			XMFLOAT3 playerPos = GameFunction::GetPlayerPos();
+			flyComboV = { playerPos.x - position.x,playerPos.y - position.y,playerPos.z - position.z };
+			flyComboV = DirectX::XMVector3Normalize(flyComboV);
+			
+		}
+
+		if (flyAttackFlg)
+		{
+			if (!flyBack)
+			{
+
+				const float SPEED = 5;
+
+				// 降下行動
+				position.x += flyComboV.m128_f32[0] * SPEED;
+				position.y += flyComboV.m128_f32[1] * SPEED;
+				position.z += flyComboV.m128_f32[2] * SPEED;
+
+				if (position.y <= 0) 
+				{
+					flyBack = true; 
+					flyEasing.SetState(1, position.y, MAX_FLY_POS);
+				}
+			}
+			else
+			{
+				position.y = flyEasing.StartEeaging(easeOutFLAG);
+
+				if (flyEasing.GetEndFlg())
+				{
+					flyAttackFlg = false;
+				}
+			}
+		}
+
 
 		actionCount++;
 	}
@@ -494,13 +598,14 @@ bool Boss::ActionFallConmbo()
 
 
 	// 時間が経過したら終了フラグをtrue
-	if (actionCount >= flyFrame && initEndFly)
+	if (actionCount >= flyFrame && initEndFly && position.y >= MAX_FLY_POS)
 	{
 		endFly = true;
-		flyEasing.SetState(2, position.y, 0);
+		flyEasing.SetState(5, position.y, 0);
 		initEndFly = false;
 	}
 
+	// 終了時の着陸動作
 	if (endFly)
 	{
 		position.y = flyEasing.StartEeaging(easeOutFLAG);

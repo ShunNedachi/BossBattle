@@ -20,8 +20,8 @@ void GameScene::Initalize()
 
 	// Šî–{obj‚ÌÝ’u
 	objectManager->AddPlayer("sphere");
-	objectManager->AddOBJ("ground", { 0,-1,0 });
-	objectManager->AddOBJ("skydome");
+	objectManager->AddOBJ("ground", { 0,-1,0 }, { 10,10,10 });
+	objectManager->AddOBJ("skydome", { 0,0,0 }, { 5,5,5 });
 	//camera->SetEye({ 0, 20, -100 });
 
 	objectManager->AddEnemy();

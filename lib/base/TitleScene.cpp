@@ -12,7 +12,7 @@ void TitleScene::Initalize()
 {
 	objectManager = ObjectManager::GetInstance();
 
-	objectManager->AddSprite(0, "title.png", {500,600});
+	objectManager->AddSprite(0, "title.png", {650,600});
 }
 
 void TitleScene::Update()

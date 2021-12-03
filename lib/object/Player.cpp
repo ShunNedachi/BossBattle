@@ -266,7 +266,7 @@ void Player::Update()
 
 		attack->SetAttackStart();
 	}
-	else if (XINPUT_TRIGGER & XINPUT_BUTTON_Y && !attack->GetAttackStart()) // ボタンを押したとき　攻撃をしていないとき
+	else if (XINPUT_TRIGGER & XINPUT_BUTTON_Y && !attack->GetAttackStart() && level != 0) // ボタンを押したとき　攻撃をしていないとき レベルが0じゃないときに
 	{
 		const float DAMAGE = 2.5f;
 		

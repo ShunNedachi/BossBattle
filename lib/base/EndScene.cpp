@@ -8,7 +8,7 @@ EndScene::~EndScene()
 
 void EndScene::Initalize()
 {
-	objectManager->AddSprite(0, "gameOver.png", { 500,500 });
+	objectManager->AddSprite(0, "gameOver.png", { WINDOW_WIDTH / 2,WINDOW_HEIGHT / 2 });
 }
 
 
