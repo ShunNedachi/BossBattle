@@ -532,10 +532,11 @@ bool Boss::ActionFallConmbo()
 		startFly = true;
 		// Š®—¹‚µ‚½‚çfalse‚É
 		initAttack = false;
+		initEndFly = true;
 	}
 	
 	// ŠJŽnŽž‚Ìˆ—
-	if (startFly)
+	if (startFly && !endFly)
 	{
 		position.y = flyEasing.StartEeaging(easeInFLAG);
 		
@@ -544,7 +545,7 @@ bool Boss::ActionFallConmbo()
 			startFly = false;
 		}
 	}
-	else // UŒ‚ˆ—
+	else if(!startFly && !endFly)// UŒ‚ˆ—
 	{
 		// ‰Æ‚É‹A‚Á‚Ä‚©‚çŽÀ‘•
 		// ã¸‚µ‚½ŒãU‚Á‚Ä‚­‚éˆ—
@@ -601,7 +602,7 @@ bool Boss::ActionFallConmbo()
 	if (actionCount >= flyFrame && initEndFly && position.y >= MAX_FLY_POS)
 	{
 		endFly = true;
-		flyEasing.SetState(5, position.y, 0);
+		flyEasing.SetState(2, position.y, 0);
 		initEndFly = false;
 	}
 

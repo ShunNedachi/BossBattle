@@ -366,6 +366,9 @@ void Object::Update()
 	// ビュー行列
 	matView = XMMatrixLookAtLH(XMLoadFloat3(&camera->GetEye()), XMLoadFloat3(&camera->GetTarget()), XMLoadFloat3(&camera->GetUp()));
 
+
+	// あとで視錐台カリングの処理を入れる
+	// boolで描画するかどうかを識別
 }
 
 void Object::Init(MyDirectX12* my12)

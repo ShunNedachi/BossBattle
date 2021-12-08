@@ -49,7 +49,6 @@ void Enemy::Update()
 			}
 		}
 
-
 	}
 	obj->SetPosition(position);
 	obj->SetScale(scale);

@@ -57,13 +57,15 @@ public:
 	static void SetTheta(float theta) { Camera::theta = theta; }
 	static void SetPhi(float phi) { Camera::phi = phi; }
 
-
 	
 	// カメラのズーム用
 	void ZoomIn();
 	void SetZoomState(float radius, float time,bool endEasing = false);
 
 	void SetEyeLerp();
+
+	// デバッグ用
+	static void DebugDraw();
 
 private:
 	static Camera* instance;
@@ -97,7 +99,7 @@ private:
 
 	Easing zoomEasing;
 
-	XMFLOAT3 endEye;
+	static XMFLOAT3 endEye;
 	XMFLOAT3 endTarget;
 };
 

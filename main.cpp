@@ -9,7 +9,6 @@
 
 bool MessageError(MSG msg);
 
-
 // windowsアプリでのエントリーポイント（main関数）
 int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 {
@@ -71,6 +70,9 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		my12.PreDraw();
 
 		sceneManager->Draw();
+
+		// カメラのデバッグ用
+		//Camera::DebugDraw();
 
 		// 描画コマンド消化用
 		my12.PostDraw();

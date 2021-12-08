@@ -1,5 +1,7 @@
 #pragma once
 #include<Windows.h>
+#include<imgui_impl_win32.h>
+
 
 class MyWindow
 {

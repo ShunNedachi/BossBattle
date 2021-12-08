@@ -1,6 +1,7 @@
 #include "Player.h"
 #include"SpriteLoadDefine.h"
 #include"Setting.h"
+#include<imgui.h>
 
 // Ã“I•Ï”‚ÌŽÀ‘Ì
 Player* Player::instance = nullptr;
@@ -340,6 +341,16 @@ void Player::Draw()
 	expBarSprite->Draw();
 
 	numberSprite[level]->Draw();
+
+#ifdef _DEBUG
+
+	//ImGui::Begin("player Config");
+	//ImGui::SetWindowSize(ImVec2(100, 300));
+	//ImGui::End();
+
+#endif // _DEBUG
+
+
 }
 
 void Player::RecieveDamage(XMFLOAT3 pos, float damage)

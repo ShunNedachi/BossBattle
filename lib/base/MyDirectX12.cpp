@@ -6,6 +6,8 @@
 #include<vector>
 #include<d3dcompiler.h>
 #include<d3dx12.h>
+#include<imgui_impl_win32.h>
+#include<imgui_impl_dx12.h>
 
 #pragma comment(lib,"d3dcompiler.lib")
 #pragma comment(lib,"d3d12.lib")
@@ -16,6 +18,14 @@ MyDirectX12::MyDirectX12()
 }
 MyDirectX12::~MyDirectX12()
 {
+	#ifdef _DEBUG
+
+	ImGui_ImplDX12_Shutdown();
+	ImGui_ImplWin32_Shutdown();
+	ImGui::DestroyContext();
+
+#endif // _DEBUG
+
 }
 
 
@@ -142,6 +152,14 @@ void MyDirectX12::Initialize(MyWindow* window)
 
 	// 深度ビュー用
 	CreatDepthDesc();
+
+	#ifdef _DEBUG
+
+		// imgui 
+		InitImgui();
+
+#endif // _DEBUG
+
 }
 
 void MyDirectX12::Debug()
@@ -259,6 +277,19 @@ void MyDirectX12::SetScissorrect()
 
 void MyDirectX12::PostDraw()
 {
+#ifdef _DEBUG
+
+	// imgui描画
+	ImGui::Render();
+	ID3D12DescriptorHeap* ppHeaps[] = { imguiHeap.Get() };
+	cmdList->SetDescriptorHeaps(_countof(ppHeaps), ppHeaps);
+	ImGui_ImplDX12_RenderDrawData(ImGui::GetDrawData(), cmdList.Get());
+
+
+#endif // _DEBUG
+
+
+
 	EndBarrier();
 	ExecuteCmd();
 }
@@ -283,6 +314,16 @@ void MyDirectX12::PreDraw()
 	// ビューポートとシザー矩形の設定
 	SetViewport();
 	SetScissorrect();
+
+	#ifdef _DEBUG
+
+	// imgui開始
+	ImGui_ImplDX12_NewFrame();
+	ImGui_ImplWin32_NewFrame();
+	ImGui::NewFrame();
+
+#endif // _DEBUG
+
 }
 
 bool MyDirectX12::CreatDepthDesc()
@@ -327,5 +368,52 @@ bool MyDirectX12::CreatDepthDesc()
 		depthBuffer.Get(),
 		&dsvDesc,
 		dsvHeap->GetCPUDescriptorHandleForHeapStart());
+
+}
+
+bool MyDirectX12::InitImgui()
+{
+	HRESULT result = S_FALSE;
+
+	// デスクリプタヒープを生成
+	D3D12_DESCRIPTOR_HEAP_DESC heapDesc{};
+	heapDesc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV;
+	heapDesc.NumDescriptors = 1;
+	heapDesc.Flags = D3D12_DESCRIPTOR_HEAP_FLAG_SHADER_VISIBLE;
+	result = dev->CreateDescriptorHeap(&heapDesc, IID_PPV_ARGS(&imguiHeap));
+	if (FAILED(result)) {
+		assert(0);
+		return false;
+	}
+
+	// スワップチェーンの情報を取得
+	DXGI_SWAP_CHAIN_DESC swcDesc = {};
+	result = swapchain->GetDesc(&swcDesc);
+	if (FAILED(result)) {
+		assert(0);
+		return false;
+	}
+
+	if (ImGui::CreateContext() == nullptr) {
+		assert(0);
+		return false;
+	}
+	if (!ImGui_ImplWin32_Init(window->GetHWND())) {
+		assert(0);
+		return false;
+	}
+	if (!ImGui_ImplDX12_Init(
+		GetDevice(),
+		swcDesc.BufferCount,
+		swcDesc.BufferDesc.Format,
+		imguiHeap.Get(),
+		imguiHeap->GetCPUDescriptorHandleForHeapStart(),
+		imguiHeap->GetGPUDescriptorHandleForHeapStart()
+	)) {
+		assert(0);
+		return false;
+	}
+
+	return true;
 
 }

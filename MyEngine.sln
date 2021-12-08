@@ -7,6 +7,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DirectXTex", "DirectXTex\Di
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "MyEngine", "MyEngine.vcxproj", "{6E47BB8B-8F66-44E2-810B-24632AD19ED1}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "imgui", "imgui\imgui.vcxproj", "{05525985-C110-44D6-A3BE-275262FDB18A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -41,6 +43,16 @@ Global
 		{6E47BB8B-8F66-44E2-810B-24632AD19ED1}.Release|x64.Build.0 = Release|x64
 		{6E47BB8B-8F66-44E2-810B-24632AD19ED1}.Release|x86.ActiveCfg = Release|Win32
 		{6E47BB8B-8F66-44E2-810B-24632AD19ED1}.Release|x86.Build.0 = Release|Win32
+		{05525985-C110-44D6-A3BE-275262FDB18A}.Debug|x64.ActiveCfg = Debug|x64
+		{05525985-C110-44D6-A3BE-275262FDB18A}.Debug|x64.Build.0 = Debug|x64
+		{05525985-C110-44D6-A3BE-275262FDB18A}.Debug|x86.ActiveCfg = Debug|x64
+		{05525985-C110-44D6-A3BE-275262FDB18A}.Profile|x64.ActiveCfg = Debug|x64
+		{05525985-C110-44D6-A3BE-275262FDB18A}.Profile|x64.Build.0 = Debug|x64
+		{05525985-C110-44D6-A3BE-275262FDB18A}.Profile|x86.ActiveCfg = Debug|x64
+		{05525985-C110-44D6-A3BE-275262FDB18A}.Profile|x86.Build.0 = Debug|x64
+		{05525985-C110-44D6-A3BE-275262FDB18A}.Release|x64.ActiveCfg = Release|x64
+		{05525985-C110-44D6-A3BE-275262FDB18A}.Release|x64.Build.0 = Release|x64
+		{05525985-C110-44D6-A3BE-275262FDB18A}.Release|x86.ActiveCfg = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

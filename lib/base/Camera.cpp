@@ -1,10 +1,12 @@
 #include "Camera.h"
 #include"Setting.h"
 #include"GameFunction.h"
+#include<imgui.h>
 
 // 静的メンバ変数
 Camera* Camera::instance = nullptr;
 DirectX::XMFLOAT3 Camera::eye = { 0,0,-100 };
+DirectX::XMFLOAT3 Camera::endEye = { 0,0,0 };
 DirectX::XMFLOAT3 Camera::target = { 0,0,0 };
 DirectX::XMFLOAT3 Camera::pastTarget = { 0,0,0 };
 DirectX::XMFLOAT3 Camera::up = { 0,1,0 };
@@ -54,9 +56,9 @@ void Camera::Update()
 	}
 
 
-	SetEyeLerp();
+	//SetEyeLerp();
 	SetTarget(endTarget);
-	//SetEye(endEye);
+	SetEye(endEye);
 	//SetTargetLerp();
 
 	// 視線ベクトルの更新
@@ -72,7 +74,7 @@ void Camera::Follow(XMFLOAT3 target)
 	// 定数定義
 	const int MIN_PHI_RADIUS = 0;
 	const int MAX_PHI_RADIUS = 360;
-	const int MIN_THETA_RADIUS = 0;
+	const int MIN_THETA_RADIUS = -89;
 	const int MAX_THETA_RADIUS = 89;
 
 	if (input->PushKey(DIK_DOWN)|| xinput->MoveStick(0,XINPUT_BUTTON_RS)&XINPUT_STICK_DOWN)theta+= CAMERA_MOVE_VALUE;
@@ -148,4 +150,18 @@ void Camera::SetZoomState(float radius, float time,bool endEasing)
 	zoomFlg = true;
 
 	zoomEasing.SetState(time, initRadius, radius);
+}
+
+
+void Camera::DebugDraw()
+{
+	#ifdef _DEBUG
+	
+	ImGui::Begin("Camera");
+	ImGui::Text("EYE position : %f %f %f", eye.x, eye.y, eye.z);
+	ImGui::Text("EYE endPosition : %f %f %f", endEye.x, endEye.y, endEye.z);
+	ImGui::End();
+
+#endif // _DEBUG
+
 }

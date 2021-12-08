@@ -46,6 +46,8 @@ public:
 
 	bool CreatDepthDesc();
 
+	// imgui初期化
+	bool InitImgui();
 
 	ID3D12Device* GetDevice() { return dev.Get(); }
 	ID3D12CommandList* GetCommandList() { return cmdList.Get(); }
@@ -71,6 +73,8 @@ private:
 	ComPtr<ID3D12Resource> depthBuffer;
 	ComPtr<ID3D12DescriptorHeap> dsvHeap;
 
+	// imgui
+	ComPtr<ID3D12DescriptorHeap> imguiHeap;
 
 	// リソースバリア用
 	std::vector<ComPtr<ID3D12Resource>> backBuffers{ 2 };
