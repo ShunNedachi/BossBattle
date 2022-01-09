@@ -23,10 +23,10 @@ void TitleScene::Update()
 	
 	
 	if(IsNext())NextScene(SceneManager::GetInstance());
-		
+
 	// ƒV[ƒ“•ÏX
-	if (xinput->TriggerButton(0)& XINPUT_BUTTON_A)isNext = true;
-		
+	if (xinput->TriggerButton(0)& XINPUT_BUTTON_A || input->TriggerKey(DIK_SPACE))isNext = true;
+
 
 	objectManager->Update();
 }
@@ -34,6 +34,7 @@ void TitleScene::Update()
 void TitleScene::Draw()
 {
 	objectManager->Draw();
+
 }
 
 void TitleScene::NextScene(SceneManager* nowScene)

@@ -29,5 +29,7 @@ private:
 	// ƒJƒƒ‰
 	Camera* camera;
 
+
+
 };
 

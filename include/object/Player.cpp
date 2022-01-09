@@ -161,7 +161,8 @@ void Player::Update()
 	if (XINPUT_MOVE_STICK & XINPUT_STICK_UP ||
 		XINPUT_MOVE_STICK & XINPUT_STICK_DOWN||
 		XINPUT_MOVE_STICK & XINPUT_STICK_LEFT ||
-		XINPUT_MOVE_STICK & XINPUT_STICK_RIGHT)
+		XINPUT_MOVE_STICK & XINPUT_STICK_RIGHT ||
+		input->PushKey(DIK_W) || input->PushKey(DIK_S)||input->PushKey(DIK_A)|| input->PushKey(DIK_D))
 	{
 		//	攻撃中じゃないときに移動可能
 		if (!attack->GetAttackStart() && !specialAttack->GetAttackStart())
@@ -184,16 +185,17 @@ void Player::Update()
 			XMVECTOR moveUPDOWN = DirectX::XMVector3Normalize(DirectX::XMVector3Cross( moveRIGHTLEFT, playerUpV));
 
 			// 直接posを変更して、とりあえず視線方向に移動
-			if (XINPUT_MOVE_STICK & XINPUT_STICK_LEFT || XINPUT_MOVE_STICK & XINPUT_STICK_RIGHT)
+			if (XINPUT_MOVE_STICK & XINPUT_STICK_LEFT || XINPUT_MOVE_STICK & XINPUT_STICK_RIGHT||
+				input->PushKey(DIK_A)||input->PushKey(DIK_D))
 			{
 				isMoveRIGHTLEFT = true;
 
-				if (XINPUT_MOVE_STICK & XINPUT_STICK_LEFT)
+				if (XINPUT_MOVE_STICK & XINPUT_STICK_LEFT || input->PushKey(DIK_A))
 				{
 					move.m128_f32[0] -= moveRIGHTLEFT.m128_f32[0];
 					move.m128_f32[2] -= moveRIGHTLEFT.m128_f32[2];
 				}
-				else if (XINPUT_MOVE_STICK & XINPUT_STICK_RIGHT)
+				else if (XINPUT_MOVE_STICK & XINPUT_STICK_RIGHT|| input->PushKey(DIK_D))
 				{
 					move.m128_f32[0] += moveRIGHTLEFT.m128_f32[0];
 					move.m128_f32[2] += moveRIGHTLEFT.m128_f32[2];
@@ -214,12 +216,12 @@ void Player::Update()
 				move = { 0,0,0 };
 			}
 
-			if (XINPUT_MOVE_STICK & XINPUT_STICK_UP)
+			if (XINPUT_MOVE_STICK & XINPUT_STICK_UP || input->PushKey(DIK_W))
 			{
 				move.m128_f32[0] += moveUPDOWN.m128_f32[0];
 				move.m128_f32[2] += moveUPDOWN.m128_f32[2];
 			}
-			else if (XINPUT_MOVE_STICK & XINPUT_STICK_DOWN)
+			else if (XINPUT_MOVE_STICK & XINPUT_STICK_DOWN || input->PushKey(DIK_S))
 			{
 				move.m128_f32[0] -= moveUPDOWN.m128_f32[0];
 				move.m128_f32[2] -= moveUPDOWN.m128_f32[2];
@@ -253,7 +255,8 @@ void Player::Update()
 	// 攻撃用処理
 	
 	// 通常攻撃 ボタンを押したとき　必殺技を使用していないとき
-	if (XINPUT_TRIGGER & XINPUT_BUTTON_A && !specialAttack->GetAttackStart())
+	if (XINPUT_TRIGGER & XINPUT_BUTTON_A && !specialAttack->GetAttackStart() ||
+		input->TriggerKey(DIK_SPACE) && !specialAttack->GetAttackStart())
 	{
 		// 攻撃用見た目オブジェクトの位置変更
 		XMFLOAT3 eyeDir = Camera::GetEyeDir();
@@ -267,7 +270,8 @@ void Player::Update()
 
 		attack->SetAttackStart();
 	}
-	else if (XINPUT_TRIGGER & XINPUT_BUTTON_Y && !attack->GetAttackStart() && level != 0) // ボタンを押したとき　攻撃をしていないとき レベルが0じゃないときに
+	else if (XINPUT_TRIGGER & XINPUT_BUTTON_Y && !attack->GetAttackStart() && level != 0 ||
+		input->TriggerKey(DIK_EQUALS) && !attack->GetAttackStart() && level != 0) // ボタンを押したとき　攻撃をしていないとき レベルが0じゃないときに
 	{
 		const float DAMAGE = 2.5f;
 		

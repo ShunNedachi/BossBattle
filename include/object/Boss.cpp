@@ -35,6 +35,7 @@ void Boss::Update()
 	// enemyの中身にnullがあるかの確認
 	for (int i = 0; i < enemys.size(); i++)
 	{
+		// 敵の体力が0以下になっていたときに配列から削除
 		if (enemys[i]->GetHealth() <= 0)
 		{
 			GameFunction::AddEXP(enemys[i]->GetEXP());
@@ -42,6 +43,7 @@ void Boss::Update()
 			delete enemys[i];
 			enemys[i] = nullptr;
 			enemys.erase(enemys.begin() + i);
+			i--;
 		}
 	}
 	// attackObjsの中身にnullがあるかの確認

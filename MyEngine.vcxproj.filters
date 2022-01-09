@@ -61,153 +61,246 @@
     <Filter Include="ヘッダー ファイル\object\gameObject">
       <UniqueIdentifier>{8b49e50d-92fd-4dee-8810-2510f95a5722}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ヘッダー ファイル\gameSystem\Collision">
+      <UniqueIdentifier>{201cff60-89c0-4058-8964-c307f9a3bfde}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\gameSystem\Collision">
+      <UniqueIdentifier>{2ec46d9d-0536-4eab-ac85-3fb7805a02aa}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="lib\audio\Audio.cpp">
+    <ClCompile Include="include\audio\Audio.cpp">
       <Filter>ソース ファイル\audio</Filter>
     </ClCompile>
-    <ClCompile Include="lib\base\Camera.cpp">
+    <ClCompile Include="include\base\EndScene.cpp">
+      <Filter>ソース ファイル\base\scene</Filter>
+    </ClCompile>
+    <ClCompile Include="include\base\GameScene.cpp">
+      <Filter>ソース ファイル\base\scene</Filter>
+    </ClCompile>
+    <ClCompile Include="include\base\SceneManager.cpp">
+      <Filter>ソース ファイル\base\scene</Filter>
+    </ClCompile>
+    <ClCompile Include="include\base\TitleScene.cpp">
+      <Filter>ソース ファイル\base\scene</Filter>
+    </ClCompile>
+    <ClCompile Include="include\base\Camera.cpp">
       <Filter>ソース ファイル\base</Filter>
     </ClCompile>
-    <ClCompile Include="lib\base\MyDirectX12.cpp">
+    <ClCompile Include="include\base\FrameFixed.cpp">
       <Filter>ソース ファイル\base</Filter>
     </ClCompile>
-    <ClCompile Include="lib\base\MyWindow.cpp">
+    <ClCompile Include="include\base\MyDirectX12.cpp">
       <Filter>ソース ファイル\base</Filter>
     </ClCompile>
-    <ClCompile Include="lib\input\Input.cpp">
-      <Filter>ソース ファイル\input</Filter>
+    <ClCompile Include="include\base\MyWindow.cpp">
+      <Filter>ソース ファイル\base</Filter>
     </ClCompile>
-    <ClCompile Include="lib\input\XinputControll.cpp">
-      <Filter>ソース ファイル\input</Filter>
-    </ClCompile>
-    <ClCompile Include="lib\object\Object.cpp">
-      <Filter>ソース ファイル\object</Filter>
-    </ClCompile>
-    <ClCompile Include="lib\base\EndScene.cpp">
-      <Filter>ソース ファイル\base\scene</Filter>
-    </ClCompile>
-    <ClCompile Include="lib\base\GameScene.cpp">
-      <Filter>ソース ファイル\base\scene</Filter>
-    </ClCompile>
-    <ClCompile Include="lib\base\TitleScene.cpp">
-      <Filter>ソース ファイル\base\scene</Filter>
-    </ClCompile>
-    <ClCompile Include="lib\base\SceneManager.cpp">
-      <Filter>ソース ファイル\base\scene</Filter>
-    </ClCompile>
-    <ClCompile Include="lib\easing\Easing.cpp">
+    <ClCompile Include="include\easing\Easing.cpp">
       <Filter>ソース ファイル\easing</Filter>
     </ClCompile>
-    <ClCompile Include="lib\object\Sprite2D.cpp">
+    <ClCompile Include="include\gameSystem\AttackBase.cpp">
+      <Filter>ソース ファイル\gameSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="include\gameSystem\GameFunction.cpp">
+      <Filter>ソース ファイル\gameSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="include\input\Input.cpp">
+      <Filter>ソース ファイル\input</Filter>
+    </ClCompile>
+    <ClCompile Include="include\input\XinputControll.cpp">
+      <Filter>ソース ファイル\input</Filter>
+    </ClCompile>
+    <ClCompile Include="include\object\Boss.cpp">
+      <Filter>ソース ファイル\object\gameObject</Filter>
+    </ClCompile>
+    <ClCompile Include="include\object\Enemy.cpp">
+      <Filter>ソース ファイル\object\gameObject</Filter>
+    </ClCompile>
+    <ClCompile Include="include\object\ObjectManager.cpp">
+      <Filter>ソース ファイル\object\gameObject</Filter>
+    </ClCompile>
+    <ClCompile Include="include\object\Player.cpp">
+      <Filter>ソース ファイル\object\gameObject</Filter>
+    </ClCompile>
+    <ClCompile Include="include\object\Model.cpp">
       <Filter>ソース ファイル\object</Filter>
     </ClCompile>
-    <ClCompile Include="lib\object\Model.cpp">
+    <ClCompile Include="include\object\Object.cpp">
       <Filter>ソース ファイル\object</Filter>
     </ClCompile>
-    <ClCompile Include="lib\gameSystem\AttackBase.cpp">
-      <Filter>ソース ファイル\gameSystem</Filter>
+    <ClCompile Include="include\object\Sprite2D.cpp">
+      <Filter>ソース ファイル\object</Filter>
     </ClCompile>
-    <ClCompile Include="lib\gameSystem\Collision.cpp">
-      <Filter>ソース ファイル\gameSystem</Filter>
+    <ClCompile Include="include\gameSystem\Collision\Collision.cpp">
+      <Filter>ソース ファイル\gameSystem\Collision</Filter>
     </ClCompile>
-    <ClCompile Include="lib\base\FrameFixed.cpp">
-      <Filter>ソース ファイル\base</Filter>
+    <ClCompile Include="include\gameSystem\Collision\CollisionCapsule2D.cpp">
+      <Filter>ソース ファイル\gameSystem\Collision</Filter>
     </ClCompile>
-    <ClCompile Include="lib\object\Boss.cpp">
-      <Filter>ソース ファイル\object\gameObject</Filter>
+    <ClCompile Include="include\gameSystem\Collision\CollisionCapsule3D.cpp">
+      <Filter>ソース ファイル\gameSystem\Collision</Filter>
     </ClCompile>
-    <ClCompile Include="lib\object\Enemy.cpp">
-      <Filter>ソース ファイル\object\gameObject</Filter>
+    <ClCompile Include="include\gameSystem\Collision\CollisionCircle.cpp">
+      <Filter>ソース ファイル\gameSystem\Collision</Filter>
     </ClCompile>
-    <ClCompile Include="lib\object\Player.cpp">
-      <Filter>ソース ファイル\object\gameObject</Filter>
+    <ClCompile Include="include\gameSystem\Collision\CollisionLine2D.cpp">
+      <Filter>ソース ファイル\gameSystem\Collision</Filter>
     </ClCompile>
-    <ClCompile Include="lib\object\ObjectManager.cpp">
-      <Filter>ソース ファイル\object\gameObject</Filter>
+    <ClCompile Include="include\gameSystem\Collision\CollisionLine3D.cpp">
+      <Filter>ソース ファイル\gameSystem\Collision</Filter>
     </ClCompile>
-    <ClCompile Include="lib\gameSystem\GameFunction.cpp">
-      <Filter>ソース ファイル\gameSystem</Filter>
+    <ClCompile Include="include\gameSystem\Collision\CollisionSegment2D.cpp">
+      <Filter>ソース ファイル\gameSystem\Collision</Filter>
+    </ClCompile>
+    <ClCompile Include="include\gameSystem\Collision\CollisionSegment3D.cpp">
+      <Filter>ソース ファイル\gameSystem\Collision</Filter>
+    </ClCompile>
+    <ClCompile Include="include\gameSystem\Collision\CollisionSphere.cpp">
+      <Filter>ソース ファイル\gameSystem\Collision</Filter>
+    </ClCompile>
+    <ClCompile Include="include\gameSystem\Collision\CollisionTriangle2D.cpp">
+      <Filter>ソース ファイル\gameSystem\Collision</Filter>
+    </ClCompile>
+    <ClCompile Include="include\gameSystem\Collision\Float2.cpp">
+      <Filter>ソース ファイル\gameSystem\Collision</Filter>
+    </ClCompile>
+    <ClCompile Include="include\gameSystem\Collision\Float3.cpp">
+      <Filter>ソース ファイル\gameSystem\Collision</Filter>
+    </ClCompile>
+    <ClCompile Include="include\gameSystem\Collision\Vector2.cpp">
+      <Filter>ソース ファイル\gameSystem\Collision</Filter>
+    </ClCompile>
+    <ClCompile Include="include\gameSystem\Collision\Vector3.cpp">
+      <Filter>ソース ファイル\gameSystem\Collision</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="lib\audio\Audio.h">
+    <ClInclude Include="include\audio\Audio.h">
       <Filter>ヘッダー ファイル\audio</Filter>
     </ClInclude>
-    <ClInclude Include="lib\base\Camera.h">
+    <ClInclude Include="include\base\EndScene.h">
+      <Filter>ヘッダー ファイル\base\scene</Filter>
+    </ClInclude>
+    <ClInclude Include="include\base\GameScene.h">
+      <Filter>ヘッダー ファイル\base\scene</Filter>
+    </ClInclude>
+    <ClInclude Include="include\base\Scene.h">
+      <Filter>ヘッダー ファイル\base\scene</Filter>
+    </ClInclude>
+    <ClInclude Include="include\base\SceneManager.h">
+      <Filter>ヘッダー ファイル\base\scene</Filter>
+    </ClInclude>
+    <ClInclude Include="include\base\TitleScene.h">
+      <Filter>ヘッダー ファイル\base\scene</Filter>
+    </ClInclude>
+    <ClInclude Include="include\base\Camera.h">
       <Filter>ヘッダー ファイル\base</Filter>
     </ClInclude>
-    <ClInclude Include="lib\base\MyDirectX12.h">
+    <ClInclude Include="include\base\FrameFixed.h">
       <Filter>ヘッダー ファイル\base</Filter>
     </ClInclude>
-    <ClInclude Include="lib\base\MyWindow.h">
+    <ClInclude Include="include\base\MyDirectX12.h">
       <Filter>ヘッダー ファイル\base</Filter>
     </ClInclude>
-    <ClInclude Include="lib\input\Input.h">
-      <Filter>ヘッダー ファイル\input</Filter>
+    <ClInclude Include="include\base\MyWindow.h">
+      <Filter>ヘッダー ファイル\base</Filter>
     </ClInclude>
-    <ClInclude Include="lib\input\XinputControll.h">
-      <Filter>ヘッダー ファイル\input</Filter>
-    </ClInclude>
-    <ClInclude Include="lib\object\Object.h">
-      <Filter>ヘッダー ファイル\object</Filter>
-    </ClInclude>
-    <ClInclude Include="lib\object\Sprite2D.h">
-      <Filter>ヘッダー ファイル\object</Filter>
-    </ClInclude>
-    <ClInclude Include="lib\base\Scene.h">
-      <Filter>ヘッダー ファイル\base\scene</Filter>
-    </ClInclude>
-    <ClInclude Include="lib\base\EndScene.h">
-      <Filter>ヘッダー ファイル\base\scene</Filter>
-    </ClInclude>
-    <ClInclude Include="lib\base\GameScene.h">
-      <Filter>ヘッダー ファイル\base\scene</Filter>
-    </ClInclude>
-    <ClInclude Include="lib\base\TitleScene.h">
-      <Filter>ヘッダー ファイル\base\scene</Filter>
-    </ClInclude>
-    <ClInclude Include="lib\base\SceneManager.h">
-      <Filter>ヘッダー ファイル\base\scene</Filter>
-    </ClInclude>
-    <ClInclude Include="lib\easing\Easing.h">
+    <ClInclude Include="include\easing\Easing.h">
       <Filter>ヘッダー ファイル\easing</Filter>
     </ClInclude>
-    <ClInclude Include="lib\object\Model.h">
+    <ClInclude Include="include\gameSystem\Collision\CollidePrimitive.h">
+      <Filter>ヘッダー ファイル\gameSystem\Collision</Filter>
+    </ClInclude>
+    <ClInclude Include="include\gameSystem\Collision\Collision.h">
+      <Filter>ヘッダー ファイル\gameSystem\Collision</Filter>
+    </ClInclude>
+    <ClInclude Include="include\gameSystem\Collision\CollisionCapsule2D.h">
+      <Filter>ヘッダー ファイル\gameSystem\Collision</Filter>
+    </ClInclude>
+    <ClInclude Include="include\gameSystem\Collision\CollisionCapsule3D.h">
+      <Filter>ヘッダー ファイル\gameSystem\Collision</Filter>
+    </ClInclude>
+    <ClInclude Include="include\gameSystem\Collision\CollisionCircle.h">
+      <Filter>ヘッダー ファイル\gameSystem\Collision</Filter>
+    </ClInclude>
+    <ClInclude Include="include\gameSystem\Collision\CollisionLine2D.h">
+      <Filter>ヘッダー ファイル\gameSystem\Collision</Filter>
+    </ClInclude>
+    <ClInclude Include="include\gameSystem\Collision\CollisionLine3D.h">
+      <Filter>ヘッダー ファイル\gameSystem\Collision</Filter>
+    </ClInclude>
+    <ClInclude Include="include\gameSystem\Collision\CollisionPoint.h">
+      <Filter>ヘッダー ファイル\gameSystem\Collision</Filter>
+    </ClInclude>
+    <ClInclude Include="include\gameSystem\Collision\CollisionRay.h">
+      <Filter>ヘッダー ファイル\gameSystem\Collision</Filter>
+    </ClInclude>
+    <ClInclude Include="include\gameSystem\Collision\CollisionSegment2D.h">
+      <Filter>ヘッダー ファイル\gameSystem\Collision</Filter>
+    </ClInclude>
+    <ClInclude Include="include\gameSystem\Collision\CollisionSegment3D.h">
+      <Filter>ヘッダー ファイル\gameSystem\Collision</Filter>
+    </ClInclude>
+    <ClInclude Include="include\gameSystem\Collision\CollisionSphere.h">
+      <Filter>ヘッダー ファイル\gameSystem\Collision</Filter>
+    </ClInclude>
+    <ClInclude Include="include\gameSystem\Collision\CollisionTriangle2D.h">
+      <Filter>ヘッダー ファイル\gameSystem\Collision</Filter>
+    </ClInclude>
+    <ClInclude Include="include\gameSystem\Collision\Float2.h">
+      <Filter>ヘッダー ファイル\gameSystem\Collision</Filter>
+    </ClInclude>
+    <ClInclude Include="include\gameSystem\Collision\Float3.h">
+      <Filter>ヘッダー ファイル\gameSystem\Collision</Filter>
+    </ClInclude>
+    <ClInclude Include="include\gameSystem\Collision\Vector2.h">
+      <Filter>ヘッダー ファイル\gameSystem\Collision</Filter>
+    </ClInclude>
+    <ClInclude Include="include\gameSystem\Collision\Vector3.h">
+      <Filter>ヘッダー ファイル\gameSystem\Collision</Filter>
+    </ClInclude>
+    <ClInclude Include="include\gameSystem\AttackBase.h">
+      <Filter>ヘッダー ファイル\gameSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="include\gameSystem\GameFunction.h">
+      <Filter>ヘッダー ファイル\gameSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="include\gameSystem\Setting.h">
+      <Filter>ヘッダー ファイル\gameSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="include\input\Input.h">
+      <Filter>ヘッダー ファイル\input</Filter>
+    </ClInclude>
+    <ClInclude Include="include\input\XinputControll.h">
+      <Filter>ヘッダー ファイル\input</Filter>
+    </ClInclude>
+    <ClInclude Include="include\object\Boss.h">
+      <Filter>ヘッダー ファイル\object\gameObject</Filter>
+    </ClInclude>
+    <ClInclude Include="include\object\Enemy.h">
+      <Filter>ヘッダー ファイル\object\gameObject</Filter>
+    </ClInclude>
+    <ClInclude Include="include\object\ObjectManager.h">
+      <Filter>ヘッダー ファイル\object\gameObject</Filter>
+    </ClInclude>
+    <ClInclude Include="include\object\Player.h">
+      <Filter>ヘッダー ファイル\object\gameObject</Filter>
+    </ClInclude>
+    <ClInclude Include="include\object\Model.h">
       <Filter>ヘッダー ファイル\object</Filter>
     </ClInclude>
-    <ClInclude Include="lib\gameSystem\AttackBase.h">
-      <Filter>ヘッダー ファイル\gameSystem</Filter>
-    </ClInclude>
-    <ClInclude Include="lib\gameSystem\Collision.h">
-      <Filter>ヘッダー ファイル\gameSystem</Filter>
-    </ClInclude>
-    <ClInclude Include="lib\object\SpriteLoadDefine.h">
+    <ClInclude Include="include\object\Object.h">
       <Filter>ヘッダー ファイル\object</Filter>
     </ClInclude>
-    <ClInclude Include="lib\base\FrameFixed.h">
-      <Filter>ヘッダー ファイル\base</Filter>
+    <ClInclude Include="include\object\Sprite2D.h">
+      <Filter>ヘッダー ファイル\object</Filter>
     </ClInclude>
-    <ClInclude Include="lib\object\Boss.h">
-      <Filter>ヘッダー ファイル\object\gameObject</Filter>
-    </ClInclude>
-    <ClInclude Include="lib\object\Enemy.h">
-      <Filter>ヘッダー ファイル\object\gameObject</Filter>
-    </ClInclude>
-    <ClInclude Include="lib\object\Player.h">
-      <Filter>ヘッダー ファイル\object\gameObject</Filter>
-    </ClInclude>
-    <ClInclude Include="lib\gameSystem\Setting.h">
-      <Filter>ヘッダー ファイル\gameSystem</Filter>
-    </ClInclude>
-    <ClInclude Include="lib\object\ObjectManager.h">
-      <Filter>ヘッダー ファイル\object\gameObject</Filter>
-    </ClInclude>
-    <ClInclude Include="lib\gameSystem\GameFunction.h">
-      <Filter>ヘッダー ファイル\gameSystem</Filter>
+    <ClInclude Include="include\object\SpriteLoadDefine.h">
+      <Filter>ヘッダー ファイル\object</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

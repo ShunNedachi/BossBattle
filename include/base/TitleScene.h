@@ -19,6 +19,8 @@ public:
 
 	// ƒV[ƒ“‚ÌØ‚è‘Ö‚¦
 	void NextScene(SceneManager* nowScene) override;
-	
+
+private:
+	// ƒƒ“ƒo•Ï”
 };
 

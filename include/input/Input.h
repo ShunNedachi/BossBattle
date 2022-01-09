@@ -25,9 +25,6 @@ private: // エイリアス
 	template <class T> using ComPtr = Microsoft::WRL::ComPtr<T>;
 
 public: 
-	Input() {};
-	~Input() {};
-	
 	static Input* GetInstance();
 	static void Destroy();
 
@@ -84,7 +81,12 @@ public:
 
 
 private:
-	
+
+	Input() = default;
+	~Input() = default;
+	void operator=(const Input & obj) {}
+	Input(const Input & obj) {}
+
 	// インスタンス
 	static Input* instance;
 	static bool isPad;

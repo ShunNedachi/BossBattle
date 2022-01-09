@@ -76,10 +76,10 @@
     <IncludePath>$(ProjectDir);$(ProjectDir)lib\base\;$(ProjectDir)lib\input\;$(ProjectDir)lib\object\;$(ProjectDir)lib\audio\;$(ProjectDir)lib\easing\;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>$(ProjectDir);$(ProjectDir)lib\base\;$(ProjectDir)lib\input\;$(ProjectDir)lib\object\;$(ProjectDir)lib\audio\;$(ProjectDir)lib\easing\;$(ProjectDir)lib\gameSystem\;$(IncludePath)</IncludePath>
+    <IncludePath>$(ProjectDir);$(ProjectDir)include\base\;$(ProjectDir)include\input\;$(ProjectDir)include\object\;$(ProjectDir)include\audio\;$(ProjectDir)include\easing\;$(ProjectDir)include\gameSystem\Collision;$(ProjectDir)include\gameSystem\;$(ProjectDir)lib\gameSystem\Collision\;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <IncludePath>$(ProjectDir);$(ProjectDir)lib\base\;$(ProjectDir)lib\input\;$(ProjectDir)lib\object\;$(ProjectDir)lib\audio\;$(ProjectDir)lib\easing\;$(ProjectDir)lib\gameSystem\;$(IncludePath)</IncludePath>
+    <IncludePath>$(ProjectDir);$(ProjectDir)include\base\;$(ProjectDir)include\input\;$(ProjectDir)include\object\;$(ProjectDir)include\audio\;$(ProjectDir)include\easing\;$(ProjectDir)include\gameSystem\Collision;$(ProjectDir)include\gameSystem\;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -140,56 +140,85 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="lib\audio\Audio.cpp" />
-    <ClCompile Include="lib\base\Camera.cpp" />
-    <ClCompile Include="lib\base\EndScene.cpp" />
-    <ClCompile Include="lib\base\FrameFixed.cpp" />
-    <ClCompile Include="lib\base\GameScene.cpp" />
-    <ClCompile Include="lib\base\MyDirectX12.cpp" />
-    <ClCompile Include="lib\base\MyWindow.cpp" />
-    <ClCompile Include="lib\base\SceneManager.cpp" />
-    <ClCompile Include="lib\base\TitleScene.cpp" />
-    <ClCompile Include="lib\easing\Easing.cpp" />
-    <ClCompile Include="lib\gameSystem\AttackBase.cpp" />
-    <ClCompile Include="lib\gameSystem\Collision.cpp" />
-    <ClCompile Include="lib\gameSystem\GameFunction.cpp" />
-    <ClCompile Include="lib\input\Input.cpp" />
-    <ClCompile Include="lib\input\XinputControll.cpp" />
-    <ClCompile Include="lib\object\Boss.cpp" />
-    <ClCompile Include="lib\object\Enemy.cpp" />
-    <ClCompile Include="lib\object\Model.cpp" />
-    <ClCompile Include="lib\object\Object.cpp" />
-    <ClCompile Include="lib\object\ObjectManager.cpp" />
-    <ClCompile Include="lib\object\Player.cpp" />
-    <ClCompile Include="lib\object\Sprite2D.cpp" />
+    <ClCompile Include="include\audio\Audio.cpp" />
+    <ClCompile Include="include\base\Camera.cpp" />
+    <ClCompile Include="include\base\EndScene.cpp" />
+    <ClCompile Include="include\base\FrameFixed.cpp" />
+    <ClCompile Include="include\base\GameScene.cpp" />
+    <ClCompile Include="include\base\MyDirectX12.cpp" />
+    <ClCompile Include="include\base\MyWindow.cpp" />
+    <ClCompile Include="include\base\SceneManager.cpp" />
+    <ClCompile Include="include\base\TitleScene.cpp" />
+    <ClCompile Include="include\easing\Easing.cpp" />
+    <ClCompile Include="include\gameSystem\AttackBase.cpp" />
+    <ClCompile Include="include\gameSystem\Collision\Collision.cpp" />
+    <ClCompile Include="include\gameSystem\Collision\CollisionCapsule2D.cpp" />
+    <ClCompile Include="include\gameSystem\Collision\CollisionCapsule3D.cpp" />
+    <ClCompile Include="include\gameSystem\Collision\CollisionCircle.cpp" />
+    <ClCompile Include="include\gameSystem\Collision\CollisionLine2D.cpp" />
+    <ClCompile Include="include\gameSystem\Collision\CollisionLine3D.cpp" />
+    <ClCompile Include="include\gameSystem\Collision\CollisionSegment2D.cpp" />
+    <ClCompile Include="include\gameSystem\Collision\CollisionSegment3D.cpp" />
+    <ClCompile Include="include\gameSystem\Collision\CollisionSphere.cpp" />
+    <ClCompile Include="include\gameSystem\Collision\CollisionTriangle2D.cpp" />
+    <ClCompile Include="include\gameSystem\Collision\Float2.cpp" />
+    <ClCompile Include="include\gameSystem\Collision\Float3.cpp" />
+    <ClCompile Include="include\gameSystem\Collision\Vector2.cpp" />
+    <ClCompile Include="include\gameSystem\Collision\Vector3.cpp" />
+    <ClCompile Include="include\gameSystem\GameFunction.cpp" />
+    <ClCompile Include="include\input\Input.cpp" />
+    <ClCompile Include="include\input\XinputControll.cpp" />
+    <ClCompile Include="include\object\Boss.cpp" />
+    <ClCompile Include="include\object\Enemy.cpp" />
+    <ClCompile Include="include\object\Model.cpp" />
+    <ClCompile Include="include\object\Object.cpp" />
+    <ClCompile Include="include\object\ObjectManager.cpp" />
+    <ClCompile Include="include\object\Player.cpp" />
+    <ClCompile Include="include\object\Sprite2D.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="lib\audio\Audio.h" />
-    <ClInclude Include="lib\base\Camera.h" />
-    <ClInclude Include="lib\base\EndScene.h" />
-    <ClInclude Include="lib\base\FrameFixed.h" />
-    <ClInclude Include="lib\base\GameScene.h" />
-    <ClInclude Include="lib\base\MyDirectX12.h" />
-    <ClInclude Include="lib\base\MyWindow.h" />
-    <ClInclude Include="lib\base\Scene.h" />
-    <ClInclude Include="lib\base\SceneManager.h" />
-    <ClInclude Include="lib\base\TitleScene.h" />
-    <ClInclude Include="lib\easing\Easing.h" />
-    <ClInclude Include="lib\gameSystem\AttackBase.h" />
-    <ClInclude Include="lib\gameSystem\Collision.h" />
-    <ClInclude Include="lib\gameSystem\GameFunction.h" />
-    <ClInclude Include="lib\gameSystem\Setting.h" />
-    <ClInclude Include="lib\input\Input.h" />
-    <ClInclude Include="lib\input\XinputControll.h" />
-    <ClInclude Include="lib\object\Boss.h" />
-    <ClInclude Include="lib\object\Enemy.h" />
-    <ClInclude Include="lib\object\Model.h" />
-    <ClInclude Include="lib\object\Object.h" />
-    <ClInclude Include="lib\object\ObjectManager.h" />
-    <ClInclude Include="lib\object\Player.h" />
-    <ClInclude Include="lib\object\Sprite2D.h" />
-    <ClInclude Include="lib\object\SpriteLoadDefine.h" />
+    <ClInclude Include="include\audio\Audio.h" />
+    <ClInclude Include="include\base\Camera.h" />
+    <ClInclude Include="include\base\EndScene.h" />
+    <ClInclude Include="include\base\FrameFixed.h" />
+    <ClInclude Include="include\base\GameScene.h" />
+    <ClInclude Include="include\base\MyDirectX12.h" />
+    <ClInclude Include="include\base\MyWindow.h" />
+    <ClInclude Include="include\base\Scene.h" />
+    <ClInclude Include="include\base\SceneManager.h" />
+    <ClInclude Include="include\base\TitleScene.h" />
+    <ClInclude Include="include\easing\Easing.h" />
+    <ClInclude Include="include\gameSystem\AttackBase.h" />
+    <ClInclude Include="include\gameSystem\Collision\CollidePrimitive.h" />
+    <ClInclude Include="include\gameSystem\Collision\Collision.h" />
+    <ClInclude Include="include\gameSystem\Collision\CollisionCapsule2D.h" />
+    <ClInclude Include="include\gameSystem\Collision\CollisionCapsule3D.h" />
+    <ClInclude Include="include\gameSystem\Collision\CollisionCircle.h" />
+    <ClInclude Include="include\gameSystem\Collision\CollisionLine2D.h" />
+    <ClInclude Include="include\gameSystem\Collision\CollisionLine3D.h" />
+    <ClInclude Include="include\gameSystem\Collision\CollisionPoint.h" />
+    <ClInclude Include="include\gameSystem\Collision\CollisionRay.h" />
+    <ClInclude Include="include\gameSystem\Collision\CollisionSegment2D.h" />
+    <ClInclude Include="include\gameSystem\Collision\CollisionSegment3D.h" />
+    <ClInclude Include="include\gameSystem\Collision\CollisionSphere.h" />
+    <ClInclude Include="include\gameSystem\Collision\CollisionTriangle2D.h" />
+    <ClInclude Include="include\gameSystem\Collision\Float2.h" />
+    <ClInclude Include="include\gameSystem\Collision\Float3.h" />
+    <ClInclude Include="include\gameSystem\Collision\Vector2.h" />
+    <ClInclude Include="include\gameSystem\Collision\Vector3.h" />
+    <ClInclude Include="include\gameSystem\GameFunction.h" />
+    <ClInclude Include="include\gameSystem\Setting.h" />
+    <ClInclude Include="include\input\Input.h" />
+    <ClInclude Include="include\input\XinputControll.h" />
+    <ClInclude Include="include\object\Boss.h" />
+    <ClInclude Include="include\object\Enemy.h" />
+    <ClInclude Include="include\object\Model.h" />
+    <ClInclude Include="include\object\Object.h" />
+    <ClInclude Include="include\object\ObjectManager.h" />
+    <ClInclude Include="include\object\Player.h" />
+    <ClInclude Include="include\object\Sprite2D.h" />
+    <ClInclude Include="include\object\SpriteLoadDefine.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Resources\shader\OBJPixelShader.hlsl">

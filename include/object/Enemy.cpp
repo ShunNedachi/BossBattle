@@ -11,7 +11,7 @@ void Enemy::Init()
 	scale = { 5,5,5 };
 	obj->SetPosition(position);
 	obj->SetScale(scale);
-	obj->SetRadius(2.5f);
+	obj->SetRadius(2.5f); 
 }
 
 void Enemy::Update()

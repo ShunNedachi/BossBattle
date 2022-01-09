@@ -23,6 +23,54 @@ bool Collision::Sphere2Sphere(const DirectX::XMFLOAT3& sphere1Pos, const DirectX
 	return false;
 }
 
+
+#pragma region 2D用判定
+
+bool Collision::Point2Point_2D(const Point2D& p1, const Point2D& p2)
+{
+	// 誤差範囲内なら判定
+	const float E = 0.00001f;
+
+	float disP1 = p1.x - p2.x;
+	float disP2 = p1.y - p2.y;
+
+	if (disP1 < 0)disP1 * -1;
+	if (disP2 < 0)disP2 * -1;
+
+	// 距離が誤差範囲内なら当たっている
+	if (disP1 < E && disP2 < E) return true;
+
+	// 当たっていないとき
+	return false;
+}
+
+bool Collision::Point2Segment2D(const Point2D& point, const Segment2D& segment)
+{
+	// 誤差範囲内なら判定
+	const float E = 0.00001f;
+
+
+	// 計算用
+	Vector2 temp(segment.point.x - point.x, segment.point.y - point.y);
+
+
+	// 誤差計算用
+	float dot = temp.Dot(segment.dirV);
+
+	if (dot < 0)dot *= -1;
+
+	bool result = false;
+
+	// 誤差以内ならあたっている
+	if (dot <= E)result = true;
+
+	return result;
+}
+
+
+#pragma endregion
+
+
 bool Collision::Attack2OBJ(const Object& obj,const AttackBase& attack)
 {
 	AttackBase tempAttack = attack;

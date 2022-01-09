@@ -4,6 +4,7 @@
 #include"Enemy.h"
 #include"Boss.h"
 #include<DirectXMath.h>
+#include"CollidePrimitive.h"
 
 class AttackBase;
 
@@ -21,6 +22,22 @@ public:
 	/// <returns></returns>
 	static bool Sphere2Sphere(const DirectX::XMFLOAT3& sphere1Pos, const DirectX::XMFLOAT3& sphere2Pos, 
 						  const float& sphereR, const float& sphere2R);
+
+
+	#pragma region 2DŒn‚Ì“–‚½‚è”»’è
+
+
+	static bool Point2Point_2D(const Point2D& p1,const Point2D& p2);
+
+	static bool Point2Segment2D(const Point2D& point, const Segment2D& segment);
+
+
+
+	#pragma endregion
+
+
+
+	// ì¬‚µ‚½ƒNƒ‰ƒX‚Æ‚Ì”»’è
 
 	/// <summary>
 	/// obj‚ÆUŒ‚‚Ì“–‚½‚è”»’è

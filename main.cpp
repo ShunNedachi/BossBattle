@@ -79,8 +79,9 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 		#pragma endregion
 
-		// fps固定用
+		// フレームレート固定用
 		frameFixed->PostWait();
+
 	}
 
 

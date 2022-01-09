@@ -50,6 +50,8 @@ void GameScene::Update()
 
 	camera->Update();
 
+	
+
 
 	objectManager->Update();
 

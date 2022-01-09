@@ -369,6 +369,7 @@ void Object::Update()
 
 	// ‚ ‚Æ‚Å‹‘äƒJƒŠƒ“ƒO‚Ìˆ—‚ğ“ü‚ê‚é
 	// bool‚Å•`‰æ‚·‚é‚©‚Ç‚¤‚©‚ğ¯•Ê
+
 }
 
 void Object::Init(MyDirectX12* my12)
