@@ -22,7 +22,6 @@ D3D12_GRAPHICS_PIPELINE_STATE_DESC Object::gpipeline{};
 Camera* Object::camera = nullptr;
 
 
-
 Object::Object(int shaderNum, const string& filename):shaderNum(shaderNum)
 {
 	CreateModel(filename);
@@ -293,6 +292,8 @@ void Object::Draw()
 	using namespace DirectX;
 	HRESULT result;
 
+	matView = camera->GetViewMatrix();
+
 	ConstBufferDataB0* constMap = nullptr;
 	result = constBuffB0->Map(0, nullptr, (void**)&constMap);
 	constMap->mat = matWorld * matView * matProjection;
@@ -361,14 +362,12 @@ void Object::Update()
 	matWorld = XMMatrixIdentity();
 	matWorld *= matScale;
 	matWorld *= matRot;
+	if (isBillboard) matWorld *= Camera::GetBillboardMatrix();
+	else if (isBillboardY)matWorld *= Camera::GetBillboardYMatrix();
 	matWorld *= matTrans;
 
 	// ビュー行列
-	matView = XMMatrixLookAtLH(XMLoadFloat3(&camera->GetEye()), XMLoadFloat3(&camera->GetTarget()), XMLoadFloat3(&camera->GetUp()));
-
-
-	// あとで視錐台カリングの処理を入れる
-	// boolで描画するかどうかを識別
+	//matView = XMMatrixLookAtLH(XMLoadFloat3(&camera->GetEye()), XMLoadFloat3(&camera->GetTarget()), XMLoadFloat3(&camera->GetUp()));
 
 }
 

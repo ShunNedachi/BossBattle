@@ -2,6 +2,7 @@
 #include"Setting.h"
 #include"GameFunction.h"
 #include<imgui.h>
+#include"Collision.h"
 
 // 静的メンバ変数
 Camera* Camera::instance = nullptr;
@@ -15,6 +16,9 @@ float Camera::phi = 0;
 float Camera::theta = 0;
 float Camera::initRadius = 20;
 bool Camera::zoomFlg = false;
+DirectX::XMMATRIX Camera::matView = {};
+DirectX::XMMATRIX Camera::matBillboard = DirectX::XMMatrixIdentity();
+DirectX::XMMATRIX Camera::matBillboradY = DirectX::XMMatrixIdentity();
 
 
 Camera* Camera::GetInstance()
@@ -37,14 +41,14 @@ void Camera::Destroy()
 void Camera::Update()
 {
 	// プレイヤーの必殺技時
-	//if (zoomFlg && zoomEnd)
-	//{
-	//	ZoomIn();
-	//}
-	//else
-	//{
-	//	initRadius = 20;
-	//}
+	if (zoomFlg && zoomEnd)
+	{
+		ZoomIn();
+	}
+	else
+	{
+		initRadius = 20;
+	}
 
 	if (GameFunction::GetPlayerIsSpecial())
 	{
@@ -56,13 +60,15 @@ void Camera::Update()
 	}
 
 
-	//SetEyeLerp();
+	SetEyeLerp();
+	//SetEye(endEye);
 	SetTarget(endTarget);
-	SetEye(endEye);
 	//SetTargetLerp();
 
 	// 視線ベクトルの更新
 	UpdateEyeDir();
+
+	UpdateBillboard();
 }
 
 void Camera::Follow(XMFLOAT3 target)
@@ -74,8 +80,8 @@ void Camera::Follow(XMFLOAT3 target)
 	// 定数定義
 	const int MIN_PHI_RADIUS = 0;
 	const int MAX_PHI_RADIUS = 360;
-	const int MIN_THETA_RADIUS = -89;
-	const int MAX_THETA_RADIUS = 89;
+	const int MIN_THETA_RADIUS = 0;
+	const int MAX_THETA_RADIUS = 70;
 
 	if (input->PushKey(DIK_DOWN)|| xinput->MoveStick(0,XINPUT_BUTTON_RS)&XINPUT_STICK_DOWN)theta+= CAMERA_MOVE_VALUE;
 	else if (input->PushKey(DIK_UP)|| xinput->MoveStick(0,XINPUT_BUTTON_RS)&XINPUT_STICK_UP)theta-= CAMERA_MOVE_VALUE;
@@ -99,6 +105,8 @@ void Camera::Follow(XMFLOAT3 target)
 	float eyeY = sin(thetaRADIUS) * initRadius + target.y;
 	float eyeZ = sin(phiRADIUS) * cos(thetaRADIUS) * initRadius + target.z;
 
+
+
 	endEye = { eyeX,eyeY,eyeZ };
 
 
@@ -120,11 +128,118 @@ void Camera::SetEyeLerp()
 	XMVECTOR eyeV = { eye.x,eye.y,eye.z,0 };
 	XMVECTOR endEyeV = { endEye.x,endEye.y,endEye.z,0 };
 	
-	result = DirectX::XMVectorLerp(eyeV, endEyeV,0.25f);
+	result = DirectX::XMVectorLerp(eyeV, endEyeV,0.1f);
 
 	DirectX::XMStoreFloat3(&eye, result);
 
 	SetEye(eye);
+}
+
+void Camera::UpdateView()
+{
+	// 視点、注視点、上方向
+	XMVECTOR eyePos = DirectX::XMLoadFloat3(&eye);
+	XMVECTOR targetPos = DirectX::XMLoadFloat3(&target);
+	XMVECTOR upVector = DirectX::XMLoadFloat3(&up);
+
+	// カメラz軸
+	XMVECTOR cameraAxisZ = DirectX::XMVectorSubtract(targetPos, eyePos);
+	// ベクトルを正規化
+	cameraAxisZ = DirectX::XMVector3Normalize(cameraAxisZ);
+	// カメラのx軸
+	XMVECTOR cameraAxisX = DirectX::XMVector3Cross(upVector, cameraAxisZ);
+	// 正規化
+	cameraAxisX = DirectX::XMVector3Normalize(cameraAxisX);
+	// カメラのy軸
+	XMVECTOR cameraAxisY = DirectX::XMVector3Cross(cameraAxisZ, cameraAxisX);
+
+	// カメラ回転行列
+	XMMATRIX matCameraRot;
+	// カメラ座標→ワールド座標の変換行列
+	matCameraRot.r[0] = cameraAxisX;
+	matCameraRot.r[1] = cameraAxisY;
+	matCameraRot.r[2] = cameraAxisZ;
+	matCameraRot.r[3] = DirectX::XMVectorSet(0, 0, 0, 1);
+	// 転置により逆行列(逆回転)を計算
+	matView = DirectX::XMMatrixTranspose(matCameraRot);
+
+	// 視点座標に-1をかけた座標
+	XMVECTOR eyePosInverse = DirectX::XMVectorNegate(eyePos);
+	// カメラの位置からワールド原点へのベクトル(カメラ座標系)
+	XMVECTOR tX = DirectX::XMVector3Dot(cameraAxisX, eyePosInverse);
+	XMVECTOR tY = DirectX::XMVector3Dot(cameraAxisY, eyePosInverse);
+	XMVECTOR tZ = DirectX::XMVector3Dot(cameraAxisZ, eyePosInverse);
+	// 一つのベクトルにまとめる
+	XMVECTOR traslation = DirectX::XMVectorSet(tX.m128_f32[0], tY.m128_f32[1], tZ.m128_f32[2], 1.0f);
+	// ビュー行列に平行移動成分を設定
+	matView.r[3] = traslation;
+}
+
+void Camera::UpdateBillboard()
+{
+	// 視点、注視点、上方向
+	XMVECTOR eyePos = DirectX::XMLoadFloat3(&eye);
+	XMVECTOR targetPos = DirectX::XMLoadFloat3(&target);
+	XMVECTOR upVector = DirectX::XMLoadFloat3(&up);
+
+	// カメラz軸
+	XMVECTOR cameraAxisZ = DirectX::XMVectorSubtract(targetPos, eyePos);
+	// ベクトルを正規化
+	cameraAxisZ = DirectX::XMVector3Normalize(cameraAxisZ);
+	// カメラのx軸
+	XMVECTOR cameraAxisX = DirectX::XMVector3Cross(upVector, cameraAxisZ);
+	// 正規化
+	cameraAxisX = DirectX::XMVector3Normalize(cameraAxisX);
+	// カメラのy軸
+	XMVECTOR cameraAxisY = DirectX::XMVector3Cross(cameraAxisZ,cameraAxisX);
+
+	// カメラ回転行列
+	XMMATRIX matCameraRot;
+	// カメラ座標→ワールド座標の変換行列
+	matCameraRot.r[0] = cameraAxisX;
+	matCameraRot.r[1] = cameraAxisY;
+	matCameraRot.r[2] = cameraAxisZ;
+	matCameraRot.r[3] = DirectX::XMVectorSet(0, 0, 0, 1);
+	// 転置により逆行列(逆回転)を計算
+	matView = DirectX::XMMatrixTranspose(matCameraRot);
+
+	// 視点座標に-1をかけた座標
+	XMVECTOR eyePosInverse = DirectX::XMVectorNegate(eyePos);
+	// カメラの位置からワールド原点へのベクトル(カメラ座標系)
+	XMVECTOR tX = DirectX::XMVector3Dot(cameraAxisX, eyePosInverse);
+	XMVECTOR tY = DirectX::XMVector3Dot(cameraAxisY, eyePosInverse);
+	XMVECTOR tZ = DirectX::XMVector3Dot(cameraAxisZ, eyePosInverse);
+	// 一つのベクトルにまとめる
+	XMVECTOR traslation = DirectX::XMVectorSet(tX.m128_f32[0], tY.m128_f32[1], tZ.m128_f32[2], 1.0f);
+	// ビュー行列に平行移動成分を設定
+	matView.r[3] = traslation;
+
+
+	// 全方向ビルボードの計算
+	// ビルボード行列
+	matBillboard.r[0] = cameraAxisX;
+	matBillboard.r[1] = cameraAxisY;
+	matBillboard.r[2] = cameraAxisZ;
+	matBillboard.r[3] = DirectX::XMVectorSet(0, 0, 0, 1);
+
+	// Y軸ビルボード行列の計算
+	
+	// カメラX軸、Y軸、Z軸
+	XMVECTOR yBillCameraAxisX, yBillCameraAxisY, yBillCameraAxisZ;
+
+	// X軸は共通
+	yBillCameraAxisX = cameraAxisX; 
+	// Y軸はワールド座標系のY軸
+	yBillCameraAxisY = DirectX::XMVector3Normalize(upVector);
+	// Z軸はX軸→Y軸の外積で求める
+	yBillCameraAxisZ = DirectX::XMVector3Cross(yBillCameraAxisX, yBillCameraAxisY);
+
+	// Y軸ビルボード行列
+	matBillboradY.r[0] = yBillCameraAxisX;
+	matBillboradY.r[1] = yBillCameraAxisY;
+	matBillboradY.r[2] = yBillCameraAxisZ;
+	matBillboradY.r[3] = DirectX::XMVectorSet(0, 0, 0, 1);
+
 }
 
 void Camera::ZoomIn()
@@ -164,4 +279,14 @@ void Camera::DebugDraw()
 
 #endif // _DEBUG
 
+}
+
+void Camera::HitObject()
+{
+}
+
+bool Camera::HitGround()
+{
+	//Collision::CheckRay2Plane()
+	return false;
 }

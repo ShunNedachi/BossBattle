@@ -2,6 +2,7 @@
 #include"Collision.h"
 #include<string>
 #include"GameFunction.h"
+#include"Camera.h"
 
 // 静的メンバ変数
 ObjectManager* ObjectManager::instance = nullptr;
@@ -186,7 +187,7 @@ void ObjectManager::AddPlayer(const std::string& filename)
 	ObjectManager::player->Init(filename);
 }
 
-void ObjectManager::AddEnemy()
+void ObjectManager::AddBoss()
 {
 	boss = new Boss();
 	boss->Init();
@@ -216,28 +217,28 @@ void ObjectManager::DeleteOBJ(int index)
 
 // ↓sprite
 
-void ObjectManager::AddSprite(int textureNum, const std::string& filename, XMFLOAT2 position, float rotation,XMFLOAT2 anchorPoint, XMFLOAT4 color)
-{
-	// 画像ロード
-	Sprite2D::LoadTex(textureNum, filename);
-
-	Sprite2D* temp = new Sprite2D(anchorPoint.x, anchorPoint.y);
-
-	// スプライト生成
-	temp->CreateSprite(textureNum);
-
-	// 位置、角度、色の設定
-	temp->SetPosition(position);
-	temp->SetRotation(rotation);
-	temp->SetColor(color);
-
-	// 配列に追加
-	spriteArray.push_back(temp);
-}
+//void ObjectManager::AddSprite(int textureNum, const std::string& filename, XMFLOAT2 position, float rotation,XMFLOAT2 anchorPoint, XMFLOAT4 color)
+//{
+//	// 画像ロード
+//	Sprite2D::LoadTex(textureNum, filename);
+//
+//	Sprite2D* temp = new Sprite2D(anchorPoint.x, anchorPoint.y);
+//
+//	// スプライト生成
+//	temp->CreateSprite(textureNum);
+//
+//	// 位置、角度、色の設定
+//	temp->SetPosition(position);
+//	temp->SetRotation(rotation);
+//	temp->SetColor(color);
+//
+//	// 配列に追加
+//	spriteArray.push_back(temp);
+//}
 
 void ObjectManager::AddSprite(int textureNum,XMFLOAT2 position, float rotation, XMFLOAT2 anchorPoint, XMFLOAT4 color)
 {
-	Sprite2D* temp = new Sprite2D(0.5f, 0.5f);
+	Sprite2D* temp = new Sprite2D(anchorPoint.x, anchorPoint.y);
 
 	temp->CreateSprite(textureNum);
 	// 位置、角度、色の設定
@@ -250,9 +251,43 @@ void ObjectManager::AddSprite(int textureNum,XMFLOAT2 position, float rotation, 
 
 void ObjectManager::DeleteSprite(int index)
 {
-	if (spriteArray.size() > 0 && spriteArray.size() <= index)
+	if (spriteArray.size() >= index)
 	{
 		delete spriteArray[index];
 		spriteArray[index] = nullptr;
 	}
+}
+
+void ObjectManager::SpriteFlash(int index, bool flg)
+{
+	if (spriteArray.size() >= index)
+	{
+		spriteArray[index]->SetDrawFlash(flg);
+	}
+}
+
+void ObjectManager::SetSize(int index, XMFLOAT2 size)
+{
+	if (spriteArray.size() >= index)
+	{
+		spriteArray[index]->Resize(size.x, size.y);
+	}
+}
+
+void ObjectManager::SetFlashSpeed(int index, float speed)
+{
+	if (spriteArray.size() >= index)
+	{
+		spriteArray[index]->SetFlashSpeed(speed);
+	}
+}
+
+DirectX::XMFLOAT4 ObjectManager::GetColor(int index)
+{
+	if (spriteArray.size() >= index)
+	{
+		return spriteArray[index]->GetColor();
+	}
+
+	return { -200,-200,-200,-200 };
 }

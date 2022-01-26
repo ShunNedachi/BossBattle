@@ -1,4 +1,5 @@
 #include "EndScene.h"
+#include"GameFunction.h"
 
 
 EndScene::~EndScene()
@@ -8,7 +9,10 @@ EndScene::~EndScene()
 
 void EndScene::Initalize()
 {
-	objectManager->AddSprite(0, "gameOver.png", { WINDOW_WIDTH / 2,WINDOW_HEIGHT / 2 });
+	objectManager = ObjectManager::GetInstance();
+
+	GameFunction::LoadEndSceneTexture();
+	objectManager->AddSprite(endSprite, { WINDOW_WIDTH / 2,WINDOW_HEIGHT / 2 });
 }
 
 
@@ -20,7 +24,7 @@ void EndScene::Update()
 	if (IsNext())NextScene(SceneManager::GetInstance());
 
 	// ƒV[ƒ“•ÏX
-	if (xinput->TriggerButton(0)& XINPUT_BUTTON_A)isNext = true;
+	if (xinput->TriggerButton(0)& XINPUT_BUTTON_A && input->TriggerKey(DIK_SPACE))isNext = true;
 
 }
 

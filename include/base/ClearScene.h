@@ -1,17 +1,13 @@
 #pragma once
 #include "Scene.h"
 #include"TitleScene.h"
-#include"EndScene.h"
-#include"ClearScene.h"
-#include<ObjectManager.h>
-#include"Camera.h"
-#include"Player.h"
-#include"Model.h"
 
-class GameScene :
+class ClearScene :
     public Scene
 {
-	~GameScene();
+public:
+
+	~ClearScene();
 
 	// シーンの動作用
 	void Initalize() override;
@@ -20,17 +16,6 @@ class GameScene :
 
 	// シーンの切り替え
 	void NextScene(SceneManager* nowScene) override;
-
-public:
-
-	// 関数
-
-private:
-
-	// カメラ
-	Camera* camera;
-
-
 
 };
 

@@ -36,6 +36,11 @@ public:
 	#pragma endregion
 
 
+	/// <summary>
+	/// ƒŒƒC‚Æ•½–Ê‚Ì“–‚½‚è”»’è
+	/// </summary>
+	static bool CheckRay2Plane(const Ray& ray, const Plane& plane);
+
 
 	// ì¬‚µ‚½ƒNƒ‰ƒX‚Æ‚Ì”»’è
 

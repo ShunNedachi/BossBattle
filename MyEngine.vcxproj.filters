@@ -177,6 +177,12 @@
     <ClCompile Include="include\gameSystem\Collision\Vector3.cpp">
       <Filter>ソース ファイル\gameSystem\Collision</Filter>
     </ClCompile>
+    <ClCompile Include="include\base\Scene.cpp">
+      <Filter>ソース ファイル\base\scene</Filter>
+    </ClCompile>
+    <ClCompile Include="include\base\ClearScene.cpp">
+      <Filter>ソース ファイル\base\scene</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\audio\Audio.h">
@@ -301,6 +307,12 @@
     </ClInclude>
     <ClInclude Include="include\object\SpriteLoadDefine.h">
       <Filter>ヘッダー ファイル\object</Filter>
+    </ClInclude>
+    <ClInclude Include="include\gameSystem\Collision\CollisionPlane3D.h">
+      <Filter>ヘッダー ファイル\gameSystem\Collision</Filter>
+    </ClInclude>
+    <ClInclude Include="include\base\ClearScene.h">
+      <Filter>ヘッダー ファイル\base\scene</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

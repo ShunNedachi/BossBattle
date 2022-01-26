@@ -1,10 +1,12 @@
 #pragma once
 #include"ObjectManager.h"
+#include"GameFunction.h"
 
 
 #define titleSceneNum 0
 #define gameSceneNum 1
 #define endSceneNum 2
+#define clearSceneNum 3
 
 class SceneManager;
 
@@ -23,6 +25,7 @@ public:
 
 	// シーンの切り替え
 	virtual void NextScene(SceneManager* nowScene) = 0;
+	void ChangeScene(SceneManager* nowScene,int sceneNum);
 
 	// 切り替え要求用
 	bool IsNext() { return isNext; }

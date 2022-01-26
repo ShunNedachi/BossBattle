@@ -37,6 +37,13 @@ public:
 
 	static void Initialize(MyDirectX12* my12);
 
+	// オブジェクトの受け渡し用
+	// 後でこれらをscene内に持って行ってupdateを各自でするように変更する
+	static std::vector<Object*>* GetObjectArray() { return &objArray; }
+	static std::vector<Sprite2D*>* GetSpriteArray() { return &spriteArray; }
+	static Player* GetPlayer() { return player; }
+	static Boss* GetBoss() { return boss; }
+
 	void Update();
 	void Draw();
 
@@ -62,7 +69,7 @@ public:
 
 	#pragma region Enemy関係関数
 
-	void AddEnemy();
+	void AddBoss();
 
 	XMFLOAT3 GetBossPosition() { 
 		if (boss) { return boss->GetPosition(); }
@@ -90,14 +97,20 @@ public:
 	//void LoadTexture(const wchar_t* filename, int textureNum);
 
 	// スプライト生成
-	void AddSprite(int textureNum,const std::string& filename = "white.png", XMFLOAT2 position = {0,0}, float rotation = 0.0f,
-		XMFLOAT2 anchorPoint = {0.5f,0.5f}, XMFLOAT4 color = { 1,1,1,1 });
+	//void AddSprite(int textureNum, const std::string& filename = "white.png", XMFLOAT2 position = { 0,0 }, float rotation = 0.0f,
+	//	XMFLOAT2 anchorPoint = { 0.5f,0.5f }, XMFLOAT4 color = { 1,1,1,1 });
 
-	static void AddSprite(int textureNum, XMFLOAT2 position = { 0,0 }, float rotation = 0.0f,
+	void AddSprite(int textureNum, XMFLOAT2 position = { 0,0 }, float rotation = 0.0f,
 		XMFLOAT2 anchorPoint = { 0.5f,0.5f }, XMFLOAT4 color = { 1,1,1,1 });
 
 	// 削除
 	void DeleteSprite(int index);
+
+	void SpriteFlash(int index, bool flg);
+
+	void SetSize(int index,XMFLOAT2 size);
+	void SetFlashSpeed(int index, float speed);
+	XMFLOAT4 GetColor(int index);
 
 #pragma endregion
 

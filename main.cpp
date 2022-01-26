@@ -62,6 +62,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 		// ŠeƒV[ƒ“‚Ìupdate
 		sceneManager->Update();
+
 	#pragma endregion
 
 		#pragma region •`‰æˆ—

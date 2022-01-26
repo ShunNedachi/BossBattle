@@ -9,11 +9,8 @@
 
 #define NORMAL 0
 #define TOON 1
-
-class Object
+class Particle
 {
-private:
-
 	template<class T>using ComPtr = Microsoft::WRL::ComPtr<T>;
 	using string = std::string;
 	using XMFLOAT2 = DirectX::XMFLOAT2;
@@ -24,10 +21,10 @@ private:
 public:
 
 
-	Object(int shaderNum, const string& filename);
-	~Object();
+	Particle();
+	~Particle();
 
-	#pragma region メンバー関数
+#pragma region メンバー関数
 
 	// 初期化処理　全体で一回のみinitを回す
 	static void Init(MyDirectX12* my12);
@@ -39,7 +36,7 @@ public:
 
 	void Update();
 
-	void CreateModel(const string& filename);
+	void CreateModel();
 	void LoadMaterial(const string& directryPath, const string& filename);
 	bool LoadTexture(const string& directoryPath, const string& filename);
 
@@ -47,30 +44,24 @@ public:
 	// setter
 	//void SetModel(Model* model) { this->model = model; }
 	void SetShaderNum(int shaderNum) { this->shaderNum = shaderNum; }
-	void SetPosition(XMFLOAT3 position) { this->position = position; }
-	void SetRotation(XMFLOAT3 rotation) { this->rotation = rotation; }
 	void SetScale(XMFLOAT3 scale) { this->scale = scale; }
 	void SetSize(XMFLOAT3 size) { this->size = size; }
 	void SetRadius(float r) { this->r = r; }
-	void SetColor(XMFLOAT3 color) { this->color = color; }
 	void SetBillboard(bool flg) { isBillboard = flg; }
 	void SetBillboardY(bool flg) { isBillboardY = flg; }
 
 
 	// getter
-	XMFLOAT3 GetPosition() { return position; }
-	XMFLOAT3 GetRotation() { return rotation; }
 	XMFLOAT3 GetScale() { return scale; }
 	XMFLOAT3 GetSize() { return size; }
 	float GetRadius() { return r; }
-	XMFLOAT3 GetObjColor() { return color; }
-	
 
-	#pragma endregion
+
+#pragma endregion
 
 private:
 
-	#pragma region 構造体
+#pragma region 構造体
 
 	struct ConstBufferDataB0
 	{
@@ -121,13 +112,13 @@ private:
 #pragma endregion
 
 
-	#pragma region	directX
+#pragma region	directX
 
 	// 共有する変数
 	static ComPtr<ID3D12RootSignature> rootSignature[2]; // ルートシグネチャ
 	static ComPtr<ID3D12PipelineState> pipelineState[2]; // パイプラインステート
 	static XMMATRIX matProjection; // 射影行列
-	//static const int SRVCount = 512; // テクスチャの最大枚数
+	static const int SRVCount = 512; // テクスチャの最大枚数
 	static XMMATRIX matView;
 
 	static ComPtr<ID3D12GraphicsCommandList> commandList;
@@ -152,8 +143,14 @@ private:
 #pragma endregion
 
 
-	// eye targetはコンストラクタ内部
+// eye targetはコンストラクタ内部
 	static Camera* camera;
+	static const int vertexCount = 4;
+	static const int indexCount = 3 * 2;
+
+	// 頂点データ配列
+	static Vertex vertices[vertexCount];
+	static unsigned short indices[indexCount];
 
 
 	XMMATRIX matWorld; // ワールド行列
@@ -161,24 +158,18 @@ private:
 	XMMATRIX matRot; // 回転行列
 	XMMATRIX matTrans; // 平行移動行列
 
-
-	XMFLOAT3 position = { 0,0,0 }; // 座標
 	XMFLOAT3 scale = { 1,1,1 };     // スケール
-	XMFLOAT3 rotation = { 0,0,0 }; // 回転
-	XMMATRIX objMatWorld{}; // ワールド座標
-	XMFLOAT3 color = { 1,1,1 }; // スプライトの色
+
+
 	UINT texNumber = 0; //	テクスチャ番号
 
 	// どちらかに値を入れてオブジェクトの大きさを取ってくる(主に当たり判定用)
 	XMFLOAT3 size = { 0,0,0 }; // 矩形の大きさ
 	float r = 0; // 半径
 
-	
+
 
 	int shaderNum;
-
-	std::vector<Vertex> vertices;
-	std::vector<unsigned short> indices;
 	Material material;
 
 	// ビルボード用

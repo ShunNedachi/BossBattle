@@ -228,7 +228,7 @@ void Player::Update()
 			}
 
 			
-			move =DirectX::XMVector3Normalize(move);
+			move = DirectX::XMVector3Normalize(move);
 
 			position.x += move.m128_f32[0];
 			position.z += move.m128_f32[2];
@@ -311,7 +311,6 @@ void Player::Update()
 	// Ž€‚ñ‚Å‚é‚©‚Ç‚¤‚©‚Ì”»’è
 	if (health <= 0)isDead = true;
 
-
 	//	XV
 
 	objPlayer->Update();
@@ -320,6 +319,7 @@ void Player::Update()
 	attack->Update();
 
 	specialAttack->Update();
+
 }
 
 void Player::Draw()

@@ -19,3 +19,15 @@
 #define number7 17
 #define number8 18
 #define number9 19
+
+// title—p(‚Æ‚è‚ ‚¦‚¸20”Ô‘ä)
+#define titleSprite 20
+#define titleExplainSprite 21
+#define selectTutorial 22
+#define selectGameStart 23
+
+// end—p(‚Æ‚è‚ ‚¦‚¸30”Ô‘ä)
+#define endSprite 30
+
+// clear—p(‚Æ‚è‚ ‚¦‚¸40”Ô‘ä)
+#define clearSprite 40

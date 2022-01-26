@@ -43,7 +43,6 @@ public:
 	// 毎フレーム処理
 	void SetPipelineForSprite(Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList> cmdList);
 	void Draw();
-	void DrawFlash();
 
 	void InitColor();
 
@@ -67,7 +66,10 @@ public:
 	void SetAlpha(float alpha) { spriteColor.w = alpha; }
 	DirectX::XMFLOAT4 GetColor() { return spriteColor; }
 	float GetAlpha() { return spriteColor.w; }
-
+	
+	// 点滅描画用
+	void SetDrawFlash(bool flg) { isDrawFlash = flg; }
+	void SetFlashSpeed(float speed) { flashSpeed = speed; }
 
 private:
 
@@ -105,5 +107,12 @@ private:
 	float tex_height; // テクスチャ縦幅
 	bool IsExtent = false;
 
+	// 点滅タイミング用
 	bool flashFlag = false;
+	// 点滅させるかどうかのフラグ用
+	bool isDrawFlash = false;
+
+	float flashSpeed = 1;
+
+	DirectX::XMFLOAT2 originalSize;
 };

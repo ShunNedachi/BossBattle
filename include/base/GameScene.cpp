@@ -24,7 +24,7 @@ void GameScene::Initalize()
 	objectManager->AddOBJ("skydome", { 0,0,0 }, { 5,5,5 });
 	//camera->SetEye({ 0, 20, -100 });
 
-	objectManager->AddEnemy();
+	objectManager->AddBoss();
 }
 
 void GameScene::Update()
@@ -32,6 +32,9 @@ void GameScene::Update()
 	// inputŠÖŒW
 	Input* input = Input::GetInstance();
 	Xinput* xinput = Xinput::GetInstance();
+	
+	
+	objectManager->Update();
 
 	// ƒJƒƒ‰‚Ì‹““®
 	if (objectManager->GetIsInitBoss())
@@ -42,22 +45,22 @@ void GameScene::Update()
 	else
 	{
 		// “G‚Ì“oêƒ^ƒCƒ~ƒ“ƒO‚Å“G‚ÉƒJƒƒ‰‚ð’Ç]
-		camera->Follow(objectManager->GetBossPosition());
 		camera->SetPhi(300);
 		camera->SetTheta(20);
-		camera->SetR(5);
+		camera->SetR(10);
+		camera->Follow(objectManager->GetBossPosition());
 	}
 
+
+	
 	camera->Update();
+
 
 	
 
-
-	objectManager->Update();
-
 	//// ƒV[ƒ“•ÏX
-	if (objectManager->GetPlayerDead())NextScene(SceneManager::GetInstance());
-	else if (objectManager->GetIsClear())NextScene(SceneManager::GetInstance());
+	if (objectManager->GetPlayerDead())ChangeScene(SceneManager::GetInstance(),endSceneNum);
+	else if (objectManager->GetIsClear())ChangeScene(SceneManager::GetInstance(),clearSceneNum);
 
 }
 

@@ -67,8 +67,34 @@ bool Collision::Point2Segment2D(const Point2D& point, const Segment2D& segment)
 	return result;
 }
 
-
 #pragma endregion
+
+
+bool Collision::CheckRay2Plane(const Ray& ray, const Plane& plane)
+{
+	const float epsilon = 1.0e-5f; // 誤差範囲用
+
+	// 面法線とレイの方向ベクトルの内積
+	DirectX::XMVECTOR normal = { plane.normal.x,plane.normal.y,plane.normal.z };
+	DirectX::XMVECTOR rayDir = { ray.dirVector.x,ray.dirVector.y,ray.dirVector.z };
+
+	float d1 = DirectX::XMVector3Dot(normal, rayDir).m128_f32[0];
+	if (d1 > -epsilon) { return false; }
+
+	// 面法線とレイの始点座標との内積
+	DirectX::XMVECTOR rayStart = { ray.point.x,ray.point.y,ray.point.z };
+	float d2 = DirectX::XMVector3Dot(normal, rayStart).m128_f32[0];
+
+	// 始点と平面の距離(平面の法線方向)
+	float dist = d2 - plane.distance;
+	// 始点と平面の距離(レイ方向)
+	float t = dist / -d1;
+	// 交点が始点より後ろにあるので当たらない
+	if (t < 0) { return false; }
+
+	return true;
+
+}
 
 
 bool Collision::Attack2OBJ(const Object& obj,const AttackBase& attack)

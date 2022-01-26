@@ -1,7 +1,6 @@
 #include "GameFunction.h"
 #include"Player.h"
 #include"Sprite2D.h"
-#include"SpriteLoadDefine.h"
 
 void GameFunction::AddEXP(float exp)
 {
@@ -16,7 +15,25 @@ void GameFunction::LoadGameSceneTexture()
 	LoadPlayerTexture();
 	LoadBossTexture();
 	LoadNumberTexture();
-}	
+}
+void GameFunction::LoadTitleSceneTexture()
+{
+	Sprite2D::LoadTex(titleSprite, "gameName.png");
+	Sprite2D::LoadTex(titleExplainSprite, "title.png");
+	Sprite2D::LoadTex(selectTutorial, "selectTutorial.png");
+	Sprite2D::LoadTex(selectGameStart, "selectGamePlay.png");
+}
+
+void GameFunction::LoadEndSceneTexture()
+{
+	Sprite2D::LoadTex(endSprite, "gameOver.png");
+}
+
+void GameFunction::LoadClearSceneTexture()
+{
+	Sprite2D::LoadTex(clearSprite, "gameClear.png");
+}
+
 
 DirectX::XMFLOAT3 GameFunction::GetPlayerPos()
 {
@@ -27,6 +44,7 @@ bool GameFunction::GetPlayerIsSpecial()
 {
 	return Player::GetInstance()->GetIsSpecial();
 }
+
 
 void GameFunction::LoadPlayerTexture()
 {

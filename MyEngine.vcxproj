@@ -142,11 +142,13 @@
   <ItemGroup>
     <ClCompile Include="include\audio\Audio.cpp" />
     <ClCompile Include="include\base\Camera.cpp" />
+    <ClCompile Include="include\base\ClearScene.cpp" />
     <ClCompile Include="include\base\EndScene.cpp" />
     <ClCompile Include="include\base\FrameFixed.cpp" />
     <ClCompile Include="include\base\GameScene.cpp" />
     <ClCompile Include="include\base\MyDirectX12.cpp" />
     <ClCompile Include="include\base\MyWindow.cpp" />
+    <ClCompile Include="include\base\Scene.cpp" />
     <ClCompile Include="include\base\SceneManager.cpp" />
     <ClCompile Include="include\base\TitleScene.cpp" />
     <ClCompile Include="include\easing\Easing.cpp" />
@@ -180,6 +182,7 @@
   <ItemGroup>
     <ClInclude Include="include\audio\Audio.h" />
     <ClInclude Include="include\base\Camera.h" />
+    <ClInclude Include="include\base\ClearScene.h" />
     <ClInclude Include="include\base\EndScene.h" />
     <ClInclude Include="include\base\FrameFixed.h" />
     <ClInclude Include="include\base\GameScene.h" />
@@ -197,6 +200,7 @@
     <ClInclude Include="include\gameSystem\Collision\CollisionCircle.h" />
     <ClInclude Include="include\gameSystem\Collision\CollisionLine2D.h" />
     <ClInclude Include="include\gameSystem\Collision\CollisionLine3D.h" />
+    <ClInclude Include="include\gameSystem\Collision\CollisionPlane3D.h" />
     <ClInclude Include="include\gameSystem\Collision\CollisionPoint.h" />
     <ClInclude Include="include\gameSystem\Collision\CollisionRay.h" />
     <ClInclude Include="include\gameSystem\Collision\CollisionSegment2D.h" />

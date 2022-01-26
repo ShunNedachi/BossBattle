@@ -19,6 +19,8 @@ ComPtr<ID3D12Device> Sprite2D::device;
 ComPtr<ID3D12GraphicsCommandList> Sprite2D::commandList;
 
 
+
+
 Sprite2D::Sprite2D(float anchorWidth, float anchorHeight) :anchorpoint{ anchorWidth,anchorHeight }
 {
 }
@@ -449,71 +451,25 @@ void Sprite2D::Draw()
 	constMap->color = spriteColor;
 	spriteConstBuff->Unmap(0, nullptr);
 
-
-
-	// デスクリプタヒープの配列
-	ID3D12DescriptorHeap* ppHeaps[] = { spriteDescHeap.Get() };
-	commandList->SetDescriptorHeaps(_countof(ppHeaps), ppHeaps);
-
-	// 頂点バッファをセット
-	commandList->IASetVertexBuffers(0, 1, &spriteVBView);
-
-	// 定数バッファをセット
-	commandList->SetGraphicsRootConstantBufferView(0, spriteConstBuff->GetGPUVirtualAddress());
-	// シェーダリソースビューをセット
-	commandList->SetGraphicsRootDescriptorTable(1,
-		CD3DX12_GPU_DESCRIPTOR_HANDLE(
-			spriteDescHeap->GetGPUDescriptorHandleForHeapStart(),
-			texNumber,
-			device->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV))
-	);
-	// 描画コマンド
-	commandList->DrawInstanced(4, 1, 0, 0);
-}
-void Sprite2D::DrawFlash()
-{
-	// パイプラインステートの設定
-	commandList->SetPipelineState(spritePipelineState.Get());
-	// ルートシグネチャの設定
-	commandList->SetGraphicsRootSignature(spriteRootSignature.Get());
-	// プリミティブ形状を設定
-	commandList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP);
-	using namespace DirectX;
-
-	// ワールド行列の更新
-	spriteMatWorld = XMMatrixIdentity();
-	spriteMatWorld *= XMMatrixRotationZ(XMConvertToRadians(spriteRotation));
-	spriteMatWorld *= XMMatrixTranslation(spritePosition.x, spritePosition.y, 0);
-
-	// 行列の転送
-	ConstBufferData* constMap = nullptr;
-	HRESULT result = spriteConstBuff->Map(0, nullptr, (void**)&constMap);
-	constMap->mat = spriteMatWorld * spriteMatProjection; // 行列の合成
-	constMap->color = spriteColor;
-	spriteConstBuff->Unmap(0, nullptr);
-
-	if (spriteColor.x >= 0.9)
+	if (isDrawFlash)
 	{
-		flashFlag = true;
-	}
-	else if (spriteColor.x <= 0)
-	{
-		flashFlag = false;
-	}
+		if (spriteColor.x >= 1){flashFlag = true;}
+		else if (spriteColor.x <= 0){flashFlag = false;}
 
-	if (flashFlag)
-	{
-		spriteColor.x -= 0.01f;
-		spriteColor.y -= 0.01f;
-		spriteColor.z -= 0.01f;
-		spriteColor.w -= 0.01f;
-	}
-	else
-	{
-		spriteColor.x += 0.01f;
-		spriteColor.y += 0.01f;
-		spriteColor.z += 0.01f;
-		spriteColor.w += 0.01f;
+		if (flashFlag)
+		{
+			spriteColor.x -= 0.01f * flashSpeed;
+			spriteColor.y -= 0.01f * flashSpeed;
+			spriteColor.z -= 0.01f * flashSpeed;
+			spriteColor.w -= 0.01f * flashSpeed;
+		}
+		else
+		{
+			spriteColor.x += 0.01f * flashSpeed;
+			spriteColor.y += 0.01f * flashSpeed;
+			spriteColor.z += 0.01f * flashSpeed;
+			spriteColor.w += 0.01f * flashSpeed;
+		}
 	}
 
 	// デスクリプタヒープの配列
@@ -653,6 +609,7 @@ void Sprite2D::UpdateVertices()
 	float resWidth = resDesc.Width; // 画像の横幅
 	float resHeight = resDesc.Height; // 画像の縦幅
 
+	originalSize = { resWidth,resHeight };
 
 	float left = (0.0f - anchorpoint.x) * resWidth;
 	float right = (1.0f - anchorpoint.x)* resWidth;

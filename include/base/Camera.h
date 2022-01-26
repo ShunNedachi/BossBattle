@@ -11,6 +11,7 @@ class Camera
 private:
 	using XMFLOAT3 = DirectX::XMFLOAT3;
 	using XMVECTOR = DirectX::XMVECTOR;
+	using XMMATRIX = DirectX::XMMATRIX;
 
 private:
 	Camera() = default;
@@ -41,12 +42,16 @@ public:
 	static XMFLOAT3 GetUp() { return up; }
 	static float GetRadius() { return initRadius; }
 	static XMFLOAT3 GetEyeDir() { return eyeDir; }
+	static XMFLOAT3 GetEndEye() { return endEye; }
 	
 	static float GetPhi() { return phi; }
 	static float GetPhiRadius() { return phi * DirectX::XM_PI / 180; }
 	static float GetTheta() { return theta; }
 	static float GetThetaRadius() { return theta * DirectX::XM_PI / 180;}
 
+	static XMMATRIX GetViewMatrix() { return matView; }
+	static XMMATRIX GetBillboardMatrix() { return matBillboard; }
+	static XMMATRIX GetBillboardYMatrix() { return matBillboradY; }
 
 	// セッター
 	static void SetEye(XMFLOAT3 eye) { Camera::eye = eye; }
@@ -64,8 +69,19 @@ public:
 
 	void SetEyeLerp();
 
+	// ビュー行列更新用
+	void UpdateView();
+	// ビルボード行列用
+	void UpdateBillboard();
+
 	// デバッグ用
 	static void DebugDraw();
+
+	// カメラが近づく処理用
+	void HitObject();
+
+	// 地面との判定用
+	bool HitGround();
 
 private:
 	static Camera* instance;
@@ -86,6 +102,13 @@ private:
 
 	// 追従用
 	static XMFLOAT3 pastTarget;
+
+	// ビュー行列
+	static XMMATRIX matView;
+	// ビルボード行列
+	static XMMATRIX matBillboard;
+	// Y軸周りビルボード行列
+	static XMMATRIX matBillboradY;
 
 	// カメラの挙動用
 	static bool zoomFlg;

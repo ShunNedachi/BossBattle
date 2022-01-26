@@ -16,5 +16,6 @@
 #include"CollisionSegment3D.h"
 #include"CollisionSphere.h"
 #include"CollisionCapsule3D.h"
-
+#include"CollisionPlane3D.h"
+#include"CollisionRay.h"
 

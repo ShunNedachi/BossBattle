@@ -5,7 +5,6 @@
 #include"SceneManager.h"
 #include"ObjectManager.h"
 
-
 class TitleScene :
     public Scene
 {
@@ -19,8 +18,16 @@ public:
 
 	// シーンの切り替え
 	void NextScene(SceneManager* nowScene) override;
+	
 
 private:
 	// メンバ変数
+	
+	// スタート後の選択用
+	bool isSelect = false;
+
+
+	// アニメーション用
+	bool startAnimation = false;
 };
 

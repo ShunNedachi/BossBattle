@@ -86,4 +86,22 @@ private:
 	D3D12_RECT scissorrect{};
 
 	DirectX::XMFLOAT4 clearBackColor = { 0.0f, 0.0f, 0.5f, 0.0f };
+
 };
+
+// XMFLOAT3ìØémÇÃâ¡éZèàóù
+const DirectX::XMFLOAT3 operator+(const DirectX::XMFLOAT3& lhs, const DirectX::XMFLOAT3& rhs);
+const DirectX::XMFLOAT3 operator+(const DirectX::XMFLOAT3& lhs, const float& rhs);
+
+
+const DirectX::XMFLOAT3 operator-(const DirectX::XMFLOAT3& lhs, const DirectX::XMFLOAT3& rhs);
+
+
+const DirectX::XMFLOAT4 operator+(const DirectX::XMFLOAT4& lhs, const DirectX::XMFLOAT4& rhs);
+const DirectX::XMFLOAT4 operator+(const DirectX::XMFLOAT4& lhs, const float& rhs);
+
+
+const DirectX::XMFLOAT4 operator-(const DirectX::XMFLOAT4& lhs, const DirectX::XMFLOAT4& rhs);
+const DirectX::XMFLOAT4 operator-(const DirectX::XMFLOAT4& lhs, const float& rhs);
+
+DirectX::XMFLOAT4& operator-=(const DirectX::XMFLOAT4& lhs, const float& rhs);
