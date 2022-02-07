@@ -29,6 +29,7 @@ public:
     ~Boss() {}
 
     // åpè≥
+
     void Init() override;
     void Update() override;
     void Draw() override;

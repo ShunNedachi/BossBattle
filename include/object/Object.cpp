@@ -36,9 +36,13 @@ void Object::CreatePiplineStateOBJ()
 	using namespace Microsoft::WRL;
 
 	CD3DX12_STATIC_SAMPLER_DESC samplerDesc = CD3DX12_STATIC_SAMPLER_DESC(0);
+
+	#pragma region 通常シェーダー読み込み
+
 	ComPtr<ID3DBlob> vsBlob;// 頂点シェーダーオブジェクト
 	ComPtr<ID3DBlob> psBlob;// ピクセルシェーダーオブジェクト
 	ComPtr<ID3DBlob> errorBlob;// エラーオブジェクト
+
 	// 頂点シェーダーの読み込みとコンパイル
 	result = D3DCompileFromFile(
 		L"Resources/shader/OBJVertexShader.hlsl", // シェーダーファイル名
@@ -101,17 +105,11 @@ void Object::CreatePiplineStateOBJ()
 	gpipeline.VS = CD3DX12_SHADER_BYTECODE(vsBlob.Get());
 	gpipeline.PS = CD3DX12_SHADER_BYTECODE(psBlob.Get());
 
-	gpipeline.SampleMask = D3D12_DEFAULT_SAMPLE_MASK; // 標準設定
-	//samplerDesc.AddressU = D3D12_TEXTURE_ADDRESS_MODE_WRAP; // 横繰り返し
-	//samplerDesc.AddressV = D3D12_TEXTURE_ADDRESS_MODE_WRAP;
-	//samplerDesc.AddressW = D3D12_TEXTURE_ADDRESS_MODE_WRAP;
-	//samplerDesc.BorderColor = D3D12_STATIC_BORDER_COLOR_TRANSPARENT_BLACK; // ボーダーの時は黒
-	//samplerDesc.Filter = D3D12_FILTER_MIN_MAG_MIP_POINT; // 補間しない
-	//samplerDesc.MaxLOD = D3D12_FLOAT32_MAX;
-	//samplerDesc.MinLOD = 0.0f;
-	//samplerDesc.ComparisonFunc = D3D12_COMPARISON_FUNC_NEVER;
-	//samplerDesc.ShaderVisibility = D3D12_SHADER_VISIBILITY_PIXEL; // ピクセルシェーダからのみ可視
 
+
+#pragma endregion
+
+	gpipeline.SampleMask = D3D12_DEFAULT_SAMPLE_MASK; // 標準設定
 
 	// デプスステンシルステート
 	// 標準的な設定（背面カリング、塗りつぶし、深度クリッピング有効）
@@ -122,11 +120,14 @@ void Object::CreatePiplineStateOBJ()
 	gpipeline.DepthStencilState = CD3DX12_DEPTH_STENCIL_DESC(D3D12_DEFAULT);
 	gpipeline.DSVFormat = DXGI_FORMAT_D32_FLOAT; // 深度値フォーマット
 
+
+	#pragma region ブレンド関係
+
 	// レンダーターゲットのブレンド設定（８個あるが今は１つしか使わない）
 	D3D12_RENDER_TARGET_BLEND_DESC blenddesc{};
 	blenddesc.RenderTargetWriteMask = D3D12_COLOR_WRITE_ENABLE_ALL; // 標準設定
 
-			// ブレンドの共通設定
+	// ブレンドの共通設定
 
 	blenddesc.BlendEnable = true; // ブレンド有効
 	blenddesc.BlendOpAlpha = D3D12_BLEND_OP_ADD; // 加算
@@ -138,9 +139,10 @@ void Object::CreatePiplineStateOBJ()
 	blenddesc.SrcBlend = D3D12_BLEND_SRC_ALPHA; // ソースの値のα値
 	blenddesc.DestBlend = D3D12_BLEND_INV_SRC_ALPHA; // 1.0fソースのα値
 	// 
-
-
 	gpipeline.BlendState.RenderTarget[0] = blenddesc; // RBGA全てのチャンネルを描画
+
+	#pragma endregion
+
 
 
 	gpipeline.InputLayout.pInputElementDescs = inputLayout;
@@ -186,8 +188,10 @@ void Object::CreatePiplineStateOBJ()
 	result = device.Get()->CreateGraphicsPipelineState(&gpipeline, IID_PPV_ARGS(&pipelineState[0]));
 
 
+	#pragma region トゥーンシェーダー読み込み用
+
 	// トゥーンシェーダー用ルートシグネチャ設定
-		// 頂点シェーダーの読み込みとコンパイル
+	// 頂点シェーダーの読み込みとコンパイル
 	result = D3DCompileFromFile(
 		L"Resources/shader/ToonVertexShader.hlsl", // シェーダーファイル名
 		nullptr,
@@ -252,6 +256,10 @@ void Object::CreatePiplineStateOBJ()
 	gpipeline.InputLayout.pInputElementDescs = inputLayout2;
 	gpipeline.InputLayout.NumElements = _countof(inputLayout2);
 
+
+#pragma endregion
+
+
 	// ルートシグネチャの生成
 	result = device->CreateRootSignature(0, rootSigBlob->GetBufferPointer(), rootSigBlob->GetBufferSize(),
 		IID_PPV_ARGS(&rootSignature[1]));
@@ -260,10 +268,6 @@ void Object::CreatePiplineStateOBJ()
 	gpipeline.pRootSignature = rootSignature[1].Get();
 
 	result = device.Get()->CreateGraphicsPipelineState(&gpipeline, IID_PPV_ARGS(&pipelineState[1]));
-
-
-
-
 }
 
 void Object::Draw()
