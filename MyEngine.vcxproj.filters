@@ -183,6 +183,9 @@
     <ClCompile Include="include\base\ClearScene.cpp">
       <Filter>ソース ファイル\base\scene</Filter>
     </ClCompile>
+    <ClCompile Include="include\object\Particle.cpp">
+      <Filter>ソース ファイル\object</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\audio\Audio.h">
@@ -313,6 +316,9 @@
     </ClInclude>
     <ClInclude Include="include\base\ClearScene.h">
       <Filter>ヘッダー ファイル\base\scene</Filter>
+    </ClInclude>
+    <ClInclude Include="include\object\Particle.h">
+      <Filter>ヘッダー ファイル\object</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

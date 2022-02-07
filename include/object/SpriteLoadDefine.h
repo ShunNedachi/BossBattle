@@ -25,6 +25,7 @@
 #define titleExplainSprite 21
 #define selectTutorial 22
 #define selectGameStart 23
+#define arrowSprite 24
 
 // end—p(‚Æ‚è‚ ‚¦‚¸30”Ô‘ä)
 #define endSprite 30

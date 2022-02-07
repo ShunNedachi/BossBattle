@@ -1,5 +1,6 @@
 #pragma once
 #include"Object.h"
+#include"Setting.h"
 
 // 基底クラス
 class Enemy
@@ -72,13 +73,16 @@ protected:
 	// ダメージ状態の経過フレーム数
 	int damageCount;
 	// ダメージ状態の最大フレーム数
-	const int DAMAGE_FRAME = 20;
+	const int DAMAGE_FRAME = 10;
 
 	// 仮設定のダメージ量
 	int damage = 1;
 
 	std::vector<Object*> attackObjs;
 
-
+	XMFLOAT3 knockbackPos;
+	bool isKnockBack = false;
+	Easing knockBackXEasing;
+	Easing knockBackZEasing;
 };
 

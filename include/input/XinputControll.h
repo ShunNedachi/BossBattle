@@ -35,6 +35,12 @@
 	#define XINPUT_STICK_UP 0x04
 	#define XINPUT_STICK_DOWN 0x08
 
+	// 使用するコントローラーの番号
+	constexpr int CONTROLLER_1 = 0;
+	constexpr int CONTROLLER_2 = 1;
+	constexpr int CONTROLLER_3 = 2;
+	constexpr int CONTROLLER_4 = 3;
+
 	typedef unsigned char stickState;
 	typedef unsigned short buttonState;
 

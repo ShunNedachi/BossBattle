@@ -175,6 +175,7 @@
     <ClCompile Include="include\object\Model.cpp" />
     <ClCompile Include="include\object\Object.cpp" />
     <ClCompile Include="include\object\ObjectManager.cpp" />
+    <ClCompile Include="include\object\Particle.cpp" />
     <ClCompile Include="include\object\Player.cpp" />
     <ClCompile Include="include\object\Sprite2D.cpp" />
     <ClCompile Include="main.cpp" />
@@ -220,6 +221,7 @@
     <ClInclude Include="include\object\Model.h" />
     <ClInclude Include="include\object\Object.h" />
     <ClInclude Include="include\object\ObjectManager.h" />
+    <ClInclude Include="include\object\Particle.h" />
     <ClInclude Include="include\object\Player.h" />
     <ClInclude Include="include\object\Sprite2D.h" />
     <ClInclude Include="include\object\SpriteLoadDefine.h" />

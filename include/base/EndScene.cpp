@@ -24,8 +24,7 @@ void EndScene::Update()
 	if (IsNext())NextScene(SceneManager::GetInstance());
 
 	// ƒV[ƒ“•ÏX
-	if (xinput->TriggerButton(0)& XINPUT_BUTTON_A && input->TriggerKey(DIK_SPACE))isNext = true;
-
+	if (xinput->TriggerButton(CONTROLLER_1)& XINPUT_BUTTON_A || input->TriggerKey(DIK_SPACE))isNext = true;
 }
 
 void EndScene::Draw()

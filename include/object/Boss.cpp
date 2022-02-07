@@ -3,6 +3,7 @@
 #include"SpriteLoadDefine.h"
 #include"Setting.h"
 
+
 void Boss::Init()
 {
 	// 仮用のオブジェクトの生成
@@ -14,6 +15,7 @@ void Boss::Init()
 	obj->SetPosition(position);
 	obj->SetScale(scale);
 	obj->SetRadius(2.5f);
+
 
 	//health = MAX_HEALTH;
 
@@ -87,7 +89,7 @@ void Boss::Update()
 			if (isDamage)
 			{
 				damageCount++;
-				obj->SetColor({ 0,1,1 });
+				obj->SetColor({ 1,0,0 });
 
 				hpSprite->Resize(ONE_HEALTH_SIZE * health, 50);
 
@@ -144,7 +146,7 @@ void Boss::Destroy()
 		enemys.shrink_to_fit();
 	}
 
-	DeleteAttack();
+	DestroyAttackArray();
 
 	delete obj;
 	obj = nullptr;
@@ -161,11 +163,7 @@ void Boss::AddEnemy(XMFLOAT3 position, XMFLOAT3 scale,XMFLOAT3 rotation)
 
 	enemys.push_back(temp);
 }
-
-void Boss::DeleteAttack()
-{
-
-}
+ 
 
 // AI挙動
 void Boss::Action()
@@ -318,10 +316,13 @@ bool Boss::ActionPopEnemy()
 	{
 		endFlg = true;
 
-		// 位置は後で調整
-		AddEnemy();
-		AddEnemy({ 10,0,10 });
-		AddEnemy({ 10,0,-10 });
+		const float OFFSET = 10;
+		const XMFLOAT3 setPos = position;
+		// 位置はbossの位置の付近四か所
+		AddEnemy({setPos.x +10,setPos.y,setPos.z});
+		AddEnemy({ setPos.x - 10,setPos.y,setPos.z});
+		AddEnemy({ setPos.x,setPos.y,setPos.z - 10});
+		AddEnemy({ setPos.x,setPos.y,setPos.z + 10});
 
 		actionCount = 0;
 	}
@@ -365,7 +366,7 @@ bool Boss::ActionFollow()
 	// 追従前の待機時間よりも長いときに追従
 	if(actionCount > followStopFrame)
 	{
-		const float SPEED = 0.6f;
+		const float SPEED = 0.3f;
 
 		// 移動するベクトルの計算 (yはとりあえず固定値)
 		XMVECTOR moveV = { playerPos.x - position.x,0,playerPos.z - position.z };
@@ -373,7 +374,6 @@ bool Boss::ActionFollow()
 
 		position.x += moveV.m128_f32[0] * SPEED;
 		position.z += moveV.m128_f32[2] * SPEED;
-
 	}
 
 	// 一定時間経過したら終了

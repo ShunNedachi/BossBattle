@@ -38,8 +38,6 @@ public:
     void AddEnemy(XMFLOAT3 position = { 0,0,0 }, XMFLOAT3 scale = { 1,1,1 },
         XMFLOAT3 rotation = { 0,0,0 });
 
-    // 攻撃の解放処理用
-    void DeleteAttack();
 
     std::vector<Enemy*> GetEnemys() { return enemys; }
 
@@ -103,21 +101,29 @@ private:
 
     // 敵出現状態の停止秒数
     int popFrame = 3 * GAME_FRAME;
+    // 敵出現用のモーション用(後で使用)
+    int popAnimationFrame;
 
     // 休憩状態の秒数
     int sleepFrame = 3 * GAME_FRAME;
     // 回復の間隔
     int healFrame = 1 * GAME_FRAME;
+    // 回復前のモーション用(後で使用)
+    int healActionFrame;
     
     // 追従状態の秒数
     int followFrame = 10 * GAME_FRAME;
     // 追従前の待機秒数
     int followStopFrame = 1 * GAME_FRAME;
+    // 追従用のモーション用(後で使用)
+    int followAnimetionFrame;
 
     // 突進状態の秒数
     int rushFrame = 10 * GAME_FRAME;
     // 突進前の待機秒数
     int rushWaitFrame = 2 * GAME_FRAME;
+    // 突進用のモーション用(後で使用)
+    int rushAnimetionFrame;
     // 1回あたりの突進時間
     int oneRushFrame = 1 * GAME_FRAME;
     XMVECTOR rushV;
@@ -133,18 +139,21 @@ private:
     // 遠距離攻撃用
     // bless用
     
-    //  bless発射用待機フレーム
+    // bless発射用待機フレーム
     int blessFrame = 10 * GAME_FRAME;
+    // 発射待機用(モーションを後で追加)
     int blessWaitFrame = 1 * GAME_FRAME;
+
+
     // 発射方向
     std::vector<XMFLOAT3> blessV;
     //
     float blessDamage = 1;
 
     // 飛行状態用
-    int flyFrame = 10 * GAME_FRAME; // デバッグ用に時間を10 ⇒　1
-    //int flyToUpFrame = 1 * GAME_FRAME;
-    //int flyToDownFrame = 1 * GAME_FRAME;
+    int flyFrame = 10 * GAME_FRAME;
+    // 飛行用のモーション用(行き帰り用)
+    int flyAnimeFrame;
     // 落下攻撃する頻度
     int flyAttackFrame = 1 * GAME_FRAME;
     float flyAttackDamage = 1;

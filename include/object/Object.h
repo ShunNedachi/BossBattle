@@ -184,6 +184,4 @@ private:
 	// ビルボード用
 	bool isBillboard = false;
 	bool isBillboardY = false;
-
-
 };
