@@ -62,6 +62,11 @@ public:
 	static void SetTheta(float theta) { Camera::theta = theta; }
 	static void SetPhi(float phi) { Camera::phi = phi; }
 
+	static void SetState(float r,float theta,float phi){
+		Camera::initRadius = r;
+		Camera::theta = theta;
+		Camera::phi = phi;
+	}
 	
 	// カメラのズーム用
 	void ZoomIn();

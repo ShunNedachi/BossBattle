@@ -35,6 +35,7 @@ void GameScene::Update()
 	
 	
 	objectManager->Update();
+	camera->Update();
 
 	// カメラの挙動
 	if (objectManager->GetIsInitBoss())
@@ -44,18 +45,14 @@ void GameScene::Update()
 	}
 	else
 	{
+		const float R = 10;
+		const float Phi = 300;
+		const float Theta = 20;
+
 		// 敵の登場タイミングで敵にカメラを追従
-		camera->SetPhi(300);
-		camera->SetTheta(20);
-		camera->SetR(10);
+		camera->SetState(R, Theta, Phi);
 		camera->Follow(objectManager->GetBossPosition());
 	}
-
-
-	
-	camera->Update();
-
-
 	
 
 	//// シーン変更

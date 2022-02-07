@@ -8,6 +8,16 @@
 // また処理をまとめるために使用
 namespace GameFunction
 {
+	// タイトルシーン画像番号保存用
+	enum class TitleTexNum
+	{
+		title,
+		titleExplain,
+		tutorial,
+		gamestart,
+		arrow,
+	};
+
 	void AddEXP(float exp);
 
 	void LoadGameSceneTexture();

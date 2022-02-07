@@ -152,10 +152,11 @@ void Player::Update()
 	Xinput* xinput = Xinput::GetInstance();
 
 	
-	const buttonState XINPUT_TRIGGER = xinput->TriggerButton(0);
+	const buttonState XINPUT_TRIGGER = xinput->TriggerButton(CONTROLLER_1);
 
 	// 移動処理　後で関数化して処理を分かりやすく
-	const stickState XINPUT_MOVE_STICK = xinput->MoveStick(0, XINPUT_BUTTON_LS);
+	const stickState XINPUT_MOVE_STICK = xinput->MoveStick(CONTROLLER_1, XINPUT_BUTTON_LS);
+
 
 	// 入力確認
 	if (XINPUT_MOVE_STICK & XINPUT_STICK_UP ||
@@ -168,16 +169,17 @@ void Player::Update()
 		if (!attack->GetAttackStart() && !specialAttack->GetAttackStart())
 		{
 			move = {0,0,0};
-			XMFLOAT3 attackPos = position;
 			bool isMoveRIGHTLEFT = false;
+			const float SPEED = 0.5f;
 
 			// 外積に必要な変数の定義
 			XMFLOAT3 eyeDir = Camera::GetEyeDir();
 			XMVECTOR eyeDirV = { eyeDir.x,eyeDir.y,eyeDir.z,0 };
 			XMVECTOR upV = { Camera::GetUp().x,Camera::GetUp().y,Camera::GetUp().z,0 };
-			// プレイヤーの位置からupベクトルをとる
-			XMVECTOR playerUpV = {position.x,position.y,position.z};
-			playerUpV.m128_f32[1] += 1;
+
+			// プレイヤーのupベクトルをとる
+			XMVECTOR playerUpV = { 0,1,0 };
+
 			// eyeDirV と　upの外積
 			// 左右移動用
 			XMVECTOR moveRIGHTLEFT = DirectX::XMVector3Normalize(DirectX::XMVector3Cross(upV, eyeDirV));
@@ -207,11 +209,9 @@ void Player::Update()
 			{
 				move = DirectX::XMVector3Normalize(move);
 
-				position.x += move.m128_f32[0];
-				position.z += move.m128_f32[2];
+				position.x += move.m128_f32[0] * SPEED;
+				position.z += move.m128_f32[2] * SPEED;
 
-				attackPos.x += move.m128_f32[0] * 5;
-				attackPos.z += move.m128_f32[2] * 5;
 				// 左右移動用に初期化
 				move = { 0,0,0 };
 			}
@@ -230,14 +230,10 @@ void Player::Update()
 			
 			move = DirectX::XMVector3Normalize(move);
 
-			position.x += move.m128_f32[0];
-			position.z += move.m128_f32[2];
-
-			attackPos.x += move.m128_f32[0] * 5;
-			attackPos.z += move.m128_f32[2] * 5;
+			position.x += move.m128_f32[0] * SPEED;
+			position.z += move.m128_f32[2] * SPEED;
 
 			objPlayer->SetPosition(position);
-			attackObj->SetPosition(attackPos);
 			// 必殺技の位置はplayerの位置
 			specialAttackObj->SetPosition(position);
 
@@ -248,8 +244,6 @@ void Player::Update()
 	//// 回転設定用 　yに-90しているのはモデルの初期値に対するものあとで変更
 	//// 攻撃中は回転を止める
 	//if(!attack->GetAttackStart())attackObj->SetRotation({ 0, -1 *Camera::GetPhi()- 90,0 });
-
-
 
 
 	// 攻撃用処理
@@ -263,15 +257,35 @@ void Player::Update()
 		// 距離変更用
 		const float DISTANCE = 5;
 
-		//XMFLOAT3 tempPos = { position.x + move.m128_f32[0] * DISTANCE,position.y,position.z + move.m128_f32[2] * DISTANCE};
-		//attackObj->SetPosition(tempPos);
+		// 外積に必要な変数の定義
+		XMVECTOR eyeDirV = { eyeDir.x,eyeDir.y,eyeDir.z,0 };
+		XMVECTOR upV = { Camera::GetUp().x,Camera::GetUp().y,Camera::GetUp().z,0 };
 
-		// 正面方向に向きを合わせる(後程)
+		// プレイヤーの位置からupベクトルをとる
+		XMVECTOR playerUpV = { 0,1,0 };
 
+		// eyeDirV と　upの外積
+		XMVECTOR side = DirectX::XMVector3Normalize(DirectX::XMVector3Cross(upV, eyeDirV));
+		// 前方向計算用
+		XMVECTOR front = DirectX::XMVector3Normalize(DirectX::XMVector3Cross(side, playerUpV));
+
+		front = DirectX::XMVector3Normalize(front);
+
+		float posX = front.m128_f32[0] * DISTANCE;
+		float posZ = front.m128_f32[2] * DISTANCE;
+
+		// 位置の設定
+		XMFLOAT3 setPos;
+		setPos.x = position.x + posX;
+		setPos.y = position.y;
+		setPos.z = position.z + posZ;
+		
+		attackObj->SetPosition(setPos);
+		
 		attack->SetAttackStart();
 	}
-	else if (XINPUT_TRIGGER & XINPUT_BUTTON_Y && !attack->GetAttackStart() && level != 0 ||
-		input->TriggerKey(DIK_EQUALS) && !attack->GetAttackStart() && level != 0) // ボタンを押したとき　攻撃をしていないとき レベルが0じゃないときに
+	else if (XINPUT_TRIGGER & XINPUT_BUTTON_Y && !attack->GetAttackStart() && level >= 0 ||
+		input->TriggerKey(DIK_EQUALS) && !attack->GetAttackStart() && level >= 0) // ボタンを押したとき　攻撃をしていないとき レベルが0じゃないときに
 	{
 		const float DAMAGE = 2.5f;
 		
@@ -282,8 +296,6 @@ void Player::Update()
 		
 		specialAttack->SetAttackStart();
 		//Camera::GetInstance()->SetZoomState(5, 0.5f);
-		
-
 	}
 
 	if (specialAttack->GetAttackStart())isSpecial = true;
@@ -296,7 +308,7 @@ void Player::Update()
 	if (isDamage)
 	{
 		damageCount++;
-		objPlayer->SetColor({ 0,1,1 });
+		objPlayer->SetColor({ 1,0,0 });
 
 		// ダメージ状態解除条件
 		if (damageCount >= DAMAGE_FRAME)

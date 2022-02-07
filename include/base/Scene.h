@@ -14,6 +14,11 @@ class SceneManager;
 // シーンクラスの基底クラス
 class Scene
 {
+	// エイリアス
+protected:
+	using TitleTexNum = GameFunction::TitleTexNum;
+
+
 public:
 	Scene() {};
 	virtual ~Scene() {};

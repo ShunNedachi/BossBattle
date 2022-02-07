@@ -22,6 +22,7 @@ void GameFunction::LoadTitleSceneTexture()
 	Sprite2D::LoadTex(titleExplainSprite, "title.png");
 	Sprite2D::LoadTex(selectTutorial, "selectTutorial.png");
 	Sprite2D::LoadTex(selectGameStart, "selectGamePlay.png");
+	Sprite2D::LoadTex(arrowSprite, "arrow.png");
 }
 
 void GameFunction::LoadEndSceneTexture()
