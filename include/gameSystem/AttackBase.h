@@ -1,6 +1,7 @@
 #pragma once
 #include<DirectXMath.h>
 #include"Object.h"
+#include"Light.h"
 
 struct AttackSize
 {
@@ -32,7 +33,7 @@ public:
 
 	// update
 	void Update();
-	void Draw();
+	void Draw(Light& light);
 
 	// çUåÇäJénóp
 	void SetAttackStart();

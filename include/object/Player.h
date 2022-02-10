@@ -3,6 +3,7 @@
 #include"Sprite2D.h"
 #include"AttackBase.h"
 #include<string>
+#include"Light.h"
 
 // ステータス情報が増えたとき用特に今は使用なし　必要なら後で.hにファイル分け
 #define STATE_DEAD 0x001
@@ -29,7 +30,7 @@ public:
 	//
 	void Init(const String& filename);
 	void Update();
-	void Draw();
+	void Draw(Light& light);
 
 	// 経験値更新用
 	void EXPupdate();

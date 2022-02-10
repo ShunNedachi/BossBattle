@@ -50,6 +50,7 @@ public:
 	static float GetThetaRadius() { return theta * DirectX::XM_PI / 180;}
 
 	static XMMATRIX GetViewMatrix() { return matView; }
+	static XMMATRIX GetProjection() { return projectionMat; }
 	static XMMATRIX GetBillboardMatrix() { return matBillboard; }
 	static XMMATRIX GetBillboardYMatrix() { return matBillboradY; }
 
@@ -78,6 +79,8 @@ public:
 	void UpdateView();
 	// ビルボード行列用
 	void UpdateBillboard();
+	// プロジェクション行列用
+	void UpdateProjection();
 
 	// デバッグ用
 	static void DebugDraw();
@@ -110,6 +113,9 @@ private:
 
 	// ビュー行列
 	static XMMATRIX matView;
+	// プロジェクション行列
+	static XMMATRIX projectionMat;
+
 	// ビルボード行列
 	static XMMATRIX matBillboard;
 	// Y軸周りビルボード行列
@@ -121,6 +127,9 @@ private:
 	float zoomRadius;
 	float zoomCount = 0;
 	bool zoomEnd = false;
+
+	// 画角
+	float fov = 60.0f;
 
 	// ズーム解除時にイージングをかけるのかどうか
 	bool endEasing = false;

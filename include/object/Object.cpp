@@ -10,17 +10,14 @@
 #include<string>
 
 
-
 // 3dObject 共有変数
 Microsoft::WRL::ComPtr<ID3D12RootSignature> Object::rootSignature[2]; // ルートシグネチャ
 Microsoft::WRL::ComPtr<ID3D12PipelineState> Object::pipelineState[2]; // パイプラインステート
-DirectX::XMMATRIX Object::matProjection; // 射影行列
-DirectX::XMMATRIX Object::matView;
 Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList> Object::commandList;
 Microsoft::WRL::ComPtr<ID3D12Device> Object::device;
 D3D12_GRAPHICS_PIPELINE_STATE_DESC Object::gpipeline{};
 Camera* Object::camera = nullptr;
-
+int Object::constBuffNum = 3;
 
 Object::Object(int shaderNum, const string& filename):shaderNum(shaderNum)
 {
@@ -120,7 +117,6 @@ void Object::CreatePiplineStateOBJ()
 	gpipeline.DepthStencilState = CD3DX12_DEPTH_STENCIL_DESC(D3D12_DEFAULT);
 	gpipeline.DSVFormat = DXGI_FORMAT_D32_FLOAT; // 深度値フォーマット
 
-
 	#pragma region ブレンド関係
 
 	// レンダーターゲットのブレンド設定（８個あるが今は１つしか使わない）
@@ -143,8 +139,6 @@ void Object::CreatePiplineStateOBJ()
 
 	#pragma endregion
 
-
-
 	gpipeline.InputLayout.pInputElementDescs = inputLayout;
 	gpipeline.InputLayout.NumElements = _countof(inputLayout);
 
@@ -159,17 +153,19 @@ void Object::CreatePiplineStateOBJ()
 	CD3DX12_DESCRIPTOR_RANGE descRangeSRV;
 	descRangeSRV.Init(D3D12_DESCRIPTOR_RANGE_TYPE_SRV, 1, 0); // t0レジスタ
 
-	// ルートパラメータ 定数バッファの項目
-	//CD3DX12_ROOT_PARAMETER rootparams[2];
-	//rootparams[0].InitAsConstantBufferView(0, 0, D3D12_SHADER_VISIBILITY_ALL); // 定数バッファとして初期化
-	//rootparams[1].InitAsDescriptorTable(1, &descRangeSRV, D3D12_SHADER_VISIBILITY_ALL);
-	CD3DX12_ROOT_PARAMETER rootparams[3];
-	rootparams[0].InitAsConstantBufferView(0, 0, D3D12_SHADER_VISIBILITY_ALL);
-	rootparams[1].InitAsConstantBufferView(1, 0, D3D12_SHADER_VISIBILITY_ALL);
-	rootparams[2].InitAsDescriptorTable(1, &descRangeSRV, D3D12_SHADER_VISIBILITY_ALL);
+	// ルートパラメータの生成
+	std::vector<CD3DX12_ROOT_PARAMETER> rootparams;
+	for (int i = 0; i < constBuffNum; i++)
+	{
+		rootparams.emplace_back();
+		rootparams.at(i).InitAsConstantBufferView(i, 0, D3D12_SHADER_VISIBILITY_ALL);
+	}
+	rootparams.emplace_back();
+	rootparams.back().InitAsDescriptorTable(1,&descRangeSRV,D3D12_SHADER_VISIBILITY_ALL);
 
+	// ルートシグネチャの設定
 	CD3DX12_VERSIONED_ROOT_SIGNATURE_DESC rootSignatureDesc;
-	rootSignatureDesc.Init_1_0(_countof(rootparams), rootparams, 1, &samplerDesc,
+	rootSignatureDesc.Init_1_0(rootparams.size(), &rootparams[0], 1, &samplerDesc,
 		D3D12_ROOT_SIGNATURE_FLAG_ALLOW_INPUT_ASSEMBLER_INPUT_LAYOUT);
 
 	ComPtr<ID3DBlob> rootSigBlob;
@@ -270,82 +266,39 @@ void Object::CreatePiplineStateOBJ()
 	result = device.Get()->CreateGraphicsPipelineState(&gpipeline, IID_PPV_ARGS(&pipelineState[1]));
 }
 
-void Object::Draw()
+void Object::Draw(Light& light)
 {
-	// num によってシェーダーを切り替える
-	if (shaderNum == 0)
-	{	
-		// パイプラインステートの設定
-		commandList->SetPipelineState(pipelineState[0].Get());
-		// ルートシグネチャの設定
-		commandList->SetGraphicsRootSignature(rootSignature[0].Get());
-		// プリミティブ形状を設定
-		commandList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP);
-	}
-	else if (shaderNum == 1)
-	{
-		// パイプラインステートの設定
-		commandList->SetPipelineState(pipelineState[1].Get());
-		// ルートシグネチャの設定
-		commandList->SetGraphicsRootSignature(rootSignature[1].Get());
-		// プリミティブ形状を設定
-		commandList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP);
-
-	}
+	// シェーダーを切り替える
+	SetDrawSetting(shaderNum);
 
 	using namespace DirectX;
 	HRESULT result;
 
-	matView = camera->GetViewMatrix();
+	XMMATRIX matView = Camera::GetViewMatrix();
+	XMMATRIX matProjection = Camera::GetProjection();
 
-	ConstBufferDataB0* constMap = nullptr;
-	result = constBuffB0->Map(0, nullptr, (void**)&constMap);
-	constMap->mat = matWorld * matView * matProjection;
-	constMap->cameraPos = camera->GetEye();
-	constMap->color = color;
-	//constMap->colorR = color.x;
-	//constMap->colorG = color.y;
-	//constMap->colorB = color.z;
-	//constMap->colorA = color.w;
-	constBuffB0->Unmap(0, nullptr);
+	// b0データ転送
+	ConstBufferDataB0 dataB0;
+	dataB0.mat = matWorld * matView * matProjection;
+	dataB0.cameraPos = camera->GetEye();
+	dataB0.color = color;
+	// 転送
+ 	UpdateBuffer(constBuffB0, dataB0);
 
 	// b1データ転送
-	ConstBufferDataB1* constMap1 = nullptr;
-	result = constBuffB1->Map(0, nullptr, (void**)&constMap1);
-	constMap1->ambient = material.ambient;
-	constMap1->diffuse = material.diffuse;
-	constMap1->specular = material.specular;
-	constMap1->alpha = material.alpha;
-	constBuffB1->Unmap(0, nullptr);
+	ConstBufferDataB1 dataB1;
+	dataB1.ambient = material.ambient;
+	dataB1.diffuse = material.diffuse;
+	dataB1.specular = material.specular;
+	dataB1.alpha = material.alpha;
 
+	UpdateBuffer(constBuffB1, dataB1);
 
 	// デスクリプタヒープの配列
 	ID3D12DescriptorHeap* ppHeaps[] = { descHeap.Get() };
 	commandList->SetDescriptorHeaps(_countof(ppHeaps), ppHeaps);
 
-
-	// 頂点バッファをセット
-	commandList->IASetVertexBuffers(0, 1, &vbView);
-
-	commandList->IASetIndexBuffer(&ibView);
-
-	// 定数バッファをセット
-	commandList->SetGraphicsRootConstantBufferView(0, constBuffB0->GetGPUVirtualAddress());
-	// マテリアル関係
-	commandList->SetGraphicsRootConstantBufferView(1, constBuffB1->GetGPUVirtualAddress());
-
-	// シェーダリソースビューをセット
-	commandList->SetGraphicsRootDescriptorTable(2,
-		CD3DX12_GPU_DESCRIPTOR_HANDLE(
-			descHeap->GetGPUDescriptorHandleForHeapStart(),
-			texNumber,
-			device->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV)));
-
-
-	commandList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
-
-	if(vertices.size() ==0)commandList->DrawIndexedInstanced(18, 1, 0, 0, 0);
-	else commandList->DrawIndexedInstanced((UINT)indices.size(), 1, 0, 0, 0);
+	DrawCommand(light);
 }
 
 
@@ -379,17 +332,6 @@ void Object::Init(MyDirectX12* my12)
 {
 	using namespace DirectX;
 
-
-	// 射影変換
-	matProjection = XMMatrixPerspectiveFovLH(
-		XMConvertToRadians(60.0f),
-		(float)WINDOW_WIDTH / WINDOW_HEIGHT,
-		0.1f, 1000.0f
-	);
-
-
-
-
 	commandList = my12->CommandList();
 	device = my12->Device();
 	Object::camera = Camera::GetInstance();
@@ -412,6 +354,7 @@ void Object::CreateModel(const string &modelname)
 	descHeapDesc.NumDescriptors = 1;
 	result = device->CreateDescriptorHeap(&descHeapDesc, IID_PPV_ARGS(&descHeap));
 
+	#pragma region file読み込み処理
 
 	// ファイルストリーム
 	std::ifstream file;
@@ -475,11 +418,11 @@ void Object::CreateModel(const string &modelname)
 			int faceCount = 0;
 
 			string index_string;
-			while (getline(line_stream,index_string,' '))
+			while (getline(line_stream, index_string, ' '))
 			{
 
 				std::istringstream index_stream(index_string);
-				unsigned short indexPosition,indexNormal,indexTexcoord;
+				unsigned short indexPosition, indexNormal, indexTexcoord;
 				index_stream >> indexPosition;
 
 				index_stream.seekg(1, std::ios_base::cur);
@@ -493,7 +436,7 @@ void Object::CreateModel(const string &modelname)
 				vertex.uv = texcoords[indexTexcoord - 1];
 				vertices.emplace_back(vertex);
 
-				
+
 				if (faceCount >= 3)
 				{
 					// 四角形ポリゴンの4点目
@@ -525,6 +468,7 @@ void Object::CreateModel(const string &modelname)
 	}
 	file.close();
 
+#pragma endregion
 
 	UINT sizeVB = static_cast<UINT>(sizeof(Vertex)*vertices.size());
 	UINT sizeIB = static_cast<UINT>(sizeof(unsigned short)*indices.size());
@@ -554,27 +498,15 @@ void Object::CreateModel(const string &modelname)
 	//　頂点バッファへのデータ転送
 	Vertex* vertMap = nullptr;
 	result = vertBuff->Map(0, nullptr, (void**)&vertMap);
-	//memcpy(vertMap, vertices, sizeof(vertices));
 	std::copy(vertices.begin(), vertices.end(), vertMap);
 	vertBuff->Unmap(0, nullptr);
 
 	// インデックスバッファへのデータ転送
 	unsigned short* indexMap = nullptr;
 	result = indexBuff->Map(0, nullptr, (void**)&indexMap);
-	//for (int i = 0; i < _countof(indices); i++)
-	//{
-	//	indexMap[i] = indices[i]; // インデックスをコピー
-	//}
 	std::copy(indices.begin(), indices.end(), indexMap);
 	indexBuff->Unmap(0, nullptr);
 
-
-	//// テクスチャ情報取得
-	//D3D12_RESOURCE_DESC resDesc =
-	//	texBuff->GetDesc();
-
-	////　使用するテクスチャ番号をメンバ変数に入れる
-	//this->texNumber = texNumber;
 
 	// 頂点バッファビューの作成
 	vbView.BufferLocation = vertBuff->GetGPUVirtualAddress();
@@ -587,47 +519,28 @@ void Object::CreateModel(const string &modelname)
 
 
 	//定数バッファの生成 b0
-	result = device->CreateCommittedResource(
-		&CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_UPLOAD),
-		D3D12_HEAP_FLAG_NONE,
-		&CD3DX12_RESOURCE_DESC::Buffer((sizeof(ConstBufferDataB0) + 0xff)&~0xff),
-		D3D12_RESOURCE_STATE_GENERIC_READ,
-		nullptr,
-		IID_PPV_ARGS(&constBuffB0)
-	);
-
+	result = CreateConstBuffer<ConstBufferDataB0>(constBuffB0);
 	// b1
-	result = device->CreateCommittedResource(
-		&CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_UPLOAD),
-		D3D12_HEAP_FLAG_NONE,
-		&CD3DX12_RESOURCE_DESC::Buffer((sizeof(ConstBufferDataB1) + 0xff)&~0xff),
-		D3D12_RESOURCE_STATE_GENERIC_READ,
-		nullptr,
-		IID_PPV_ARGS(&constBuffB1)
-	);
+	result = CreateConstBuffer<ConstBufferDataB1>(constBuffB1);
 
-	// b0 データ転送
-	ConstBufferDataB0* constMap = nullptr;
-	result = constBuffB0->Map(0, nullptr, (void**)&constMap);
-	constMap->mat = matWorld * matView * matProjection;
-	//constMap->cameraPos = camera->GetEye();
-	constMap->color = color;
-	//constMap->colorR = color.x;
-	//constMap->colorG = color.y;
-	//constMap->colorB = color.z;
-	//constMap->colorA = color.w;
+	XMMATRIX matView = Camera::GetViewMatrix();
+	XMMATRIX matProjection = Camera::GetProjection();
 
-	constBuffB0->Unmap(0, nullptr);
+	// b0 データ転送用　変数定義
+	ConstBufferDataB0 dataB0;
+	dataB0.mat = matWorld * matView * matProjection;
+	dataB0.cameraPos = camera->GetEye();
+	dataB0.color = color;
+	// 転送
+	UpdateBuffer(constBuffB0, dataB0);
 
-	// b1データ転送
-	ConstBufferDataB1* constMap1 = nullptr;
-	result = constBuffB1->Map(0, nullptr, (void**)&constMap1);
-	constMap1->ambient = material.ambient;
-	constMap1->diffuse = material.diffuse;
-	constMap1->specular = material.specular;
-	constMap1->alpha = material.alpha;
-	constBuffB1->Unmap(0, nullptr);
-
+	// b1データ転送用　変数定義
+	ConstBufferDataB1 dataB1;
+	dataB1.ambient = material.ambient;
+	dataB1.diffuse = material.diffuse;
+	dataB1.specular = material.specular;
+	dataB1.alpha = material.alpha;
+	UpdateBuffer(constBuffB1, dataB1);
 }
 
 void Object::LoadMaterial(const std::string &directoryPath, const std::string &filename)
@@ -762,5 +675,45 @@ bool Object::LoadTexture(const std::string &directoryPath, const std::string &fi
 
 
 	return S_OK;
+
+}
+
+void Object::SetDrawSetting(int index)
+{
+	// パイプラインステートの設定
+	commandList->SetPipelineState(pipelineState[index].Get());
+	// ルートシグネチャの設定
+	commandList->SetGraphicsRootSignature(rootSignature[index].Get());
+	// プリミティブ形状を設定
+	commandList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP);
+
+}
+
+void Object::DrawCommand(Light& light)
+{
+	// 頂点バッファをセット
+	commandList->IASetVertexBuffers(0, 1, &vbView);
+	// インデックスバッファをセット
+	commandList->IASetIndexBuffer(&ibView);
+
+	
+	// 定数バッファをセット
+	commandList->SetGraphicsRootConstantBufferView(0, constBuffB0->GetGPUVirtualAddress());
+	commandList->SetGraphicsRootConstantBufferView(1, constBuffB1->GetGPUVirtualAddress());
+	// 後でライトのデータを引数で持ってきてセット
+	commandList->SetGraphicsRootConstantBufferView(2, light.GetGPUAddress());
+
+	// シェーダリソースビューをセット
+	commandList->SetGraphicsRootDescriptorTable(constBuffNum,
+		CD3DX12_GPU_DESCRIPTOR_HANDLE(
+			descHeap->GetGPUDescriptorHandleForHeapStart(),
+			texNumber,
+			device->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV)));
+
+
+	commandList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+
+	if (vertices.size() == 0)commandList->DrawIndexedInstanced(18, 1, 0, 0, 0);
+	else commandList->DrawIndexedInstanced((UINT)indices.size(), 1, 0, 0, 0);
 
 }

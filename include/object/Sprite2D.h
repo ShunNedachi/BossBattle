@@ -19,6 +19,10 @@ struct ConstBufferData
 
 class Sprite2D
 {
+private:
+	template<class T>using ComPtr = Microsoft::WRL::ComPtr<T>;
+	using string = std::string;
+
 public:
 	// アンカーポイントの設定
 	Sprite2D(float anchorWidth, float anchorHeigh);
@@ -27,7 +31,7 @@ public:
 	// 全体で一度だけ初期化
 	static void Init(MyDirectX12* directX);
 
-	static void CreatePipelineStateOBJ(Microsoft::WRL::ComPtr<ID3D12Device> dev);
+	static void CreatePipelineStateOBJ(ComPtr<ID3D12Device> dev);
 
 	// sizeとtexnumberで生成
 	HRESULT CreateSprite(UINT texNumber,float sizeX,float sizeY);
@@ -35,13 +39,13 @@ public:
 
 
 	// 共有テクスチャ番号に画像を記録　拡張子を添える必要あり
-	static HRESULT LoadTex(UINT texnumber, const std::string& filename);
+	static HRESULT LoadTex(UINT texnumber, const string& filename);
 	HRESULT Resize(float width, float height);
 	HRESULT Resize();
 
 
 	// 毎フレーム処理
-	void SetPipelineForSprite(Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList> cmdList);
+	void SetPipelineForSprite(ComPtr<ID3D12GraphicsCommandList> cmdList);
 	void Draw();
 
 	void InitColor();
@@ -73,20 +77,32 @@ public:
 
 private:
 
+	// 処理まとめ用
+
+	void DrawCommand();
+
+	template<typename T>
+	HRESULT CreateConstBuffer(ComPtr<ID3D12Resource>& buffer);
+
+	template<typename T>
+	void UpdateBuffer(ComPtr<ID3D12Resource>& buffer, T& bufferData);
+
+private:
+
 	// 共有する変数  静的変数
-	static Microsoft::WRL::ComPtr<ID3D12RootSignature> spriteRootSignature; // ルートシグネチャ
-	static Microsoft::WRL::ComPtr<ID3D12PipelineState> spritePipelineState; // パイプラインステート
+	static ComPtr<ID3D12RootSignature> spriteRootSignature; // ルートシグネチャ
+	static ComPtr<ID3D12PipelineState> spritePipelineState; // パイプラインステート
 	static DirectX::XMMATRIX spriteMatProjection; // 射影行列
 	static const int spriteSRVCount = 512; // テクスチャの最大枚数
-	static Microsoft::WRL::ComPtr<ID3D12DescriptorHeap> spriteDescHeap;
-	static Microsoft::WRL::ComPtr<ID3D12Resource> spriteTexBuff[spriteSRVCount];
-	static Microsoft::WRL::ComPtr<ID3D12Device> device;
-	static Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList> commandList;
+	static ComPtr<ID3D12DescriptorHeap> spriteDescHeap;
+	static ComPtr<ID3D12Resource> spriteTexBuff[spriteSRVCount];
+	static ComPtr<ID3D12Device> device;
+	static ComPtr<ID3D12GraphicsCommandList> commandList;
 
 
 	// 1枚ごとに変える変数
-	Microsoft::WRL::ComPtr<ID3D12Resource> spriteVertBuff; // 頂点バッファ
-	Microsoft::WRL::ComPtr<ID3D12Resource> spriteConstBuff; // 定数バッファ
+	ComPtr<ID3D12Resource> spriteVertBuff; // 頂点バッファ
+	ComPtr<ID3D12Resource> spriteConstBuff; // 定数バッファ
 	D3D12_VERTEX_BUFFER_VIEW spriteVBView{}; // 頂点バッファビュー
 
 	D3D12_GRAPHICS_PIPELINE_STATE_DESC gpipeline{};
@@ -116,3 +132,31 @@ private:
 
 	DirectX::XMFLOAT2 originalSize;
 };
+
+template<typename T>
+HRESULT Sprite2D::CreateConstBuffer(ComPtr<ID3D12Resource>& buffer)
+{
+	HRESULT result;
+
+	result = device->CreateCommittedResource(
+		&CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_UPLOAD),
+		D3D12_HEAP_FLAG_NONE,
+		&CD3DX12_RESOURCE_DESC::Buffer((sizeof(T) + 0xff) & ~0xff),
+		D3D12_RESOURCE_STATE_GENERIC_READ,
+		nullptr,
+		IID_PPV_ARGS(&buffer)
+	);
+
+	return result;
+}
+
+template<typename T>
+void Sprite2D::UpdateBuffer(ComPtr<ID3D12Resource>& buffer, T& bufferData)
+{
+	T* map = nullptr;
+	HRESULT result;
+
+	result = buffer->Map(0, nullptr, (void**)&map);
+	*map = *(&bufferData);
+	buffer->Unmap(0, nullptr);
+}

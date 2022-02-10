@@ -186,6 +186,9 @@
     <ClCompile Include="include\object\Particle.cpp">
       <Filter>ソース ファイル\object</Filter>
     </ClCompile>
+    <ClCompile Include="include\object\Light.cpp">
+      <Filter>ソース ファイル\object</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\audio\Audio.h">
@@ -318,6 +321,9 @@
       <Filter>ヘッダー ファイル\base\scene</Filter>
     </ClInclude>
     <ClInclude Include="include\object\Particle.h">
+      <Filter>ヘッダー ファイル\object</Filter>
+    </ClInclude>
+    <ClInclude Include="include\object\Light.h">
       <Filter>ヘッダー ファイル\object</Filter>
     </ClInclude>
   </ItemGroup>

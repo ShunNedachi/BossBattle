@@ -62,9 +62,9 @@ void Enemy::Update()
 	obj->Update();
 }
 
-void Enemy::Draw()
+void Enemy::Draw(Light& light)
 {
-	obj->Draw();
+	obj->Draw(light);
 }
 
 void Enemy::Destroy()

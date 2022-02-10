@@ -114,20 +114,21 @@ void Boss::Update()
 	obj->SetPosition(position);
 }
 
-void Boss::Draw()
+void Boss::Draw(Light& light)
 {
-	obj->Draw();
+	obj->Draw(light);
 
 	for (int i = 0; i < enemys.size(); i++)
 	{
-		enemys[i]->Draw();
+		enemys[i]->Draw(light);
 	}
 
 	for (int i = 0; i < attackObjs.size(); i++)
 	{
-		attackObjs[i]->Draw();
+		attackObjs[i]->Draw(light);
 	}
 
+	// スプライト
 	hpSprite->Draw();
 	hpBarSprite->Draw();
 }

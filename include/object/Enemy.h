@@ -1,6 +1,7 @@
 #pragma once
 #include"Object.h"
 #include"Setting.h"
+#include"Light.h"
 
 // Šî’êƒNƒ‰ƒX
 class Enemy
@@ -18,7 +19,7 @@ public:
 
 	virtual void Init();
 	virtual void Update();
-	virtual void Draw();
+	virtual void Draw(Light& light);
 
 	void Destroy();
 

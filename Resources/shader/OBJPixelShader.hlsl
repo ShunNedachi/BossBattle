@@ -17,10 +17,10 @@ float4 main(VSOutput input):SV_TARGET
 	float4 texcolor = tex.Sample(smp,input.uv);
 
 	float4 pixelReturn = input.color * texcolor;
-	pixelReturn.x *= colorR;
+	pixelReturn.x *= color.r;
 	//pixelReturn.x *= 1;
-	pixelReturn.y *= colorG;
-	pixelReturn.z *= colorB;
+	pixelReturn.y *= color.g;
+	pixelReturn.z *= color.b;
 
 
 	return pixelReturn;

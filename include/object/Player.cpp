@@ -334,13 +334,13 @@ void Player::Update()
 
 }
 
-void Player::Draw()
+void Player::Draw(Light& light)
 {
 	// 後でダメージ状態の時に赤く点滅するように修正する
-	objPlayer->Draw();
+	objPlayer->Draw(light);
 
-	if (attack->GetIsAttack())attackObj->Draw();
-	if (specialAttack->GetIsAttack())specialAttackObj->Draw();
+	if (attack->GetIsAttack())attackObj->Draw(light);
+	if (specialAttack->GetIsAttack())specialAttackObj->Draw(light);
 
 	// 体力バー用
 	for (int i = 0; i < health; i++)

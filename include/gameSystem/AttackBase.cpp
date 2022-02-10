@@ -97,7 +97,7 @@ bool AttackBase::Hit(XMFLOAT3 pos, XMFLOAT3 size, float r)
 	return false;
 }
 
-void AttackBase::Draw()
+void AttackBase::Draw(Light& light)
 {
-	object->Draw();
+	object->Draw(light);
 }
