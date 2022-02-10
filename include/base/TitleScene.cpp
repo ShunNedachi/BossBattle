@@ -119,7 +119,10 @@ void TitleScene::Update()
 
 
 		// ‘I‘ð‚³‚ê‚½‚Æ‚«‚ÉŽŸ‚ÌƒV[ƒ“‚ÉˆÚ“®
-		if (xinput->TriggerButton(CONTROLLER_1) & XINPUT_BUTTON_A || input->TriggerKey(DIK_SPACE))isNext = true;
+		if (xinput->TriggerButton(CONTROLLER_1) & XINPUT_BUTTON_A || input->TriggerKey(DIK_SPACE))
+		{
+			isNext = true;
+		}
 	}
 
 

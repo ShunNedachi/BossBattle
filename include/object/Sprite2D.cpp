@@ -34,16 +34,6 @@ void Sprite2D::CreatePipelineStateOBJ(Microsoft::WRL::ComPtr<ID3D12Device> dev)
 	using namespace Microsoft::WRL;
 
 	CD3DX12_STATIC_SAMPLER_DESC samplerDesc = CD3DX12_STATIC_SAMPLER_DESC(0);
-	//samplerDesc.AddressU = D3D12_TEXTURE_ADDRESS_MODE_WRAP; // 横繰り返し
-	//samplerDesc.AddressV = D3D12_TEXTURE_ADDRESS_MODE_WRAP;
-	//samplerDesc.AddressW = D3D12_TEXTURE_ADDRESS_MODE_WRAP;
-	//samplerDesc.BorderColor = D3D12_STATIC_BORDER_COLOR_TRANSPARENT_BLACK; // ボーダーの時は黒
-	//samplerDesc.Filter = D3D12_FILTER_MIN_MAG_MIP_POINT; // 補間しない
-	//samplerDesc.MaxLOD = D3D12_FLOAT32_MAX;
-	//samplerDesc.MinLOD = 0.0f;
-	//samplerDesc.ComparisonFunc = D3D12_COMPARISON_FUNC_NEVER;
-	//samplerDesc.ShaderVisibility = D3D12_SHADER_VISIBILITY_PIXEL; // ピクセルシェーダからのみ可視
-
 
 	ComPtr<ID3DBlob> vsBlob;// 頂点シェーダーオブジェクト
 	ComPtr<ID3DBlob> psBlob;// ピクセルシェーダーオブジェクト
@@ -248,21 +238,14 @@ HRESULT Sprite2D::CreateSprite(UINT texNumber, float sizeX, float sizeY)
 	spriteVBView.StrideInBytes = sizeof(vertices[0]);
 
 	//定数バッファの生成
-	result = device->CreateCommittedResource(
-		&CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_UPLOAD),
-		D3D12_HEAP_FLAG_NONE,
-		&CD3DX12_RESOURCE_DESC::Buffer((sizeof(ConstBufferData) + 0xff)&~0xff),
-		D3D12_RESOURCE_STATE_GENERIC_READ,
-		nullptr,
-		IID_PPV_ARGS(&spriteConstBuff)
-	);
+	result = CreateConstBuffer<ConstBufferData>(spriteConstBuff);
 
 	// 定数バッファにデータ転送
-	ConstBufferData* constMap = nullptr;
-	result = spriteConstBuff->Map(0, nullptr, (void**)&constMap);
-	constMap->mat = XMMatrixOrthographicOffCenterLH(
-		0.0f,WINDOW_WIDTH , WINDOW_HEIGHT, 0.0f, 0.0f, 1.0f); // 平行投影行列の合成
-	spriteConstBuff->Unmap(0, nullptr);
+	ConstBufferData data;
+	// 平行投影行列の合成
+	data.mat = XMMatrixOrthographicOffCenterLH(0.0f, WINDOW_WIDTH, WINDOW_HEIGHT, 0.0f, 0.0f, 1.0f);
+	data.color = spriteColor;
+	UpdateBuffer(spriteConstBuff, data);
 
 	Resize(sizeX, sizeY);
 
@@ -320,21 +303,15 @@ HRESULT Sprite2D::CreateSprite(UINT texNumber)
 	spriteVBView.StrideInBytes = sizeof(vertices[0]);
 
 	//定数バッファの生成
-	result = device->CreateCommittedResource(
-		&CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_UPLOAD),
-		D3D12_HEAP_FLAG_NONE,
-		&CD3DX12_RESOURCE_DESC::Buffer((sizeof(ConstBufferData) + 0xff)&~0xff),
-		D3D12_RESOURCE_STATE_GENERIC_READ,
-		nullptr,
-		IID_PPV_ARGS(&spriteConstBuff)
-	);
+	result = CreateConstBuffer<ConstBufferData>(spriteConstBuff);
 
 	// 定数バッファにデータ転送
-	ConstBufferData* constMap = nullptr;
-	result = spriteConstBuff->Map(0, nullptr, (void**)&constMap);
-	constMap->mat = XMMatrixOrthographicOffCenterLH(
-		0.0f, WINDOW_WIDTH, WINDOW_HEIGHT, 0.0f, 0.0f, 1.0f); // 平行投影行列の合成
-	spriteConstBuff->Unmap(0, nullptr);
+	ConstBufferData data;
+	// 平行投影行列の合成
+	data.mat = XMMatrixOrthographicOffCenterLH(0.0f, WINDOW_WIDTH, WINDOW_HEIGHT, 0.0f, 0.0f, 1.0f);
+	data.color = spriteColor;
+
+	UpdateBuffer(spriteConstBuff, data);
 
 	Resize();
 
@@ -444,12 +421,11 @@ void Sprite2D::Draw()
 	spriteMatWorld *= XMMatrixRotationZ(XMConvertToRadians(spriteRotation));
 	spriteMatWorld *= XMMatrixTranslation(spritePosition.x, spritePosition.y,0);
 
-	// 行列の転送
-	ConstBufferData* constMap = nullptr;
-	HRESULT result = spriteConstBuff->Map(0, nullptr, (void**)&constMap);
-	constMap->mat = spriteMatWorld * spriteMatProjection; // 行列の合成
-	constMap->color = spriteColor;
-	spriteConstBuff->Unmap(0, nullptr);
+	// 定数バッファの転送
+	ConstBufferData data;
+	data.mat = spriteMatWorld * spriteMatProjection;
+	data.color = spriteColor;
+	UpdateBuffer(spriteConstBuff, data);
 
 	if (isDrawFlash)
 	{
@@ -472,24 +448,7 @@ void Sprite2D::Draw()
 		}
 	}
 
-	// デスクリプタヒープの配列
-	ID3D12DescriptorHeap* ppHeaps[] = { spriteDescHeap.Get() };
-	commandList->SetDescriptorHeaps(_countof(ppHeaps), ppHeaps);
-
-	// 頂点バッファをセット
-	commandList->IASetVertexBuffers(0, 1, &spriteVBView);
-
-	// 定数バッファをセット
-	commandList->SetGraphicsRootConstantBufferView(0, spriteConstBuff->GetGPUVirtualAddress());
-	// シェーダリソースビューをセット
-	commandList->SetGraphicsRootDescriptorTable(1,
-		CD3DX12_GPU_DESCRIPTOR_HANDLE(
-			spriteDescHeap->GetGPUDescriptorHandleForHeapStart(),
-			texNumber,
-			device->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV))
-	);
-	// 描画コマンド
-	commandList->DrawInstanced(4, 1, 0, 0);
+	DrawCommand();
 }
 
 void Sprite2D::InitColor()
@@ -668,6 +627,29 @@ void Sprite2D::SpriteExtent(float tex_x, float tex_y, float tex_width, float tex
 
 	IsExtent = true;
 	UpdateVertices();
+}
+
+void Sprite2D::DrawCommand()
+{
+	// デスクリプタヒープの配列
+	ID3D12DescriptorHeap* ppHeaps[] = { spriteDescHeap.Get() };
+	commandList->SetDescriptorHeaps(_countof(ppHeaps), ppHeaps);
+
+	// 頂点バッファをセット
+	commandList->IASetVertexBuffers(0, 1, &spriteVBView);
+
+	// 定数バッファをセット
+	commandList->SetGraphicsRootConstantBufferView(0, spriteConstBuff->GetGPUVirtualAddress());
+	// シェーダリソースビューをセット
+	commandList->SetGraphicsRootDescriptorTable(1,
+		CD3DX12_GPU_DESCRIPTOR_HANDLE(
+			spriteDescHeap->GetGPUDescriptorHandleForHeapStart(),
+			texNumber,
+			device->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV))
+	);
+	// 描画コマンド
+	commandList->DrawInstanced(4, 1, 0, 0);
+
 }
 
 

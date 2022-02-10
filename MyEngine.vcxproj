@@ -172,6 +172,7 @@
     <ClCompile Include="include\input\XinputControll.cpp" />
     <ClCompile Include="include\object\Boss.cpp" />
     <ClCompile Include="include\object\Enemy.cpp" />
+    <ClCompile Include="include\object\Light.cpp" />
     <ClCompile Include="include\object\Model.cpp" />
     <ClCompile Include="include\object\Object.cpp" />
     <ClCompile Include="include\object\ObjectManager.cpp" />
@@ -218,6 +219,7 @@
     <ClInclude Include="include\input\XinputControll.h" />
     <ClInclude Include="include\object\Boss.h" />
     <ClInclude Include="include\object\Enemy.h" />
+    <ClInclude Include="include\object\Light.h" />
     <ClInclude Include="include\object\Model.h" />
     <ClInclude Include="include\object\Object.h" />
     <ClInclude Include="include\object\ObjectManager.h" />
