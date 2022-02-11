@@ -24,8 +24,11 @@ public:
 
 
 protected:
-	SceneManager() {};
-	~SceneManager() { };
+	SceneManager() = default;
+	~SceneManager() = default;
+
+	void operator=(const SceneManager& obj) {}
+	SceneManager(const Camera & obj) {}
 
 private:
 

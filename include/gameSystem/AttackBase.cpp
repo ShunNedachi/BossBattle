@@ -9,7 +9,7 @@ AttackBase::AttackBase(int startFrame, int attackFrame, int stopFrame, int combo
 
 AttackBase::~AttackBase()
 {
-
+	
 }
 
 void AttackBase::Update()
