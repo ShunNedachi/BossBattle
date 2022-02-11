@@ -16,14 +16,14 @@ float4 main(VSOutput input) :SV_TARGET
 	
 	// lambert反射の計算
 	// 右、下、奥の方向を向いたライト
-	float3 lightPos = { 0,100,0 };
-	float3 lightdir = float3(1, -1, 0);
-	lightdir = normalize(lightdir);
+	float3 lightPosition = { 0,100,0 };
+	float3 lightDirection = float3(1, -1, 0);
+	lightDirection = normalize(lightDirection);
 	// ライトの色(白)
 	float3 lightcolor = float3(1, 1, 1);
 
 	float3 eyeDir = { cameraPos.x - input.svpos.x ,cameraPos.y - input.svpos.y , cameraPos.z - input.svpos.z };
-	float intensity = saturate(dot(normalize(input.normal), normalize(cameraPos + lightPos)));
+	float intensity = saturate(dot(normalize(input.normal), normalize(cameraPos + lightPosition)));
 
 	float specular = step(0.5, pow(intensity, 50));
 

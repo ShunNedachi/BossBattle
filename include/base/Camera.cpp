@@ -17,6 +17,7 @@ float Camera::theta = 0;
 float Camera::initRadius = 20;
 bool Camera::zoomFlg = false;
 DirectX::XMMATRIX Camera::matView = {};
+DirectX::XMMATRIX Camera::projectionMat = {};
 DirectX::XMMATRIX Camera::matBillboard = DirectX::XMMatrixIdentity();
 DirectX::XMMATRIX Camera::matBillboradY = DirectX::XMMatrixIdentity();
 
@@ -68,7 +69,10 @@ void Camera::Update()
 	// 視線ベクトルの更新
 	UpdateEyeDir();
 
+	// ビルボード行列の更新
 	UpdateBillboard();
+	// プロジェクション行列の更新
+	UpdateProjection();
 }
 
 void Camera::Follow(XMFLOAT3 target)
@@ -173,6 +177,7 @@ void Camera::UpdateView()
 	XMVECTOR traslation = DirectX::XMVectorSet(tX.m128_f32[0], tY.m128_f32[1], tZ.m128_f32[2], 1.0f);
 	// ビュー行列に平行移動成分を設定
 	matView.r[3] = traslation;
+
 }
 
 void Camera::UpdateBillboard()
@@ -240,6 +245,16 @@ void Camera::UpdateBillboard()
 	matBillboradY.r[2] = yBillCameraAxisZ;
 	matBillboradY.r[3] = DirectX::XMVectorSet(0, 0, 0, 1);
 
+}
+
+void Camera::UpdateProjection()
+{
+	// 射影変換
+	projectionMat = DirectX::XMMatrixPerspectiveFovLH(
+		DirectX::XMConvertToRadians(fov),
+		(float)WINDOW_WIDTH / WINDOW_HEIGHT,
+		0.1f, 1000.0f
+	);
 }
 
 void Camera::ZoomIn()

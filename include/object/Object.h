@@ -5,7 +5,7 @@
 #include"Camera.h"
 #include<string>
 #include"Model.h"
-
+#include"Light.h"
 
 #define NORMAL 0
 #define TOON 1
@@ -34,14 +34,14 @@ public:
 	static void CreatePiplineStateOBJ();
 
 
-	void Draw();
-	void DrawFlash();
+	void Draw(Light& light);
 
 	void Update();
 
 	void CreateModel(const string& filename);
 	void LoadMaterial(const string& directryPath, const string& filename);
 	bool LoadTexture(const string& directoryPath, const string& filename);
+
 
 
 	// setter
@@ -64,7 +64,23 @@ public:
 	XMFLOAT3 GetSize() { return size; }
 	float GetRadius() { return r; }
 	XMFLOAT3 GetObjColor() { return color; }
+
+	static ComPtr<ID3D12Device> GetDevice() { return device; }
 	
+private:
+
+	// 処理まとめ用
+
+	void SetDrawSetting(int index);
+	void DrawCommand(Light& light);
+	
+	// 定数バッファの生成用
+	template<typename T>
+	HRESULT CreateConstBuffer(ComPtr<ID3D12Resource>& buffer);
+
+	// バッファの更新用
+	template<typename T>
+	void UpdateBuffer(ComPtr<ID3D12Resource>& buffer, T& bufferData);
 
 	#pragma endregion
 
@@ -76,6 +92,7 @@ private:
 	{
 		XMMATRIX mat; // 3d変換行列
 		XMFLOAT3 cameraPos;
+		float pad; // ぺディング
 		XMFLOAT3 color;
 		//float colorR; // 色（RGBA）
 		//float colorG;
@@ -121,24 +138,26 @@ private:
 #pragma endregion
 
 
-	#pragma region	directX
+	#pragma region	directX用変数
 
 	// 共有する変数
 	static ComPtr<ID3D12RootSignature> rootSignature[2]; // ルートシグネチャ
 	static ComPtr<ID3D12PipelineState> pipelineState[2]; // パイプラインステート
-	static XMMATRIX matProjection; // 射影行列
 	//static const int SRVCount = 512; // テクスチャの最大枚数
-	static XMMATRIX matView;
 
 	static ComPtr<ID3D12GraphicsCommandList> commandList;
 	static ComPtr<ID3D12Device> device;
 	static D3D12_GRAPHICS_PIPELINE_STATE_DESC gpipeline;
 
+	// 定数バッファ数
+	static int constBuffNum;
 
 
 	// 1枚ごとに変える変数
 	ComPtr<ID3D12Resource> vertBuff; // 頂点バッファ
 	ComPtr<ID3D12Resource> indexBuff; // インデックスバッファ
+
+
 	ComPtr<ID3D12Resource> constBuffB0; // 定数バッファ
 	ComPtr<ID3D12Resource> constBuffB1;
 
@@ -185,3 +204,31 @@ private:
 	bool isBillboard = false;
 	bool isBillboardY = false;
 };
+
+template<typename T>
+HRESULT Object::CreateConstBuffer(ComPtr<ID3D12Resource>& buffer)
+{
+	HRESULT result;
+
+	result = device->CreateCommittedResource(
+		&CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_UPLOAD),
+		D3D12_HEAP_FLAG_NONE,
+		&CD3DX12_RESOURCE_DESC::Buffer((sizeof(T) + 0xff) & ~0xff),
+		D3D12_RESOURCE_STATE_GENERIC_READ,
+		nullptr,
+		IID_PPV_ARGS(&buffer)
+	);
+
+	return result;
+}
+
+template<typename T>
+void Object::UpdateBuffer(ComPtr<ID3D12Resource>& buffer,T& bufferData)
+{
+	T* map = nullptr;
+	HRESULT result;
+
+	result = buffer->Map(0, nullptr, (void**)&map);
+ 	*map = *(&bufferData);
+	buffer->Unmap(0, nullptr);
+}

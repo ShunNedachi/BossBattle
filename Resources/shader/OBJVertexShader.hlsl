@@ -6,7 +6,7 @@ VSOutput main(float4 pos:POSITION, float3 normal : NORMAL, float2 uv : TEXCOORD)
 	float3 lightdir = float3(1, -1, 1);
 	lightdir = normalize(lightdir);
 	// ライトの色(白)
-	float3 lightcolor = float3(1, 1, 1);
+	//float3 lightcolor = float3(1, 1, 1);
 
 
 	// ピクセルシェーダーに渡す値
@@ -14,7 +14,7 @@ VSOutput main(float4 pos:POSITION, float3 normal : NORMAL, float2 uv : TEXCOORD)
 	output.svpos = mul(mat, pos);
 
 	// lambert反射の計算
-	output.color.rgb = dot(-lightdir, normal)*m_diffuse * lightcolor;
+	output.color.rgb = dot(-lightdir, normal) * m_diffuse * lightColor;
 	output.color.a = m_alpha;
 	output.uv = uv;
 
@@ -33,7 +33,7 @@ VSOutput main(float4 pos:POSITION, float3 normal : NORMAL, float2 uv : TEXCOORD)
 	// 鏡面反射光
 	float3 specular = pow(saturate(dot(reflect, eyedir)), shininess)*m_specular;
 	// 全て加算する
-	output.color.rgb = (ambient + diffuse + specular)*lightcolor;
+	output.color.rgb = (ambient + diffuse + specular)*lightColor;
 	output.color.a = m_alpha;
 
 	return output;

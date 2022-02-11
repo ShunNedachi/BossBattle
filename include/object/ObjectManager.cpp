@@ -11,6 +11,7 @@ std::vector<Sprite2D*> ObjectManager::spriteArray;
 //std::vector<std::string> ObjectManager::loadedFileArray;
 Player* ObjectManager::player = nullptr;
 Boss* ObjectManager::boss = nullptr;
+Light* ObjectManager::light = nullptr;
 
 // 関数
 
@@ -97,6 +98,13 @@ void ObjectManager::Destroy()
 	}
 	boss = nullptr;
 
+	// ライト
+	if (light != nullptr)
+	{
+		delete light;
+	}
+	light = nullptr;
+
 	// インスタンスを削除
 	if(instance != nullptr)delete instance;
 	instance = nullptr;
@@ -106,12 +114,18 @@ void ObjectManager::Initialize(MyDirectX12* my12)
 {
 	Object::Init(my12);
 	Sprite2D::Init(my12);
+	Light::StaticInitialize(Object::GetDevice().Get());
 }
 
 void ObjectManager::Update()
 {
 	// 配列チェック
 	CheckArray();
+
+	if (light)
+	{
+		light->Update();
+	}
 
 	// 当たり判定処理 敵がいるとき
 	if (boss)
@@ -165,12 +179,12 @@ void ObjectManager::Draw()
 {
 	for (auto x : objArray)
 	{
-		if(x != nullptr)x->Draw();
+		if(x != nullptr)x->Draw(*light);
 	}
 
-	if(player)player->Draw();
+	if(player)player->Draw(*light);
 
-	if (boss)boss->Draw();
+	if (boss)boss->Draw(*light);
 
 	for (auto x : spriteArray)
 	{
@@ -182,6 +196,11 @@ void ObjectManager::Draw()
 
 void ObjectManager::AddPlayer(const std::string& filename)
 {
+	if (light == nullptr)
+	{
+		light = new Light();
+	}
+
 	ObjectManager::player = player->GetInstance();
 
 	ObjectManager::player->Init(filename);
@@ -189,12 +208,21 @@ void ObjectManager::AddPlayer(const std::string& filename)
 
 void ObjectManager::AddBoss()
 {
+	if (light == nullptr)
+	{
+		light = new Light();
+	}
 	boss = new Boss();
 	boss->Init();
 }
 
 void ObjectManager::AddOBJ(const std::string& filename,XMFLOAT3 position,XMFLOAT3 scale,XMFLOAT3 rotation,int drawShader)
 {
+	if (light == nullptr)
+	{
+		light = new Light();
+	}
+
 	Object* obj = new Object(drawShader,filename);
 
 	obj->SetPosition(position);

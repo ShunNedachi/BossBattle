@@ -8,6 +8,7 @@
 #include<string>
 #include"Model.h"
 #include"Boss.h"
+#include"Light.h"
 
 // シングルトンパターン
 class ObjectManager
@@ -136,6 +137,9 @@ private:
 
 	// Enemy 仮置き
 	static Boss* boss;
+
+	// ライト　複数光源は後程対応するかも
+	static Light* light;
 
 	// クリア条件達成確認用
 	bool isClear = false;

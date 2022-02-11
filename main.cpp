@@ -6,6 +6,7 @@
 #include "XinputControll.h"
 #include"SceneManager.h"
 #include"FrameFixed.h"
+#include"Light.h"
 
 bool MessageError(MSG msg);
 
@@ -33,6 +34,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 	// オブジェクトマネージャー初期化
 	ObjectManager::Initialize(&my12);
+
 
 	// シーン管理用
 	SceneManager* sceneManager = SceneManager::GetInstance();
