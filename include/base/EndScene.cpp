@@ -29,7 +29,13 @@ void EndScene::Update()
 
 void EndScene::Draw()
 {
-	objectManager->Draw();
+	std::vector<Sprite2D*> spriteArray = *objectManager->GetSpriteArray();
+
+	for (int i = 0; i < spriteArray.size(); i++)
+	{
+		spriteArray[i]->Draw();
+	}
+	//objectManager->Draw();
 }
 
 void EndScene::NextScene(SceneManager* nowScene)

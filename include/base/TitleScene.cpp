@@ -24,13 +24,12 @@ void TitleScene::Initalize()
 	keepArrowPos = { 400,500 };
 
 	// サイズ変更
-	objectManager->SetSize((int)TitleTexNum::titleExplain, { 400,200 });
+	Sprite2D* spriteTemp = objectManager->GetSpriteArray()->at((int)TitleTexNum::titleExplain);
+	spriteTemp->Resize(400, 200);
 }
 
 void TitleScene::Update()
 {
-
-
 	// input関係
 	Input* input = Input::GetInstance();
 	Xinput* xinput = Xinput::GetInstance();
@@ -48,7 +47,7 @@ void TitleScene::Update()
 	// スタートでボタンを押されたときかつ選択状態じゃないとき　光らせる
 	if (startAnimation && !isSelect)spriteArray[(int)TitleTexNum::titleExplain]->SetDrawFlash(true);
 
-	if (startAnimation && spriteArray[(int)TitleTexNum::titleExplain]->GetColor().w < 0) 
+	if (startAnimation && spriteArray[(int)TitleTexNum::titleExplain]->GetAlpha() < 0) 
 	{
 		// 光っているのを止める
 		spriteArray[(int)TitleTexNum::titleExplain]->SetDrawFlash(false);
@@ -126,8 +125,11 @@ void TitleScene::Update()
 	}
 
 
-	objectManager->Update();
-
+	// スプライトの更新処理
+	for (auto x : spriteArray)
+	{
+		x->Update();
+	}
 
 	if(IsNext())NextScene(SceneManager::GetInstance());
 }

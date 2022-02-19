@@ -1,6 +1,9 @@
 cbuffer cbuff0:register(b0)
 {
-	float4 color; // F(RGBA)
+	float3 color; // F(RGB)
+	float alpha;
+	float pad1;
+	float pad2;
 	matrix mat; // 3ds—ñ•ÏŠ·
 };
 

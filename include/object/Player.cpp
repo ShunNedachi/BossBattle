@@ -343,20 +343,14 @@ void Player::Draw(Light& light)
 	if (specialAttack->GetIsAttack())specialAttackObj->Draw(light);
 
 	// 体力バー用
-	for (int i = 0; i < health; i++)
-	{
-		healthSprite[i]->Draw();
-	}
+	for (int i = 0; i < health; i++){healthSprite[i]->Draw();}
 	healthBarSprite->Draw();
-
 	// 経験値用
-	for (int i = 0; i < experience; i++)
-	{
-		expSprite[i]->Draw();
-	}
 	expBarSprite->Draw();
-
 	numberSprite[level]->Draw();
+	for (int i = 0; i < experience; i++){expSprite[i]->Draw();}
+
+
 
 #ifdef _DEBUG
 

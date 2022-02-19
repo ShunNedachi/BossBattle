@@ -395,17 +395,7 @@ HRESULT Sprite2D::LoadTex(UINT texnumber, const std::string& filename)
 	return S_OK;
 }
 
-void Sprite2D::SetPipelineForSprite(Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList> cmdList)
-{
-	// パイプラインステートの設定
-	cmdList->SetPipelineState(spritePipelineState.Get());
-	// ルートシグネチャの設定
-	cmdList->SetGraphicsRootSignature(spriteRootSignature.Get());
-	// プリミティブ形状を設定
-	cmdList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP);
-}
-
-void Sprite2D::Draw()
+void Sprite2D::SetPipelineForSprite()
 {
 	// パイプラインステートの設定
 	commandList->SetPipelineState(spritePipelineState.Get());
@@ -413,6 +403,29 @@ void Sprite2D::Draw()
 	commandList->SetGraphicsRootSignature(spriteRootSignature.Get());
 	// プリミティブ形状を設定
 	commandList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP);
+}
+
+void Sprite2D::Update()
+{
+	if (isDrawFlash)
+	{
+		if (spriteAlpha >= 1) { flashFlag = true; }
+		else if (spriteAlpha <= 0) { flashFlag = false; }
+
+		if (flashFlag)
+		{
+			spriteAlpha -= 0.01f * flashSpeed;
+		}
+		else
+		{
+			spriteAlpha += 0.01f * flashSpeed;
+		}
+	}
+}
+
+void Sprite2D::Draw()
+{
+	SetPipelineForSprite();
 
 	using namespace DirectX;
 
@@ -425,35 +438,16 @@ void Sprite2D::Draw()
 	ConstBufferData data;
 	data.mat = spriteMatWorld * spriteMatProjection;
 	data.color = spriteColor;
+	data.alpha = spriteAlpha;
 	UpdateBuffer(spriteConstBuff, data);
 
-	if (isDrawFlash)
-	{
-		if (spriteColor.x >= 1){flashFlag = true;}
-		else if (spriteColor.x <= 0){flashFlag = false;}
-
-		if (flashFlag)
-		{
-			spriteColor.x -= 0.01f * flashSpeed;
-			spriteColor.y -= 0.01f * flashSpeed;
-			spriteColor.z -= 0.01f * flashSpeed;
-			spriteColor.w -= 0.01f * flashSpeed;
-		}
-		else
-		{
-			spriteColor.x += 0.01f * flashSpeed;
-			spriteColor.y += 0.01f * flashSpeed;
-			spriteColor.z += 0.01f * flashSpeed;
-			spriteColor.w += 0.01f * flashSpeed;
-		}
-	}
 
 	DrawCommand();
 }
 
 void Sprite2D::InitColor()
 {
-	spriteColor = { 1,1,1,1 };
+	spriteColor = { 1,1,1 };
 	// 行列の転送
 	ConstBufferData* constMap = nullptr;
 	HRESULT result = spriteConstBuff->Map(0, nullptr, (void**)&constMap);
@@ -660,4 +654,5 @@ void Sprite2D::Init(MyDirectX12* directX)
 	Sprite2D::commandList = directX->CommandList();
 
 	CreatePipelineStateOBJ(device);
+	
 }

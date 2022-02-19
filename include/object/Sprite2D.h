@@ -5,24 +5,27 @@
 #include"MyWindow.h"
 #include"MyDirectX12.h"
 
-struct VertexPosUV
-{
-	DirectX::XMFLOAT3 pos; // xyz座標
-	DirectX::XMFLOAT2 uv; // uv座標
-};
-
-struct ConstBufferData
-{
-	DirectX::XMFLOAT4 color; // 色（RGBA）
-	DirectX::XMMATRIX mat; // 3d変換行列
-};
 
 class Sprite2D
 {
-private:
+protected:
 	template<class T>using ComPtr = Microsoft::WRL::ComPtr<T>;
 	using string = std::string;
 
+	struct VertexPosUV
+	{
+		DirectX::XMFLOAT3 pos; // xyz座標
+		DirectX::XMFLOAT2 uv; // uv座標
+	};
+
+	struct ConstBufferData
+	{
+		DirectX::XMFLOAT3 color; // 色（RGBA）
+		float alpha;
+		float pad1;
+		float pad2;
+		DirectX::XMMATRIX mat; // 3d変換行列
+	};
 public:
 	// アンカーポイントの設定
 	Sprite2D(float anchorWidth, float anchorHeigh);
@@ -45,7 +48,10 @@ public:
 
 
 	// 毎フレーム処理
-	void SetPipelineForSprite(ComPtr<ID3D12GraphicsCommandList> cmdList);
+	void SetPipelineForSprite();
+
+	void Update();
+
 	void Draw();
 
 	void InitColor();
@@ -66,16 +72,16 @@ public:
 
 
 	// 色変更系
-	void SetColor(DirectX::XMFLOAT4 color) { spriteColor = color; }
-	void SetAlpha(float alpha) { spriteColor.w = alpha; }
-	DirectX::XMFLOAT4 GetColor() { return spriteColor; }
-	float GetAlpha() { return spriteColor.w; }
+	void SetColor(DirectX::XMFLOAT3 color) { spriteColor = color; }
+	void SetAlpha(float alpha) { spriteAlpha = alpha; }
+	DirectX::XMFLOAT3 GetColor() { return spriteColor; }
+	float GetAlpha() { return spriteAlpha; }
 	
 	// 点滅描画用
 	void SetDrawFlash(bool flg) { isDrawFlash = flg; }
 	void SetFlashSpeed(float speed) { flashSpeed = speed; }
 
-private:
+protected:
 
 	// 処理まとめ用
 
@@ -87,7 +93,7 @@ private:
 	template<typename T>
 	void UpdateBuffer(ComPtr<ID3D12Resource>& buffer, T& bufferData);
 
-private:
+protected:
 
 	// 共有する変数  静的変数
 	static ComPtr<ID3D12RootSignature> spriteRootSignature; // ルートシグネチャ
@@ -95,7 +101,7 @@ private:
 	static DirectX::XMMATRIX spriteMatProjection; // 射影行列
 	static const int spriteSRVCount = 512; // テクスチャの最大枚数
 	static ComPtr<ID3D12DescriptorHeap> spriteDescHeap;
-	static ComPtr<ID3D12Resource> spriteTexBuff[spriteSRVCount];
+	static ComPtr<ID3D12Resource> spriteTexBuff[spriteSRVCount]; // テクスチャバッファ
 	static ComPtr<ID3D12Device> device;
 	static ComPtr<ID3D12GraphicsCommandList> commandList;
 
@@ -110,7 +116,9 @@ private:
 	float spriteRotation = 0.0f; // ｚ軸周りの回転角
 	DirectX::XMFLOAT2 spritePosition{}; // 座標
 	DirectX::XMMATRIX spriteMatWorld{}; // ワールド座標
-	DirectX::XMFLOAT4 spriteColor = { 1,1,1,1 }; // スプライトの色
+	DirectX::XMFLOAT3 spriteColor = { 1,1,1 }; // スプライトの色
+	float spriteAlpha = 1;
+
 	UINT texNumber; //	テクスチャ番号
 	DirectX::XMFLOAT2 anchorpoint;
 	bool IsFlipX = false;

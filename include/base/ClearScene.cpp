@@ -14,7 +14,6 @@ void ClearScene::Initalize()
 	GameFunction::LoadClearSceneTexture();
 
 	objectManager->AddSprite(clearSprite, { WINDOW_WIDTH / 2,WINDOW_HEIGHT / 2 });
-
 }
 
 void ClearScene::Update()
@@ -30,7 +29,12 @@ void ClearScene::Update()
 
 void ClearScene::Draw()
 {
-	objectManager->Draw();
+	std::vector<Sprite2D*> spriteArray = *objectManager->GetSpriteArray();
+
+	for (int i = 0; i < spriteArray.size(); i++)
+	{
+		spriteArray[i]->Draw();
+	}
 }
 
 void ClearScene::NextScene(SceneManager* nowScene)
