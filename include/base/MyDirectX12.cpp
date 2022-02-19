@@ -248,23 +248,6 @@ void MyDirectX12::ExecuteCmd()
 }
 
 
-void MyDirectX12::Draw(Microsoft::WRL::ComPtr<ID3D12DescriptorHeap>basicDescHeap, D3D12_INDEX_BUFFER_VIEW  ibView,
-	D3D12_VERTEX_BUFFER_VIEW vbView, UINT Indices, D3D12_GPU_DESCRIPTOR_HANDLE gpuDescHandleCBV, D3D12_GPU_DESCRIPTOR_HANDLE gpuDescHandleSRV)
-{
-	// 定数バッファをセット
-// デスクリプタヒープの配列
-	ID3D12DescriptorHeap* ppHeaps[] = { basicDescHeap.Get() };
-	cmdList->SetDescriptorHeaps(_countof(ppHeaps), ppHeaps);
-
-	cmdList->SetGraphicsRootDescriptorTable(0, gpuDescHandleCBV);
-	cmdList->SetGraphicsRootDescriptorTable(1, gpuDescHandleSRV);
-
-	cmdList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
-	cmdList->IASetVertexBuffers(0, 1, &vbView);
-	cmdList->IASetIndexBuffer(&ibView);
-	cmdList->DrawIndexedInstanced(Indices, 1, 0, 0, 0);
-}
-
 void MyDirectX12::SetViewport()
 {
 	cmdList->RSSetViewports(1, &CD3DX12_VIEWPORT(0.0f, 0.0f, WINDOW_WIDTH, WINDOW_HEIGHT));
@@ -304,12 +287,6 @@ void MyDirectX12::PreDraw()
 
 	// 2.画面クリアコマンドここまで
 	// 3.描画コマンドここから
-
-
-	// 深度ステンシルビュー用デスクリプタヒープのハンドルを取得
-	CD3DX12_CPU_DESCRIPTOR_HANDLE dsvH = CD3DX12_CPU_DESCRIPTOR_HANDLE(dsvHeap->GetCPUDescriptorHandleForHeapStart());
-	// 深度バッファのクリア
-	cmdList->ClearDepthStencilView(dsvH, D3D12_CLEAR_FLAG_DEPTH, 1.0f, 0, 0, nullptr);
 
 	// ビューポートとシザー矩形の設定
 	SetViewport();

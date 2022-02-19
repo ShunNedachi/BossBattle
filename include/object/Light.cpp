@@ -17,6 +17,10 @@ void Light::Initialize()
 
 void Light::Update()
 {
+	// ƒ‰ƒCƒg‚Ì•ûŒü‚ğ³‹K‰»‚µ‚Ä‚¨‚­
+
+	DirectX::XMStoreFloat3(&dir, DirectX::XMVector3Normalize({ dir.x,dir.y,dir.z }));
+
 	ConstBuffLight updateDesc;
 	updateDesc.lightPos = position;
 	updateDesc.lightDir = dir;

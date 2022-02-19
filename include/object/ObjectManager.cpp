@@ -18,8 +18,8 @@ Light* ObjectManager::light = nullptr;
 void ObjectManager::CheckArray()
 {
 	// updateの最初で配列内にnullがないか確認をする
-// 入っていた場合配列から削除し、配列を詰める
-// obj用配列整理
+	// 入っていた場合配列から削除し、配列を詰める
+	// obj用配列整理
 	for (auto itr = objArray.begin(); itr < objArray.end();)
 	{
 		if (*itr == nullptr)
@@ -122,75 +122,25 @@ void ObjectManager::Update()
 	// 配列チェック
 	CheckArray();
 
-	if (light)
-	{
-		light->Update();
-	}
-
-	// 当たり判定処理 敵がいるとき
-	if (boss)
-	{
-		// player 2 boss
-		Collision::Player2Enemy(*player, *boss,false);
-		for (auto x : boss->GetEnemys())
-		{
-			Collision::Player2Enemy(*player, *x,true);
-		}
-
-		// 遠距離攻撃の判定用
-		std::vector<Object*>* bullet = boss->GetAttackObjPointer();
-		const float BULLET_DAMAGE = boss->GetBlessDamage();
-		if (bullet->size() > 0)
-		{
-			for (int i = 0; i < bullet->size(); i++)
-			{
-				// 弾とプレイヤーが当たったらオブジェクトを消す
-				if (Collision::Player2SphereOBJ(*player, *bullet->at(i),BULLET_DAMAGE))
-				{
-					delete bullet->at(i);
-					bullet->at(i) = nullptr;
-				}
-			}
-
-		}
-	}
-
-
-	// player用
-	if(player)player->Update();
-	
-	// enemy用
-	if (boss)
-	{
-		boss->Update();
-
-		// クリア条件用
-		if (boss->GetHealth() <= 0)
-		{
-			// とりあえずのクリア条件達成用
-			isClear = true;
-		}
-	}
-	// ここまで
 
 }
 
-void ObjectManager::Draw()
-{
-	for (auto x : objArray)
-	{
-		if(x != nullptr)x->Draw(*light);
-	}
-
-	if(player)player->Draw(*light);
-
-	if (boss)boss->Draw(*light);
-
-	for (auto x : spriteArray)
-	{
-		if(x != nullptr)x->Draw();
-	}
-}
+//void ObjectManager::Draw()
+//{
+//	for (auto x : objArray)
+//	{
+//		if(x != nullptr)x->Draw(*light);
+//	}
+//
+//	if(player)player->Draw(*light);
+//
+//	if (boss)boss->Draw(*light);
+//
+//	for (auto x : spriteArray)
+//	{
+//		if(x != nullptr)x->Draw();
+//	}
+//}
 
 
 
@@ -245,26 +195,7 @@ void ObjectManager::DeleteOBJ(int index)
 
 // ↓sprite
 
-//void ObjectManager::AddSprite(int textureNum, const std::string& filename, XMFLOAT2 position, float rotation,XMFLOAT2 anchorPoint, XMFLOAT4 color)
-//{
-//	// 画像ロード
-//	Sprite2D::LoadTex(textureNum, filename);
-//
-//	Sprite2D* temp = new Sprite2D(anchorPoint.x, anchorPoint.y);
-//
-//	// スプライト生成
-//	temp->CreateSprite(textureNum);
-//
-//	// 位置、角度、色の設定
-//	temp->SetPosition(position);
-//	temp->SetRotation(rotation);
-//	temp->SetColor(color);
-//
-//	// 配列に追加
-//	spriteArray.push_back(temp);
-//}
-
-void ObjectManager::AddSprite(int textureNum,XMFLOAT2 position, float rotation, XMFLOAT2 anchorPoint, XMFLOAT4 color)
+void ObjectManager::AddSprite(int textureNum,XMFLOAT2 position, float rotation, XMFLOAT2 anchorPoint, XMFLOAT3 color)
 {
 	Sprite2D* temp = new Sprite2D(anchorPoint.x, anchorPoint.y);
 
@@ -286,36 +217,3 @@ void ObjectManager::DeleteSprite(int index)
 	}
 }
 
-void ObjectManager::SpriteFlash(int index, bool flg)
-{
-	if (spriteArray.size() >= index)
-	{
-		spriteArray[index]->SetDrawFlash(flg);
-	}
-}
-
-void ObjectManager::SetSize(int index, XMFLOAT2 size)
-{
-	if (spriteArray.size() >= index)
-	{
-		spriteArray[index]->Resize(size.x, size.y);
-	}
-}
-
-void ObjectManager::SetFlashSpeed(int index, float speed)
-{
-	if (spriteArray.size() >= index)
-	{
-		spriteArray[index]->SetFlashSpeed(speed);
-	}
-}
-
-DirectX::XMFLOAT4 ObjectManager::GetColor(int index)
-{
-	if (spriteArray.size() >= index)
-	{
-		return spriteArray[index]->GetColor();
-	}
-
-	return { -200,-200,-200,-200 };
-}

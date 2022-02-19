@@ -7,6 +7,9 @@
 #include"SceneManager.h"
 #include"FrameFixed.h"
 #include"Light.h"
+#include"PostEffect.h"
+
+#include<memory>
 
 bool MessageError(MSG msg);
 
@@ -35,6 +38,10 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	// オブジェクトマネージャー初期化
 	ObjectManager::Initialize(&my12);
 
+	std::unique_ptr<PostEffect> postEffect(new PostEffect());
+	PostEffect::Init(&my12);
+	postEffect->Initialize();
+
 
 	// シーン管理用
 	SceneManager* sceneManager = SceneManager::GetInstance();
@@ -59,6 +66,8 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		input->Update();
 		xinput->Update();
 
+		ObjectManager::GetInstance()->Update();
+
 		// exe終了用
 		if (xinput->TriggerButton(CONTROLLER_1)& XINPUT_BUTTON_BACK)break;
 
@@ -69,16 +78,23 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 		#pragma region 描画処理
 
+		
+
+		// レンダーテクスチャへの描画
+		postEffect->PreDrawScene();
+		sceneManager->Draw();
+		postEffect->PostDrawScene();
+
 		// 描画準備用
 		my12.PreDraw();
 
-		sceneManager->Draw();
-
+		postEffect->Draw();
 		// カメラのデバッグ用
 		//Camera::DebugDraw();
 
 		// 描画コマンド消化用
 		my12.PostDraw();
+
 
 		#pragma endregion
 

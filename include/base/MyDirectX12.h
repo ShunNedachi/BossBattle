@@ -26,9 +26,6 @@ public:
 	void SetViewport();
 	void SetScissorrect();
 
-	void Draw(ComPtr<ID3D12DescriptorHeap>basicDescHeap, D3D12_INDEX_BUFFER_VIEW  ibView,
-		D3D12_VERTEX_BUFFER_VIEW vbView, UINT Indices, D3D12_GPU_DESCRIPTOR_HANDLE gpuDescHandleCBV, D3D12_GPU_DESCRIPTOR_HANDLE gpuDescHandleSRV);
-
 	ComPtr<ID3D12Device> Device();
 	ComPtr<ID3D12GraphicsCommandList> CommandList();
 
@@ -53,6 +50,7 @@ public:
 	ID3D12CommandList* GetCommandList() { return cmdList.Get(); }
 
 	void SetClearColor(DirectX::XMFLOAT4 color) { clearBackColor = color; }
+
 
 private:
 	MyWindow* window;

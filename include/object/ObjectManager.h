@@ -44,26 +44,14 @@ public:
 	static std::vector<Sprite2D*>* GetSpriteArray() { return &spriteArray; }
 	static Player* GetPlayer() { return player; }
 	static Boss* GetBoss() { return boss; }
+	static Light* GetLight() { return light; }
 
 	void Update();
-	void Draw();
-
-	bool GetIsClear() { return isClear; }
-
-	bool GetIsInitBoss() {
-		if (boss) { return boss->GetIsInit(); }
-
-		return false;
-	}
+	//void Draw();
 
 	#pragma region Playerä÷åWä÷êî
 
 	static void AddPlayer(const std::string& filename);
-
-	// getter
-	XMFLOAT3 GetPlayerPos() { return player->GetPos(); }
-	bool GetPlayerDead() { return player->GetIsDead(); }
-
 
 #pragma endregion
 
@@ -71,12 +59,6 @@ public:
 	#pragma region Enemyä÷åWä÷êî
 
 	void AddBoss();
-
-	XMFLOAT3 GetBossPosition() { 
-		if (boss) { return boss->GetPosition(); }
-		return { 0,0,0 };
-	}
-
 
 #pragma endregion
 
@@ -102,16 +84,10 @@ public:
 	//	XMFLOAT2 anchorPoint = { 0.5f,0.5f }, XMFLOAT4 color = { 1,1,1,1 });
 
 	void AddSprite(int textureNum, XMFLOAT2 position = { 0,0 }, float rotation = 0.0f,
-		XMFLOAT2 anchorPoint = { 0.5f,0.5f }, XMFLOAT4 color = { 1,1,1,1 });
+		XMFLOAT2 anchorPoint = { 0.5f,0.5f }, XMFLOAT3 color = { 1,1,1 });
 
 	// çÌèú
 	void DeleteSprite(int index);
-
-	void SpriteFlash(int index, bool flg);
-
-	void SetSize(int index,XMFLOAT2 size);
-	void SetFlashSpeed(int index, float speed);
-	XMFLOAT4 GetColor(int index);
 
 #pragma endregion
 

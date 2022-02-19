@@ -1,11 +1,11 @@
 #include "GameScene.h"
 #include"ObjectManager.h"
 #include"GameFunction.h"
+#include"Collision.h"
 
 GameScene::~GameScene()
 {
 	objectManager->Destroy();
-
 }
 
 void GameScene::Initalize()
@@ -33,15 +33,51 @@ void GameScene::Update()
 	Input* input = Input::GetInstance();
 	Xinput* xinput = Xinput::GetInstance();
 	
-	
-	objectManager->Update();
+	// オブジェクトのデータを持ってくる
+	Player* player = objectManager->GetPlayer();
+	Boss* boss = objectManager->GetBoss();
+	Light* light = objectManager->GetLight();
+	std::vector<Object*> objects = *objectManager->GetObjectArray();
+
+	#pragma region 更新処理
+
+	light->Update();
+	player->Update();
+	boss->Update();
+	for (int i = 0; i < objects.size(); i++)
+	{
+		objects[i]->Update();
+	}
 	camera->Update();
+#pragma endregion
+
 
 	// カメラの挙動
-	if (objectManager->GetIsInitBoss())
+	if (boss->GetIsInit())
 	{
 		// playerに追従
-		camera->Follow(objectManager->GetPlayerPos());
+		camera->Follow(player->GetPos());
+
+
+		// 本体同士の当たり判定
+		Collision::Player2Enemy(*player, *boss, false);
+		for (auto x : boss->GetEnemys())
+		{
+			Collision::Player2Enemy(*player, *x, true);
+		}
+
+		// 遠距離攻撃用判定
+		std::vector<Object*> bullet = *boss->GetAttackObjPointer();
+		for (int i = 0; i < bullet.size(); i++)
+		{
+			// 弾にプレイヤーが当たっていたときにオブジェクトの削除
+			if (Collision::Player2SphereOBJ(*player, *bullet[i], boss->GetBlessDamage()))
+			{
+				delete bullet[i];
+				bullet[i] = nullptr;
+			}
+		}
+
 	}
 	else
 	{
@@ -51,20 +87,41 @@ void GameScene::Update()
 
 		// 敵の登場タイミングで敵にカメラを追従
 		camera->SetState(R, Theta, Phi);
-		camera->Follow(objectManager->GetBossPosition());
+		camera->Follow(boss->GetPosition());
 	}
 	
 
 	//// シーン変更
-	if (objectManager->GetPlayerDead())ChangeScene(SceneManager::GetInstance(),endSceneNum);
-	else if (objectManager->GetIsClear())ChangeScene(SceneManager::GetInstance(),clearSceneNum);
+	if (player->GetIsDead())ChangeScene(SceneManager::GetInstance(),endSceneNum);
+	else if (boss->GetHealth() <= 0)ChangeScene(SceneManager::GetInstance(),clearSceneNum);
 
 }
 
 void GameScene::Draw()
 {
 	// ゲームオブジェクトの描画
-	objectManager->Draw();
+	Player* player = objectManager->GetPlayer();
+	Boss* boss = objectManager->GetBoss();
+	Light* light = objectManager->GetLight();
+
+	std::vector<Object*> objectArray = *objectManager->GetObjectArray();
+	std::vector<Sprite2D*> spriteArray = *objectManager->GetSpriteArray();
+
+	for (int i = 0; i < spriteArray.size(); i++)
+	{
+		spriteArray[i]->Draw();
+	}
+
+	for (int i = 0; i < objectArray.size(); i++)
+	{
+		objectArray[i]->Draw(*light);
+	}
+	player->Draw(*light);
+	boss->Draw(*light);
+
+
+
+	//objectManager->Draw();
 }
 
 void GameScene::NextScene(SceneManager* nowScene)
