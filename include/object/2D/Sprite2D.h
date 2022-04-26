@@ -22,8 +22,6 @@ protected:
 	{
 		DirectX::XMFLOAT3 color; // 色（RGBA）
 		float alpha;
-		float pad1;
-		float pad2;
 		DirectX::XMMATRIX mat; // 3d変換行列
 	};
 public:

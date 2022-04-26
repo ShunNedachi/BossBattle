@@ -9,6 +9,7 @@
 #include"Model.h"
 #include"Boss.h"
 #include"Light.h"
+#include"ParticleManager.h"
 
 // シングルトンパターン
 class ObjectManager
@@ -69,7 +70,9 @@ public:
 	void AddOBJ(const std::string& filename, XMFLOAT3 position = { 0,0,0 }, XMFLOAT3 scale = {1,1,1}, 
 		XMFLOAT3 rotation = { 0,0,0 },int drawShader = NORMAL);
 
-	void DeleteOBJ(int index);
+	void DeleteOBJ(int 
+	
+	);
 
 	#pragma endregion
 

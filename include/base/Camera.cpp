@@ -305,3 +305,8 @@ bool Camera::HitGround()
 	//Collision::CheckRay2Plane()
 	return false;
 }
+
+void Camera::Rotation()
+{
+
+}

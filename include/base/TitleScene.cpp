@@ -36,6 +36,7 @@ void TitleScene::Update()
 	
 	std::vector<Sprite2D*> spriteArray = *objectManager->GetSpriteArray();
 
+
 	// スタートを押した後の処理
 	if (xinput->TriggerButton(CONTROLLER_1) & XINPUT_BUTTON_A || input->TriggerKey(DIK_SPACE))
 	{

@@ -5,6 +5,10 @@
 #include"SceneManager.h"
 #include"ObjectManager.h"
 
+// デバッグ用
+#include"ParticleManager.h"
+#include"Particle2D.h"
+
 class TitleScene :
     public Scene
 {
@@ -46,5 +50,6 @@ private:
 
 	// アニメーション用
 	bool startAnimation = false;
+
 };
 

@@ -9,6 +9,9 @@
 #include"Light.h"
 #include"PostEffect.h"
 
+#include"ParticleManager.h"
+#include"Particle2D.h"
+
 #include<memory>
 
 bool MessageError(MSG msg);
@@ -42,6 +45,10 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	PostEffect::Init(&my12);
 	postEffect->Initialize();
 
+	// particle2D
+	Particle2D::Init(&my12);
+
+	ParticleManager::Init(&my12);
 
 	// シーン管理用
 	SceneManager* sceneManager = SceneManager::GetInstance();
@@ -81,14 +88,14 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		
 
 		// レンダーテクスチャへの描画
-		postEffect->PreDrawScene();
-		sceneManager->Draw();
-		postEffect->PostDrawScene();
+		//postEffect->PreDrawScene();
+		//postEffect->PostDrawScene();
 
 		// 描画準備用
 		my12.PreDraw();
 
-		postEffect->Draw();
+		//postEffect->Draw();
+		sceneManager->Draw();
 		// カメラのデバッグ用
 		//Camera::DebugDraw();
 

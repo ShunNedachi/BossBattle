@@ -79,6 +79,15 @@
     <Filter Include="ヘッダー ファイル\object\2D">
       <UniqueIdentifier>{3192df7f-c5cc-4254-bf12-77c562fa7337}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Shader">
+      <UniqueIdentifier>{4abe0b70-f2ca-480e-b0f7-7f3e081816a0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Shader\3D">
+      <UniqueIdentifier>{e6ead43f-f6bb-4f63-b43f-c1c3f6579eaf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Shader\2D">
+      <UniqueIdentifier>{b2067be2-d8d8-46ab-b83d-0c8c497af8ae}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -189,20 +198,26 @@
     <ClCompile Include="include\object\Light.cpp">
       <Filter>ソース ファイル\object</Filter>
     </ClCompile>
-    <ClCompile Include="include\object\Model.cpp">
+    <ClCompile Include="include\object\2D\PostEffect.cpp">
+      <Filter>ソース ファイル\object\2D</Filter>
+    </ClCompile>
+    <ClCompile Include="include\object\2D\Sprite2D.cpp">
+      <Filter>ソース ファイル\object\2D</Filter>
+    </ClCompile>
+    <ClCompile Include="include\object\3D\Model.cpp">
       <Filter>ソース ファイル\object\3D</Filter>
     </ClCompile>
-    <ClCompile Include="include\object\Object.cpp">
+    <ClCompile Include="include\object\3D\Object.cpp">
       <Filter>ソース ファイル\object\3D</Filter>
     </ClCompile>
-    <ClCompile Include="include\object\Particle.cpp">
+    <ClCompile Include="include\object\ParticleManager.cpp">
+      <Filter>ソース ファイル\object</Filter>
+    </ClCompile>
+    <ClCompile Include="include\object\2D\Particle2D.cpp">
       <Filter>ソース ファイル\object\2D</Filter>
     </ClCompile>
-    <ClCompile Include="include\object\PostEffect.cpp">
-      <Filter>ソース ファイル\object\2D</Filter>
-    </ClCompile>
-    <ClCompile Include="include\object\Sprite2D.cpp">
-      <Filter>ソース ファイル\object\2D</Filter>
+    <ClCompile Include="include\object\3D\Particle3D.cpp">
+      <Filter>ソース ファイル\object\3D</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -326,51 +341,75 @@
     <ClInclude Include="include\object\Light.h">
       <Filter>ヘッダー ファイル\object</Filter>
     </ClInclude>
-    <ClInclude Include="include\object\Model.h">
+    <ClInclude Include="include\object\2D\PostEffect.h">
+      <Filter>ヘッダー ファイル\object\2D</Filter>
+    </ClInclude>
+    <ClInclude Include="include\object\2D\Sprite2D.h">
+      <Filter>ヘッダー ファイル\object\2D</Filter>
+    </ClInclude>
+    <ClInclude Include="include\object\2D\SpriteLoadDefine.h">
+      <Filter>ヘッダー ファイル\object\2D</Filter>
+    </ClInclude>
+    <ClInclude Include="include\object\3D\Model.h">
       <Filter>ヘッダー ファイル\object\3D</Filter>
     </ClInclude>
-    <ClInclude Include="include\object\Object.h">
+    <ClInclude Include="include\object\3D\Object.h">
       <Filter>ヘッダー ファイル\object\3D</Filter>
     </ClInclude>
-    <ClInclude Include="include\object\Sprite2D.h">
+    <ClInclude Include="include\object\ParticleManager.h">
+      <Filter>ヘッダー ファイル\object</Filter>
+    </ClInclude>
+    <ClInclude Include="include\object\2D\Particle2D.h">
       <Filter>ヘッダー ファイル\object\2D</Filter>
     </ClInclude>
-    <ClInclude Include="include\object\SpriteLoadDefine.h">
-      <Filter>ヘッダー ファイル\object\2D</Filter>
-    </ClInclude>
-    <ClInclude Include="include\object\PostEffect.h">
-      <Filter>ヘッダー ファイル\object\2D</Filter>
-    </ClInclude>
-    <ClInclude Include="include\object\Particle.h">
-      <Filter>ヘッダー ファイル\object\2D</Filter>
+    <ClInclude Include="include\object\3D\Particle3D.h">
+      <Filter>ヘッダー ファイル\object\3D</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Resources\shader\OBJPixelShader.hlsl">
-      <Filter>リソース ファイル</Filter>
+      <Filter>Shader\3D</Filter>
     </FxCompile>
     <FxCompile Include="Resources\shader\OBJVertexShader.hlsl">
-      <Filter>リソース ファイル</Filter>
-    </FxCompile>
-    <FxCompile Include="Resources\shader\SpritePixelShader.hlsl">
-      <Filter>リソース ファイル</Filter>
-    </FxCompile>
-    <FxCompile Include="Resources\shader\SpriteVertexShader.hlsl">
-      <Filter>リソース ファイル</Filter>
+      <Filter>Shader\3D</Filter>
     </FxCompile>
     <FxCompile Include="Resources\shader\ToonPixelShader.hlsl">
-      <Filter>リソース ファイル</Filter>
+      <Filter>Shader\3D</Filter>
     </FxCompile>
     <FxCompile Include="Resources\shader\ToonVertexShader.hlsl">
-      <Filter>リソース ファイル</Filter>
+      <Filter>Shader\3D</Filter>
+    </FxCompile>
+    <FxCompile Include="Resources\shader\SpritePixelShader.hlsl">
+      <Filter>Shader\2D</Filter>
+    </FxCompile>
+    <FxCompile Include="Resources\shader\SpriteVertexShader.hlsl">
+      <Filter>Shader\2D</Filter>
+    </FxCompile>
+    <FxCompile Include="Resources\shader\ParticlePS.hlsl">
+      <Filter>Shader</Filter>
+    </FxCompile>
+    <FxCompile Include="Resources\shader\ParticleVS.hlsl">
+      <Filter>Shader</Filter>
+    </FxCompile>
+    <FxCompile Include="Resources\shader\Particle2D_VS.hlsl">
+      <Filter>Shader\2D</Filter>
+    </FxCompile>
+    <FxCompile Include="Resources\shader\Particle2D_PS.hlsl">
+      <Filter>Shader\2D</Filter>
     </FxCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\shader\OBJShaderHeader.hlsli">
-      <Filter>リソース ファイル</Filter>
+      <Filter>Shader\3D</Filter>
     </None>
     <None Include="Resources\shader\SpriteShaderHeader.hlsli">
-      <Filter>リソース ファイル</Filter>
+      <Filter>Shader\2D</Filter>
+    </None>
+    <None Include="Resources\shader\ParticleShaderHeader.hlsli">
+      <Filter>Shader</Filter>
+    </None>
+    <None Include="Resources\shader\Particle2DShaderHeader.hlsli">
+      <Filter>Shader\2D</Filter>
     </None>
   </ItemGroup>
 </Project>

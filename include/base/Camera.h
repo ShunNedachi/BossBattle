@@ -91,6 +91,9 @@ public:
 	// 地面との判定用
 	bool HitGround();
 
+	// カメラの回転挙動用
+	void Rotation();
+
 private:
 	static Camera* instance;
 
