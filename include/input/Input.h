@@ -84,8 +84,8 @@ private:
 
 	Input() = default;
 	~Input() = default;
-	void operator=(const Input & obj) {}
-	Input(const Input & obj) {}
+	void operator=(const Input& obj) = delete;
+	Input(const Input& obj) = delete;
 
 	// インスタンス
 	static Input* instance;

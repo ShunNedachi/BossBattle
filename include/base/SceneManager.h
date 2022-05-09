@@ -16,7 +16,7 @@ public:
 	void ChangeScene(Scene* scene);
 
 	// シーン切り替え要求受け取り用
-	bool canChange() { return nowScene->IsNext(); }
+	bool CanChange() { return nowScene->IsNext(); }
 
 	// 関数
 	void Update();
@@ -27,8 +27,8 @@ protected:
 	SceneManager() = default;
 	~SceneManager() = default;
 
-	void operator=(const SceneManager& obj) {}
-	SceneManager(const Camera & obj) {}
+	void operator=(const SceneManager& obj) = delete;
+	SceneManager(const SceneManager& obj) = delete;
 
 private:
 

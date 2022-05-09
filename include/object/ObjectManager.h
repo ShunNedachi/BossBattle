@@ -25,8 +25,8 @@ private:
 	ObjectManager() = default;
 	~ObjectManager() = default;
 
-	void operator=(const ObjectManager& obj) {}
-	ObjectManager(const ObjectManager& obj) {}
+	void operator=(const ObjectManager& obj) = delete;
+	ObjectManager(const ObjectManager& obj) = delete;
 
 	// privateä÷êî
 	void CheckArray();

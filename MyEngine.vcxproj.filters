@@ -219,6 +219,9 @@
     <ClCompile Include="include\object\3D\Particle3D.cpp">
       <Filter>ソース ファイル\object\3D</Filter>
     </ClCompile>
+    <ClCompile Include="include\base\Application.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\audio\Audio.h">
@@ -364,6 +367,9 @@
     </ClInclude>
     <ClInclude Include="include\object\3D\Particle3D.h">
       <Filter>ヘッダー ファイル\object\3D</Filter>
+    </ClInclude>
+    <ClInclude Include="include\base\Application.h">
+      <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

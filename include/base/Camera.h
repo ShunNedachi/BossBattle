@@ -17,8 +17,8 @@ private:
 	Camera() = default;
 	~Camera() = default;
 
-	void operator=(const Camera & obj) {}
-	Camera(const Camera& obj) {}
+	void operator=(const Camera& obj) = delete;
+	Camera(const Camera& obj) = delete;
 
 
 public:

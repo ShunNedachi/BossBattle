@@ -78,8 +78,8 @@ private:
 	~Player() = default;
 
 	// ‹Ö~€–Ú
-	void operator=(const Player& obj) {}
-	Player(const Player& obj){}
+	void operator=(const Player& obj) = delete;
+	Player(const Player& obj) = delete;
 
 private:
 	// •Ï”

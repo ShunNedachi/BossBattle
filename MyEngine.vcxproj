@@ -141,6 +141,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="include\audio\Audio.cpp" />
+    <ClCompile Include="include\base\Application.cpp" />
     <ClCompile Include="include\base\Camera.cpp" />
     <ClCompile Include="include\base\ClearScene.cpp" />
     <ClCompile Include="include\base\EndScene.cpp" />
@@ -186,6 +187,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\audio\Audio.h" />
+    <ClInclude Include="include\base\Application.h" />
     <ClInclude Include="include\base\Camera.h" />
     <ClInclude Include="include\base\ClearScene.h" />
     <ClInclude Include="include\base\EndScene.h" />
