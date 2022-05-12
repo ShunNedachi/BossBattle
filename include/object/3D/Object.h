@@ -184,7 +184,6 @@ private:
 	XMFLOAT3 position = { 0,0,0 }; // 座標
 	XMFLOAT3 scale = { 1,1,1 };     // スケール
 	XMFLOAT3 rotation = { 0,0,0 }; // 回転
-	XMMATRIX objMatWorld{}; // ワールド座標
 	XMFLOAT3 color = { 1,1,1 }; // スプライトの色
 	UINT texNumber = 0; //	テクスチャ番号
 

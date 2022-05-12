@@ -11,8 +11,8 @@ private:
 	~FrameFixed() = default;
 
 	// ã÷é~çÄñ⁄
-	void operator=(const FrameFixed & obj) {}
-	FrameFixed(const FrameFixed & obj) {}
+	void operator=(const FrameFixed& obj) = delete;
+	FrameFixed(const FrameFixed& obj) = delete;
 
 public:
 

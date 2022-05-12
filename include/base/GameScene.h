@@ -6,7 +6,7 @@
 #include<ObjectManager.h>
 #include"Camera.h"
 #include"Player.h"
-#include"Model.h"
+#include"Particle2D.h"
 
 class GameScene :
     public Scene
@@ -29,8 +29,6 @@ private:
 
 	// ƒJƒƒ‰
 	Camera* camera;
-
-
 
 };
 

@@ -76,10 +76,10 @@
     <IncludePath>$(ProjectDir);$(ProjectDir)lib\base\;$(ProjectDir)lib\input\;$(ProjectDir)lib\object\;$(ProjectDir)lib\audio\;$(ProjectDir)lib\easing\;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>$(ProjectDir);$(ProjectDir)include\base\;$(ProjectDir)include\input\;$(ProjectDir)include\object\;$(ProjectDir)include\audio\;$(ProjectDir)include\easing\;$(ProjectDir)include\gameSystem\Collision;$(ProjectDir)include\gameSystem\;$(ProjectDir)lib\gameSystem\Collision\;$(IncludePath)</IncludePath>
+    <IncludePath>$(ProjectDir);$(ProjectDir)include\base\;$(ProjectDir)include\input\;$(ProjectDir)include\object\;$(ProjectDir)include\object\2D\;$(ProjectDir)include\object\3D\;$(ProjectDir)include\audio\;$(ProjectDir)include\easing\;$(ProjectDir)include\gameSystem\Collision;$(ProjectDir)include\gameSystem\;$(ProjectDir)lib\gameSystem\Collision\;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <IncludePath>$(ProjectDir);$(ProjectDir)include\base\;$(ProjectDir)include\input\;$(ProjectDir)include\object\;$(ProjectDir)include\audio\;$(ProjectDir)include\easing\;$(ProjectDir)include\gameSystem\Collision;$(ProjectDir)include\gameSystem\;$(IncludePath)</IncludePath>
+    <IncludePath>$(ProjectDir);$(ProjectDir)include\base\;$(ProjectDir)include\input\;$(ProjectDir)include\object\;$(ProjectDir)include\object\2D\;$(ProjectDir)include\object\3D\;$(ProjectDir)include\audio\;$(ProjectDir)include\easing\;$(ProjectDir)include\gameSystem\Collision;$(ProjectDir)include\gameSystem\;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -141,6 +141,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="include\audio\Audio.cpp" />
+    <ClCompile Include="include\base\Application.cpp" />
     <ClCompile Include="include\base\Camera.cpp" />
     <ClCompile Include="include\base\ClearScene.cpp" />
     <ClCompile Include="include\base\EndScene.cpp" />
@@ -170,20 +171,23 @@
     <ClCompile Include="include\gameSystem\GameFunction.cpp" />
     <ClCompile Include="include\input\Input.cpp" />
     <ClCompile Include="include\input\XinputControll.cpp" />
+    <ClCompile Include="include\object\2D\Particle2D.cpp" />
+    <ClCompile Include="include\object\2D\PostEffect.cpp" />
+    <ClCompile Include="include\object\2D\Sprite2D.cpp" />
+    <ClCompile Include="include\object\3D\Model.cpp" />
+    <ClCompile Include="include\object\3D\Object.cpp" />
+    <ClCompile Include="include\object\3D\Particle3D.cpp" />
     <ClCompile Include="include\object\Boss.cpp" />
     <ClCompile Include="include\object\Enemy.cpp" />
     <ClCompile Include="include\object\Light.cpp" />
-    <ClCompile Include="include\object\Model.cpp" />
-    <ClCompile Include="include\object\Object.cpp" />
     <ClCompile Include="include\object\ObjectManager.cpp" />
-    <ClCompile Include="include\object\Particle.cpp" />
+    <ClCompile Include="include\object\ParticleManager.cpp" />
     <ClCompile Include="include\object\Player.cpp" />
-    <ClCompile Include="include\object\PostEffect.cpp" />
-    <ClCompile Include="include\object\Sprite2D.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\audio\Audio.h" />
+    <ClInclude Include="include\base\Application.h" />
     <ClInclude Include="include\base\Camera.h" />
     <ClInclude Include="include\base\ClearScene.h" />
     <ClInclude Include="include\base\EndScene.h" />
@@ -218,17 +222,19 @@
     <ClInclude Include="include\gameSystem\Setting.h" />
     <ClInclude Include="include\input\Input.h" />
     <ClInclude Include="include\input\XinputControll.h" />
+    <ClInclude Include="include\object\2D\Particle2D.h" />
+    <ClInclude Include="include\object\2D\PostEffect.h" />
+    <ClInclude Include="include\object\2D\Sprite2D.h" />
+    <ClInclude Include="include\object\2D\SpriteLoadDefine.h" />
+    <ClInclude Include="include\object\3D\Model.h" />
+    <ClInclude Include="include\object\3D\Object.h" />
+    <ClInclude Include="include\object\3D\Particle3D.h" />
     <ClInclude Include="include\object\Boss.h" />
     <ClInclude Include="include\object\Enemy.h" />
     <ClInclude Include="include\object\Light.h" />
-    <ClInclude Include="include\object\Model.h" />
-    <ClInclude Include="include\object\Object.h" />
     <ClInclude Include="include\object\ObjectManager.h" />
-    <ClInclude Include="include\object\Particle.h" />
+    <ClInclude Include="include\object\ParticleManager.h" />
     <ClInclude Include="include\object\Player.h" />
-    <ClInclude Include="include\object\PostEffect.h" />
-    <ClInclude Include="include\object\Sprite2D.h" />
-    <ClInclude Include="include\object\SpriteLoadDefine.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Resources\shader\OBJPixelShader.hlsl">
@@ -250,6 +256,48 @@
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
+    </FxCompile>
+    <FxCompile Include="Resources\shader\Particle2D_PS.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
+    </FxCompile>
+    <FxCompile Include="Resources\shader\Particle2D_VS.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Compute</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">4.0</ShaderModel>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Compute</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">4.0</ShaderModel>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
+    </FxCompile>
+    <FxCompile Include="Resources\shader\ParticlePS.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">5.0</ShaderModel>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">5.0</ShaderModel>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
+      <EntryPointName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">PSmain</EntryPointName>
+      <EntryPointName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">PSmain</EntryPointName>
+    </FxCompile>
+    <FxCompile Include="Resources\shader\ParticleVS.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">5.0</ShaderModel>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">5.0</ShaderModel>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
+      <EntryPointName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">VSmain</EntryPointName>
+      <EntryPointName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">VSmain</EntryPointName>
     </FxCompile>
     <FxCompile Include="Resources\shader\SpritePixelShader.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Pixel</ShaderType>
@@ -302,6 +350,8 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\shader\OBJShaderHeader.hlsli" />
+    <None Include="Resources\shader\Particle2DShaderHeader.hlsli" />
+    <None Include="Resources\shader\ParticleShaderHeader.hlsli" />
     <None Include="Resources\shader\SpriteShaderHeader.hlsli" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

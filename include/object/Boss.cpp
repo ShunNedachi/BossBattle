@@ -147,6 +147,12 @@ void Boss::Destroy()
 		enemys.shrink_to_fit();
 	}
 
+	delete hpBarSprite;
+	hpBarSprite = nullptr;
+	
+	delete hpSprite;
+	hpSprite = nullptr;
+
 	DestroyAttackArray();
 
 	delete obj;

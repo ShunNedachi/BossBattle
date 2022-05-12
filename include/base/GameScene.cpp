@@ -25,6 +25,7 @@ void GameScene::Initalize()
 	//camera->SetEye({ 0, 20, -100 });
 
 	objectManager->AddBoss();
+
 }
 
 void GameScene::Update()
@@ -49,6 +50,8 @@ void GameScene::Update()
 		objects[i]->Update();
 	}
 	camera->Update();
+
+
 #pragma endregion
 
 
@@ -73,8 +76,7 @@ void GameScene::Update()
 			// 弾にプレイヤーが当たっていたときにオブジェクトの削除
 			if (Collision::Player2SphereOBJ(*player, *bullet[i], boss->GetBlessDamage()))
 			{
-				delete bullet[i];
-				bullet[i] = nullptr;
+				bullet.erase(bullet.begin() + i);
 			}
 		}
 
@@ -118,7 +120,6 @@ void GameScene::Draw()
 	}
 	player->Draw(*light);
 	boss->Draw(*light);
-
 
 
 	//objectManager->Draw();

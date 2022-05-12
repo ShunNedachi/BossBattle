@@ -1,4 +1,4 @@
-#include "Object.h"
+#include "Particle3D.h"
 #include"Setting.h"
 #include<vector>
 #include<Windows.h>
@@ -11,30 +11,30 @@
 
 
 // 3dObject 共有変数
-Microsoft::WRL::ComPtr<ID3D12RootSignature> Object::rootSignature[2]; // ルートシグネチャ
-Microsoft::WRL::ComPtr<ID3D12PipelineState> Object::pipelineState[2]; // パイプラインステート
-Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList> Object::commandList;
-Microsoft::WRL::ComPtr<ID3D12Device> Object::device;
-D3D12_GRAPHICS_PIPELINE_STATE_DESC Object::gpipeline{};
-Camera* Object::camera = nullptr;
-int Object::constBuffNum = 3;
+Microsoft::WRL::ComPtr<ID3D12RootSignature> Particle3D::rootSignature[2]; // ルートシグネチャ
+Microsoft::WRL::ComPtr<ID3D12PipelineState> Particle3D::pipelineState[2]; // パイプラインステート
+Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList> Particle3D::commandList;
+Microsoft::WRL::ComPtr<ID3D12Device> Particle3D::device;
+D3D12_GRAPHICS_PIPELINE_STATE_DESC Particle3D::gpipeline{};
+Camera* Particle3D::camera = nullptr;
+int Particle3D::constBuffNum = 3; // b0,b1,light
 
-Object::Object(int shaderNum, const string& filename):shaderNum(shaderNum)
+Particle3D::Particle3D(int shaderNum, const string& filename) :shaderNum(shaderNum)
 {
 	CreateModel(filename);
 }
-Object::~Object()
+Particle3D::~Particle3D()
 {
 }
 
-void Object::CreatePiplineStateOBJ()
+void Particle3D::CreatePiplineStateOBJ()
 {
 	HRESULT result;
 	using namespace Microsoft::WRL;
 
 	CD3DX12_STATIC_SAMPLER_DESC samplerDesc = CD3DX12_STATIC_SAMPLER_DESC(0);
 
-	#pragma region 通常シェーダー読み込み
+#pragma region 通常シェーダー読み込み
 
 	ComPtr<ID3DBlob> vsBlob;// 頂点シェーダーオブジェクト
 	ComPtr<ID3DBlob> psBlob;// ピクセルシェーダーオブジェクト
@@ -117,9 +117,9 @@ void Object::CreatePiplineStateOBJ()
 	gpipeline.DepthStencilState = CD3DX12_DEPTH_STENCIL_DESC(D3D12_DEFAULT);
 	gpipeline.DSVFormat = DXGI_FORMAT_D32_FLOAT; // 深度値フォーマット
 
-	#pragma region ブレンド関係
+#pragma region ブレンド関係
 
-	// レンダーターゲットのブレンド設定（８個あるが今は１つしか使わない）
+// レンダーターゲットのブレンド設定（８個あるが今は１つしか使わない）
 	D3D12_RENDER_TARGET_BLEND_DESC blenddesc{};
 	blenddesc.RenderTargetWriteMask = D3D12_COLOR_WRITE_ENABLE_ALL; // 標準設定
 
@@ -137,7 +137,7 @@ void Object::CreatePiplineStateOBJ()
 	// 
 	gpipeline.BlendState.RenderTarget[0] = blenddesc; // RBGA全てのチャンネルを描画
 
-	#pragma endregion
+#pragma endregion
 
 	gpipeline.InputLayout.pInputElementDescs = inputLayout;
 	gpipeline.InputLayout.NumElements = _countof(inputLayout);
@@ -161,7 +161,7 @@ void Object::CreatePiplineStateOBJ()
 		rootparams.at(i).InitAsConstantBufferView(i, 0, D3D12_SHADER_VISIBILITY_ALL);
 	}
 	rootparams.emplace_back();
-	rootparams.back().InitAsDescriptorTable(1,&descRangeSRV,D3D12_SHADER_VISIBILITY_ALL);
+	rootparams.back().InitAsDescriptorTable(1, &descRangeSRV, D3D12_SHADER_VISIBILITY_ALL);
 
 	// ルートシグネチャの設定
 	CD3DX12_VERSIONED_ROOT_SIGNATURE_DESC rootSignatureDesc;
@@ -184,7 +184,7 @@ void Object::CreatePiplineStateOBJ()
 	result = device.Get()->CreateGraphicsPipelineState(&gpipeline, IID_PPV_ARGS(&pipelineState[0]));
 
 
-	#pragma region トゥーンシェーダー読み込み用
+#pragma region トゥーンシェーダー読み込み用
 
 	// トゥーンシェーダー用ルートシグネチャ設定
 	// 頂点シェーダーの読み込みとコンパイル
@@ -266,7 +266,7 @@ void Object::CreatePiplineStateOBJ()
 	result = device.Get()->CreateGraphicsPipelineState(&gpipeline, IID_PPV_ARGS(&pipelineState[1]));
 }
 
-void Object::Draw(Light& light)
+void Particle3D::Draw(Light& light)
 {
 	// シェーダーを切り替える
 	SetDrawSetting(shaderNum);
@@ -283,7 +283,7 @@ void Object::Draw(Light& light)
 	dataB0.cameraPos = camera->GetEye();
 	dataB0.color = color;
 	// 転送
- 	UpdateBuffer(constBuffB0, dataB0);
+	UpdateBuffer(constBuffB0, dataB0);
 
 	// b1データ転送
 	ConstBufferDataB1 dataB1;
@@ -302,7 +302,7 @@ void Object::Draw(Light& light)
 }
 
 
-void Object::Update()
+void Particle3D::Update()
 {
 	using namespace DirectX;
 	HRESULT result;
@@ -328,23 +328,23 @@ void Object::Update()
 
 }
 
-void Object::Init(MyDirectX12* my12)
+void Particle3D::Init(MyDirectX12* my12)
 {
 	using namespace DirectX;
 
 	commandList = my12->CommandList();
 	device = my12->Device();
-	Object::camera = Camera::GetInstance();
+	Particle3D::camera = Camera::GetInstance();
 	CreatePiplineStateOBJ();
 }
 
-void Object::CreateModel(const string &modelname)
+void Particle3D::CreateModel(const string& modelname)
 {
 	using XMFLOAT2 = DirectX::XMFLOAT2;
 	using XMFLOAT3 = DirectX::XMFLOAT3;
 	using XMFLOAT4 = DirectX::XMFLOAT4;
 	using XMMATRIX = DirectX::XMMATRIX;
-	
+
 	HRESULT result = S_FALSE;
 
 	// デスクリプタヒープを生成
@@ -354,7 +354,7 @@ void Object::CreateModel(const string &modelname)
 	descHeapDesc.NumDescriptors = 1;
 	result = device->CreateDescriptorHeap(&descHeapDesc, IID_PPV_ARGS(&descHeap));
 
-	#pragma region file読み込み処理
+#pragma region file読み込み処理
 
 	// ファイルストリーム
 	std::ifstream file;
@@ -470,8 +470,8 @@ void Object::CreateModel(const string &modelname)
 
 #pragma endregion
 
-	UINT sizeVB = static_cast<UINT>(sizeof(Vertex)*vertices.size());
-	UINT sizeIB = static_cast<UINT>(sizeof(unsigned short)*indices.size());
+	UINT sizeVB = static_cast<UINT>(sizeof(Vertex) * vertices.size());
+	UINT sizeIB = static_cast<UINT>(sizeof(unsigned short) * indices.size());
 
 	// 頂点バッファ、インデックスバッファ生成
 	result = device->CreateCommittedResource(
@@ -543,7 +543,7 @@ void Object::CreateModel(const string &modelname)
 	UpdateBuffer(constBuffB1, dataB1);
 }
 
-void Object::LoadMaterial(const std::string &directoryPath, const std::string &filename)
+void Particle3D::LoadMaterial(const std::string& directoryPath, const std::string& filename)
 {
 
 	std::ifstream file;
@@ -554,9 +554,9 @@ void Object::LoadMaterial(const std::string &directoryPath, const std::string &f
 	if (file.fail())assert(0);
 
 	string line;
-	while (getline(file,line))
+	while (getline(file, line))
 	{
-		
+
 		std::istringstream line_stream(line);
 		string key;
 		getline(line_stream, key, ' ');
@@ -597,12 +597,12 @@ void Object::LoadMaterial(const std::string &directoryPath, const std::string &f
 
 		}
 	}
-	if(!isTexture)LoadTexture(TEXT("Resources/texture/"), "white.png");
+	if (!isTexture)LoadTexture(TEXT("Resources/texture/"), "white.png");
 
 	file.close();
 }
 
-bool Object::LoadTexture(const std::string &directoryPath, const std::string &filename)
+bool Particle3D::LoadTexture(const std::string& directoryPath, const std::string& filename)
 {
 	using namespace DirectX;
 	HRESULT result;
@@ -615,7 +615,7 @@ bool Object::LoadTexture(const std::string &directoryPath, const std::string &fi
 	string filepath = directoryPath + filename;
 
 	WCHAR wfilepath[128];
-	int iBufferSize = MultiByteToWideChar(CP_ACP, 0, filepath.c_str(), 
+	int iBufferSize = MultiByteToWideChar(CP_ACP, 0, filepath.c_str(),
 		-1, wfilepath, _countof(wfilepath));
 
 	result = LoadFromWICFile(
@@ -678,7 +678,7 @@ bool Object::LoadTexture(const std::string &directoryPath, const std::string &fi
 
 }
 
-void Object::SetDrawSetting(int index)
+void Particle3D::SetDrawSetting(int index)
 {
 	// パイプラインステートの設定
 	commandList->SetPipelineState(pipelineState[index].Get());
@@ -689,14 +689,14 @@ void Object::SetDrawSetting(int index)
 
 }
 
-void Object::DrawCommand(Light& light)
+void Particle3D::DrawCommand(Light& light)
 {
 	// 頂点バッファをセット
 	commandList->IASetVertexBuffers(0, 1, &vbView);
 	// インデックスバッファをセット
 	commandList->IASetIndexBuffer(&ibView);
 
-	
+
 	// 定数バッファをセット
 	commandList->SetGraphicsRootConstantBufferView(0, constBuffB0->GetGPUVirtualAddress());
 	commandList->SetGraphicsRootConstantBufferView(1, constBuffB1->GetGPUVirtualAddress());

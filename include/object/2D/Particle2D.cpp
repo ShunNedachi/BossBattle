@@ -1,8 +1,10 @@
-#include "Sprite2D.h"
+#include "Particle2D.h"
 #include"Setting.h"
 #include<vector>
 #include<wrl.h>
 #include<d3dx12.h>
+#include<DirectXTex.h>
+#include"Camera.h"
 
 
 using namespace DirectX;
@@ -10,28 +12,25 @@ using namespace Microsoft::WRL;
 
 
 //// 共有する変数
-ComPtr<ID3D12RootSignature> Sprite2D::spriteRootSignature = nullptr;
-ComPtr<ID3D12PipelineState> Sprite2D::spritePipelineState = nullptr;
-DirectX::XMMATRIX Sprite2D::spriteMatProjection = DirectX::XMMatrixIdentity();
-ComPtr<ID3D12DescriptorHeap> Sprite2D::spriteDescHeap = nullptr;
-ComPtr<ID3D12Resource> Sprite2D::spriteTexBuff[spriteSRVCount] = {};
-ComPtr<ID3D12Device> Sprite2D::device;
-ComPtr<ID3D12GraphicsCommandList> Sprite2D::commandList;
+ComPtr<ID3D12RootSignature> Particle2D::spriteRootSignature = nullptr;
+ComPtr<ID3D12PipelineState> Particle2D::spritePipelineState = nullptr;
+XMMATRIX Particle2D::spriteMatProjection = Camera::GetProjection();
+ComPtr<ID3D12DescriptorHeap> Particle2D::spriteDescHeap = nullptr;
+ComPtr<ID3D12Resource> Particle2D::spriteTexBuff[spriteSRVCount] = {};
+ComPtr<ID3D12Device> Particle2D::device;
+ComPtr<ID3D12GraphicsCommandList> Particle2D::commandList;
 
 
-
-
-Sprite2D::Sprite2D(float anchorWidth, float anchorHeight) :anchorpoint{ anchorWidth,anchorHeight }
+Particle2D::Particle2D(float anchorWidth, float anchorHeight) :anchorpoint{ anchorWidth,anchorHeight }
 {
 }
-Sprite2D::~Sprite2D()
+Particle2D::~Particle2D()
 {
 }
 
-void Sprite2D::CreatePipelineStateOBJ(Microsoft::WRL::ComPtr<ID3D12Device> dev)
+void Particle2D::CreatePipelineStateOBJ(ComPtr<ID3D12Device> dev)
 {
 	HRESULT result;
-	using namespace Microsoft::WRL;
 
 	CD3DX12_STATIC_SAMPLER_DESC samplerDesc = CD3DX12_STATIC_SAMPLER_DESC(0);
 
@@ -41,20 +40,20 @@ void Sprite2D::CreatePipelineStateOBJ(Microsoft::WRL::ComPtr<ID3D12Device> dev)
 
 	// 頂点シェーダーの読み込みとコンパイル
 	result = D3DCompileFromFile(
-		L"Resources/shader/SpriteVertexShader.hlsl", // シェーダーファイル名
+		L"Resources/shader/Particle2D_VS.hlsl", // シェーダーファイル名
 		nullptr,
 		D3D_COMPILE_STANDARD_FILE_INCLUDE, // インクルード可能にする
-		"VSmain", "vs_5_0", // エントリーポイント名、シェーダーモデル指定
+		"main", "vs_5_0", // エントリーポイント名、シェーダーモデル指定
 		D3DCOMPILE_DEBUG | D3DCOMPILE_SKIP_OPTIMIZATION, // デバッグ用設定
 		0,
 		&vsBlob, &errorBlob);
 
 	// ピクセルシェーダーの読み込みとコンパイル
 	result = D3DCompileFromFile(
-		L"Resources/shader/SpritePixelShader.hlsl", // シェーダーファイル名
+		L"Resources/shader/Particle2D_PS.hlsl", // シェーダーファイル名
 		nullptr,
 		D3D_COMPILE_STANDARD_FILE_INCLUDE, // インクルード可能にする
-		"PSmain", "ps_5_0", // エントリーポイント名、シェーダーモデル設定
+		"main", "ps_5_0", // エントリーポイント名、シェーダーモデル設定
 		D3DCOMPILE_DEBUG | D3DCOMPILE_SKIP_OPTIMIZATION, // デバッグ用設定
 		0,
 		&psBlob, &errorBlob);
@@ -186,7 +185,7 @@ void Sprite2D::CreatePipelineStateOBJ(Microsoft::WRL::ComPtr<ID3D12Device> dev)
 
 }
 
-HRESULT Sprite2D::CreateSprite(UINT texNumber, float sizeX, float sizeY)
+HRESULT Particle2D::CreateSprite(UINT texNumber, float sizeX, float sizeY)
 {
 	using namespace DirectX;
 	HRESULT result = S_FALSE;
@@ -199,10 +198,10 @@ HRESULT Sprite2D::CreateSprite(UINT texNumber, float sizeX, float sizeY)
 	VertexPosUV vertices[4] =
 	{
 		//x y z u v
-		{{0.0f,100.0f,0.0f},{0.0f,1.0f}},	//　左下
+		{{0.0f,5.0f,0.0f},{0.0f,1.0f}},	//　左下
 		{{0.0f,0.0f,0.0f},{0.0f,0.0f}},     // 左上
-		{{100.0f,100.0f,0.0f},{1.0f,1.0f}}, // 右下
-		{{100.0f,0.0f,0.0f},{1.0f,0.0f}},   // 右上
+		{{5.0f,5.0f,0.0f},{1.0f,1.0f}}, // 右下
+		{{5.0f,0.0f,0.0f},{1.0f,0.0f}},   // 右上
 	};
 
 
@@ -251,7 +250,7 @@ HRESULT Sprite2D::CreateSprite(UINT texNumber, float sizeX, float sizeY)
 
 	return result;
 }
-HRESULT Sprite2D::CreateSprite(UINT texNumber)
+HRESULT Particle2D::CreateSprite(UINT texNumber)
 {
 	using namespace DirectX;
 	HRESULT result = S_FALSE;
@@ -264,10 +263,10 @@ HRESULT Sprite2D::CreateSprite(UINT texNumber)
 	VertexPosUV vertices[4] =
 	{
 		//x y z u v
-		{{0.0f,100.0f,0.0f},{0.0f,1.0f}},	//　左下
+		{{0.0f,5.0f,0.0f},{0.0f,1.0f}},	//　左下
 		{{0.0f,0.0f,0.0f},{0.0f,0.0f}},     // 左上
-		{{100.0f,100.0f,0.0f},{1.0f,1.0f}}, // 右下
-		{{100.0f,0.0f,0.0f},{1.0f,0.0f}},   // 右上
+		{{5.0f,5.0f,0.0f},{1.0f,1.0f}}, // 右下
+		{{5.0f,0.0f,0.0f},{1.0f,0.0f}},   // 右上
 	};
 
 
@@ -320,7 +319,7 @@ HRESULT Sprite2D::CreateSprite(UINT texNumber)
 
 
 // 拡張子を添える必要あり
-HRESULT Sprite2D::LoadTex(UINT texnumber, const std::string& filename)
+HRESULT Particle2D::LoadTex(UINT texnumber, const std::string& filename)
 {
 	using namespace DirectX;
 	HRESULT result;
@@ -395,7 +394,7 @@ HRESULT Sprite2D::LoadTex(UINT texnumber, const std::string& filename)
 	return S_OK;
 }
 
-void Sprite2D::SetPipelineForSprite()
+void Particle2D::SetPipelineForSprite()
 {
 	// パイプラインステートの設定
 	commandList->SetPipelineState(spritePipelineState.Get());
@@ -405,7 +404,7 @@ void Sprite2D::SetPipelineForSprite()
 	commandList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP);
 }
 
-void Sprite2D::Update()
+void Particle2D::Update()
 {
 	if (isDrawFlash)
 	{
@@ -423,7 +422,7 @@ void Sprite2D::Update()
 	}
 }
 
-void Sprite2D::Draw()
+void Particle2D::Draw()
 {
 	SetPipelineForSprite();
 
@@ -432,20 +431,24 @@ void Sprite2D::Draw()
 	// ワールド行列の更新
 	spriteMatWorld = XMMatrixIdentity();
 	spriteMatWorld *= XMMatrixRotationZ(XMConvertToRadians(spriteRotation));
-	spriteMatWorld *= XMMatrixTranslation(spritePosition.x, spritePosition.y,0);
+	spriteMatWorld *= XMMatrixTranslation(spritePosition.x, spritePosition.y, spritePosition.z);
 
 	// 定数バッファの転送
 	ConstBufferData data;
-	data.mat = spriteMatWorld * spriteMatProjection;
+	data.mat = spriteMatWorld * Camera::GetViewMatrix() * Camera::GetProjection();
 	data.color = spriteColor;
 	data.alpha = spriteAlpha;
+	if (isBillboard) { data.billboardMat = Camera::GetBillboardMatrix(); }
+	else if (isBillboardY) { data.billboardMat = Camera::GetBillboardYMatrix(); }
+	else { data.billboardMat = XMMatrixIdentity(); }
+
 	UpdateBuffer(spriteConstBuff, data);
 
 
 	DrawCommand();
 }
 
-void Sprite2D::InitColor()
+void Particle2D::InitColor()
 {
 	spriteColor = { 1,1,1 };
 	// 行列の転送
@@ -457,7 +460,7 @@ void Sprite2D::InitColor()
 }
 
 // 表示サイズ設定
-HRESULT Sprite2D::Resize(float width, float height)
+HRESULT Particle2D::Resize(float width, float height)
 {
 
 	UpdateVertices(width, height);
@@ -465,7 +468,7 @@ HRESULT Sprite2D::Resize(float width, float height)
 	return S_OK;
 }
 
-HRESULT Sprite2D::Resize()
+HRESULT Particle2D::Resize()
 {
 
 	UpdateVertices();
@@ -475,7 +478,7 @@ HRESULT Sprite2D::Resize()
 
 
 // サイズ設定用
-void Sprite2D::UpdateVertices(float width, float height)
+void Particle2D::UpdateVertices(float width, float height)
 {
 	HRESULT result;
 
@@ -493,9 +496,9 @@ void Sprite2D::UpdateVertices(float width, float height)
 	enum { LB, LT, RB, RT };
 
 	float left = (0.0f - anchorpoint.x) * width;
-	float right = (1.0f - anchorpoint.x)* width;
-	float top = (0.0f - anchorpoint.y)* height;
-	float bottom = (1.0f - anchorpoint.y)* height;
+	float right = (1.0f - anchorpoint.x) * width;
+	float top = (0.0f - anchorpoint.y) * height;
+	float bottom = (1.0f - anchorpoint.y) * height;
 
 	if (IsFlipX)
 	{
@@ -541,7 +544,7 @@ void Sprite2D::UpdateVertices(float width, float height)
 	spriteVertBuff->Unmap(0, nullptr);
 }
 
-void Sprite2D::UpdateVertices()
+void Particle2D::UpdateVertices()
 {
 	HRESULT result;
 
@@ -565,9 +568,9 @@ void Sprite2D::UpdateVertices()
 	originalSize = { resWidth,resHeight };
 
 	float left = (0.0f - anchorpoint.x) * resWidth;
-	float right = (1.0f - anchorpoint.x)* resWidth;
-	float top = (0.0f - anchorpoint.y)*resHeight;
-	float bottom = (1.0f - anchorpoint.y)*resHeight;
+	float right = (1.0f - anchorpoint.x) * resWidth;
+	float top = (0.0f - anchorpoint.y) * resHeight;
+	float bottom = (1.0f - anchorpoint.y) * resHeight;
 
 	if (IsFlipX)
 	{
@@ -612,7 +615,7 @@ void Sprite2D::UpdateVertices()
 	spriteVertBuff->Unmap(0, nullptr);
 }
 
-void Sprite2D::SpriteExtent(float tex_x, float tex_y, float tex_width, float tex_height)
+void Particle2D::SpriteExtent(float tex_x, float tex_y, float tex_width, float tex_height)
 {
 	this->tex_x = tex_x;
 	this->tex_y = tex_y;
@@ -623,7 +626,7 @@ void Sprite2D::SpriteExtent(float tex_x, float tex_y, float tex_width, float tex
 	UpdateVertices();
 }
 
-void Sprite2D::DrawCommand()
+void Particle2D::DrawCommand()
 {
 	// デスクリプタヒープの配列
 	ID3D12DescriptorHeap* ppHeaps[] = { spriteDescHeap.Get() };
@@ -647,12 +650,12 @@ void Sprite2D::DrawCommand()
 }
 
 
-void Sprite2D::Init(MyDirectX12* directX)
+void Particle2D::Init(MyDirectX12* directX)
 {
 	// 共有変数の記録
-	Sprite2D::device = directX->Device();
-	Sprite2D::commandList = directX->CommandList();
+	Particle2D::device = directX->Device();
+	Particle2D::commandList = directX->CommandList();
 
 	CreatePipelineStateOBJ(device);
-	
+
 }
