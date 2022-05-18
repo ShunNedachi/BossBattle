@@ -1,85 +1,113 @@
 #include "Application.h"
+#include<string>
+#include<memory>
 
 // 静的変数
-MyWindow Application::myw;
-MyDirectX12 Application::my12;
-Input* Application::input;
-Xinput* Application::xinput;
-SceneManager* Application::sceneManager;
-FrameFixed* Application::frameFixed;
+//MyWindow Application::myw;
+//MyDirectX12 Application::my12;
+//Input* Application::input;
+//Xinput* Application::xinput;
+//SceneManager* Application::sceneManager;
+//FrameFixed* Application::frameFixed;
+Application* Application::instance = nullptr;
+
+Application* Application::GetInstance()
+{
+	if (instance == nullptr)
+	{
+		instance = new Application();
+	}
+
+	return instance;
+}
 
 void Application::Initialize()
 {
-	// ウィンドウ初期化
-	myw.Initialize("Engine");
+	WindowInitialize();
 
-	// DirectX12初期化
-	my12.Debug();
-	my12.Initialize(&myw);
+	DXInitialize();
 
-	// input xinput
-	input = Input::GetInstance();
-	input->Initialize(myw.GetConfig().hInstance, myw.GetHWND());
-	xinput = Xinput::GetInstance();
-	Xinput::Initialize();
+	InputInitialize();
 
-	// オブジェクトマネージャー初期化
-	ObjectManager::Initialize(&my12);
+	ManagerInitialize();
 
-	// シーンマネージャー
-	sceneManager = SceneManager::GetInstance();
-	// fps固定
-	frameFixed = FrameFixed::GetInstance();
-
-	// particle関係
-	Particle2D::Init(&my12);
-	ParticleManager::Init(&my12);
+	ParticleInitialize();
 }
 
 void Application::Destroy()
 {
 	// 解放処理
-	input->Destroy();
+	Input::GetInstance()->Destroy();
 	Camera::Destroy();
-	sceneManager->Destroy();
-	xinput->Destroy();
-	frameFixed->Destroy();
+	SceneManager::GetInstance()->Destroy();
+	Xinput::GetInstance()->Destroy();
+	FrameFixed::GetInstance()->Destroy();
 }
 
 void Application::Update()
 {
 	// フレームレート固定
-	frameFixed->PreWait();
+	FrameFixed::GetInstance()->PreWait();
 
 	// 更新
-	input->Update();
-	xinput->Update();
+	Input::GetInstance()->Update();
+	Xinput::GetInstance()->Update();
 
 	ObjectManager::GetInstance()->Update();
 
 	// 各シーンのupdate
-	sceneManager->Update();
+	SceneManager::GetInstance()->Update();
 
 	Draw();
 
 	// フレームレート固定用
-	frameFixed->PostWait();
+	FrameFixed::GetInstance()->PostWait();
 }
 
 void Application::Draw()
 {
-	// レンダーテクスチャへの描画
-	//postEffect->PreDrawScene();
-	//postEffect->PostDrawScene();
-
 	// 描画準備用
-	my12.PreDraw();
+	directX.get()->PreDraw();
 
-	//postEffect->Draw();
-	sceneManager->Draw();
+	
+	SceneManager::GetInstance()->Draw();
 	// カメラのデバッグ用
 	//Camera::DebugDraw();
 
 	// 描画コマンド消化用
-	my12.PostDraw();
+	directX.get()->PostDraw();
+}
+
+void Application::WindowInitialize()
+{
+	window = std::make_shared<MyWindow>();
+	
+	window.get()->Initialize(ApplicationSetting::WINDOW_NAME.c_str());
+}
+
+void Application::DXInitialize()
+{
+	directX = std::make_shared<MyDirectX12>();
+	// デバッグレイヤーをオン　初期化
+	directX.get()->Debug();
+	directX.get()->Initialize(window.get());
+}
+
+void Application::InputInitialize()
+{
+	Input::GetInstance()->Initialize(window.get()->GetConfig().hInstance, window.get()->GetHWND());
+	Xinput::GetInstance()->Xinput::Initialize();
+}
+
+void Application::ManagerInitialize()
+{
+	// オブジェクトマネージャー初期化
+	ObjectManager::Initialize(directX.get());
+}
+
+void Application::ParticleInitialize()
+{
+	// particle関係
+	Particle2D::Init(directX.get());
+	ParticleManager::Init(directX.get());
 }

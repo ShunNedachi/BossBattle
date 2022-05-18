@@ -13,32 +13,56 @@
 #include"ParticleManager.h"
 #include"Particle2D.h"
 
+namespace ApplicationSetting
+{
+	const std::string WINDOW_NAME = "BOSS BATTLE";
+}
 
+// シングルトンパターン
 class Application
 {
 public:
 
-	static void Initialize();
-	static void Destroy();
+	static Application* GetInstance();
 
-	static void Update();
+	void Initialize();
+	void Destroy();
 
-	static void Draw();
+	void Update();
+
+	void Draw();
+
 
 private:
+
+	// コンストラクタ　デストラクタ
+	Application() = default;
+	~Application() = default;
+
+	void operator=(const Application& obj) = delete;
+	Application(const Application& obj) = delete;
+
+	// ウィンドウクラスの初期化
+	void WindowInitialize();
+	// directXクラスの初期化
+	void DXInitialize();
+	// インプットクラスの初期化
+	void InputInitialize();
+	// マネージャークラスの初期化
+	void ManagerInitialize();
+	// パーティクルクラスの初期化
+	void ParticleInitialize();
+
+public:
+
+	static Application* instance;
+
 	// ウィンドウ用
-	static MyWindow myw;
+	std::shared_ptr<MyWindow> window;
 	// directX12
-	static MyDirectX12 my12;
+	std::shared_ptr<MyDirectX12> directX;
+	
 
-	// DirectInput,Xinput用
-	static Input* input;
-	static Xinput* xinput;
-
-	// シーン管理用
-	static SceneManager* sceneManager;
-	// fps固定用
-	static FrameFixed* frameFixed;
-
+	std::shared_ptr<std::string> windowName;
 };
 

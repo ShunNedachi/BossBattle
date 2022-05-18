@@ -8,8 +8,9 @@ bool MessageError(MSG msg);
 // windowsアプリでのエントリーポイント（main関数）
 int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 {
+	Application::GetInstance()->SetWindowName("Engine");
 
-	Application::Initialize();
+	Application::GetInstance()->Initialize();
 
 
 	MSG msg{}; // メッセージ
@@ -21,11 +22,11 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		// exe終了用
 		if (Xinput::GetInstance()->TriggerButton(CONTROLLER_1) & XINPUT_BUTTON_BACK)break;
 
-		Application::Update();
+		Application::GetInstance()->Update();
 
 	}
 	
-	Application::Destroy();
+	Application::GetInstance()->Destroy();
 
 	return 0;
 }
