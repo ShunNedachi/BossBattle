@@ -23,12 +23,12 @@ void Boss::Init()
 	hpSprite->CreateSprite(bossHealth);
 	//hpSprite->Resize(ONE_HEALTH_SIZE * MAX_HEALTH, 50);
 	hpSprite->Resize(0, 50);
-	hpSprite->SetPosition({ WINDOW_WIDTH / 2 - 400,650 });
+	hpSprite->SetPosition({ SETTING_VALUE::WINDOW_WIDTH / 2 - 400,650 });
 
 	hpBarSprite = new Sprite2D(0.5f, 0.5f);
 	hpBarSprite->CreateSprite(bossHealthBar);
 	hpBarSprite->Resize(ONE_HEALTH_SIZE * MAX_HEALTH, 50);
-	hpBarSprite->SetPosition({ WINDOW_WIDTH / 2 ,650 });
+	hpBarSprite->SetPosition({ SETTING_VALUE::WINDOW_WIDTH / 2 ,650 });
 
 }
 

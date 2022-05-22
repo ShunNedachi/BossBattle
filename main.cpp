@@ -8,8 +8,6 @@ bool MessageError(MSG msg);
 // windowsアプリでのエントリーポイント（main関数）
 int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 {
-	Application::GetInstance()->SetWindowName("Engine");
-
 	Application::GetInstance()->Initialize();
 
 

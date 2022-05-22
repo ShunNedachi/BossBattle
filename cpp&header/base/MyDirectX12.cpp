@@ -9,6 +9,8 @@
 #include<imgui_impl_win32.h>
 #include<imgui_impl_dx12.h>
 
+#include<memory>
+
 #pragma comment(lib,"d3dcompiler.lib")
 #pragma comment(lib,"d3d12.lib")
 #pragma comment(lib,"dxgi.lib")
@@ -99,8 +101,8 @@ void MyDirectX12::Initialize(MyWindow* window)
 	// 各種設定をしてスワップチェーンを生成
 	DXGI_SWAP_CHAIN_DESC1 swapchainDesc{};
 	ComPtr<IDXGISwapChain1> swapchain1;
-	swapchainDesc.Width = WINDOW_WIDTH;
-	swapchainDesc.Height = WINDOW_HEIGHT;
+	swapchainDesc.Width = SETTING_VALUE::WINDOW_WIDTH;
+	swapchainDesc.Height = SETTING_VALUE::WINDOW_HEIGHT;
 	swapchainDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM; // 色情報の書式
 	swapchainDesc.SampleDesc.Count = 1; // マルチサンプルしない
 	swapchainDesc.BufferUsage = DXGI_USAGE_BACK_BUFFER; // バックバッファ用
@@ -250,12 +252,12 @@ void MyDirectX12::ExecuteCmd()
 
 void MyDirectX12::SetViewport()
 {
-	cmdList->RSSetViewports(1, &CD3DX12_VIEWPORT(0.0f, 0.0f, WINDOW_WIDTH, WINDOW_HEIGHT));
+	cmdList->RSSetViewports(1, &CD3DX12_VIEWPORT(0.0f, 0.0f, SETTING_VALUE::WINDOW_WIDTH, SETTING_VALUE::WINDOW_HEIGHT));
 }
 
 void MyDirectX12::SetScissorrect()
 {
-	cmdList->RSSetScissorRects(1, &CD3DX12_RECT(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT));
+	cmdList->RSSetScissorRects(1, &CD3DX12_RECT(0, 0, SETTING_VALUE::WINDOW_WIDTH, SETTING_VALUE::WINDOW_HEIGHT));
 }
 
 void MyDirectX12::PostDraw()
@@ -308,8 +310,8 @@ bool MyDirectX12::CreatDepthDesc()
 	// リソース設定
 	CD3DX12_RESOURCE_DESC depthResDesc = CD3DX12_RESOURCE_DESC::Tex2D(
 		DXGI_FORMAT_D32_FLOAT,
-		WINDOW_WIDTH,
-		WINDOW_HEIGHT,
+		SETTING_VALUE::WINDOW_WIDTH,
+		SETTING_VALUE::WINDOW_HEIGHT,
 		1, 0,
 		1, 0,
 		D3D12_RESOURCE_FLAG_ALLOW_DEPTH_STENCIL
@@ -324,7 +326,7 @@ bool MyDirectX12::CreatDepthDesc()
 		IID_PPV_ARGS(&depthBuffer));
 	if (FAILED(result)) {
 		assert(0);
-		return result;
+		return false;
 	}
 
 	// 深度ビュー用デスクリプタヒープ作成
@@ -334,7 +336,7 @@ bool MyDirectX12::CreatDepthDesc()
 	result = dev->CreateDescriptorHeap(&dsvHeapDesc, IID_PPV_ARGS(&dsvHeap));
 	if (FAILED(result)) {
 		assert(0);
-		return result;
+		return false;
 	}
 
 	// 深度ビュー作成
@@ -346,6 +348,7 @@ bool MyDirectX12::CreatDepthDesc()
 		&dsvDesc,
 		dsvHeap->GetCPUDescriptorHandleForHeapStart());
 
+	return true;
 }
 
 bool MyDirectX12::InitImgui()

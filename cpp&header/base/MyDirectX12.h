@@ -23,25 +23,12 @@ public:
 	void Initialize(MyWindow* window); // デバイスやファクトリー等の初期化
 	void Debug(); // デバッグレイヤー有効化
 
-	void SetViewport();
-	void SetScissorrect();
-
 	ComPtr<ID3D12Device> Device();
 	ComPtr<ID3D12GraphicsCommandList> CommandList();
-
-	//ID3D12Device* Device();
-	//ID3D12GraphicsCommandList* CommandList();
-
-	// 描画用　上から順に使用する
-	void BeginBarrier(); // リソースバリアを変更
-	void ClearScreen(); // 画面クリアコマンド
-	void EndBarrier();   //　リソースバリアを戻す
-	void ExecuteCmd();
 
 	void PostDraw();
 	void PreDraw();
 
-	bool CreatDepthDesc();
 
 	// imgui初期化
 	bool InitImgui();
@@ -50,7 +37,20 @@ public:
 	ID3D12CommandList* GetCommandList() { return cmdList.Get(); }
 
 	void SetClearColor(DirectX::XMFLOAT4 color) { clearBackColor = color; }
+	
+private:
 
+	// 描画用　上から順に使用する
+	void BeginBarrier(); // リソースバリアを変更
+	void ClearScreen(); // 画面クリアコマンド
+	void EndBarrier();   //　リソースバリアを戻す
+	void ExecuteCmd();
+
+
+	void SetViewport();
+	void SetScissorrect();
+
+	bool CreatDepthDesc();
 
 private:
 	MyWindow* window;

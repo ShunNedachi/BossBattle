@@ -16,7 +16,7 @@ void TitleScene::Initalize()
 	GameFunction::LoadTitleSceneTexture();
 
 	// スプライト追加
-	objectManager->AddSprite(titleSprite,{WINDOW_WIDTH / 2,WINDOW_HEIGHT / 2 - 200 });
+	objectManager->AddSprite(titleSprite,{ SETTING_VALUE::WINDOW_WIDTH / 2,SETTING_VALUE::WINDOW_HEIGHT / 2 - 200 });
 	objectManager->AddSprite(titleExplainSprite,{650,600});
 	objectManager->AddSprite(selectTutorial, { 650,500 });
 	objectManager->AddSprite(selectGameStart, { 650,650 });

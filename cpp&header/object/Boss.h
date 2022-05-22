@@ -91,42 +91,42 @@ private:
     // 行動状況用
     BossPattern pattern = BossPattern::PopEnemy;
     bool isInit = false;
-    int initFrame = 5 * GAME_FRAME;
+    int initFrame = 5 * SETTING_VALUE::GAME_FRAME;
 
     // 経過フレーム計測用
     int actionCount = 0;
 
 
     // 停止状態の秒数
-    int stopFrame = 3 * GAME_FRAME;
+    int stopFrame = 3 * SETTING_VALUE::GAME_FRAME;
 
     // 敵出現状態の停止秒数
-    int popFrame = 3 * GAME_FRAME;
+    int popFrame = 3 * SETTING_VALUE::GAME_FRAME;
     // 敵出現用のモーション用(後で使用)
     int popAnimationFrame;
 
     // 休憩状態の秒数
-    int sleepFrame = 3 * GAME_FRAME;
+    int sleepFrame = 3 * SETTING_VALUE::GAME_FRAME;
     // 回復の間隔
-    int healFrame = 1 * GAME_FRAME;
+    int healFrame = 1 * SETTING_VALUE::GAME_FRAME;
     // 回復前のモーション用(後で使用)
     int healActionFrame;
     
     // 追従状態の秒数
-    int followFrame = 10 * GAME_FRAME;
+    int followFrame = 10 * SETTING_VALUE::GAME_FRAME;
     // 追従前の待機秒数
-    int followStopFrame = 1 * GAME_FRAME;
+    int followStopFrame = 1 * SETTING_VALUE::GAME_FRAME;
     // 追従用のモーション用(後で使用)
     int followAnimetionFrame;
 
     // 突進状態の秒数
-    int rushFrame = 10 * GAME_FRAME;
+    int rushFrame = 10 * SETTING_VALUE::GAME_FRAME;
     // 突進前の待機秒数
-    int rushWaitFrame = 2 * GAME_FRAME;
+    int rushWaitFrame = 2 * SETTING_VALUE::GAME_FRAME;
     // 突進用のモーション用(後で使用)
     int rushAnimetionFrame;
     // 1回あたりの突進時間
-    int oneRushFrame = 1 * GAME_FRAME;
+    int oneRushFrame = 1 * SETTING_VALUE::GAME_FRAME;
     XMVECTOR rushV;
     // 突進用経過時間計測用
     int rushCount = 0;
@@ -141,9 +141,9 @@ private:
     // bless用
     
     // bless発射用待機フレーム
-    int blessFrame = 10 * GAME_FRAME;
+    int blessFrame = 10 * SETTING_VALUE::GAME_FRAME;
     // 発射待機用(モーションを後で追加)
-    int blessWaitFrame = 1 * GAME_FRAME;
+    int blessWaitFrame = 1 * SETTING_VALUE::GAME_FRAME;
 
 
     // 発射方向
@@ -152,11 +152,11 @@ private:
     float blessDamage = 1;
 
     // 飛行状態用
-    int flyFrame = 10 * GAME_FRAME;
+    int flyFrame = 10 * SETTING_VALUE::GAME_FRAME;
     // 飛行用のモーション用(行き帰り用)
     int flyAnimeFrame;
     // 落下攻撃する頻度
-    int flyAttackFrame = 1 * GAME_FRAME;
+    int flyAttackFrame = 1 * SETTING_VALUE::GAME_FRAME;
     float flyAttackDamage = 1;
 
     // 飛行時最大値

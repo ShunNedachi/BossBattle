@@ -42,6 +42,13 @@ void Application::Destroy()
 	SceneManager::GetInstance()->Destroy();
 	Xinput::GetInstance()->Destroy();
 	FrameFixed::GetInstance()->Destroy();
+
+	// instance‚Ì‰ð•ú
+	if (instance != nullptr)
+	{
+		delete instance;
+		instance = nullptr;
+	}
 }
 
 void Application::Update()

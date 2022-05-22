@@ -209,7 +209,7 @@ HRESULT Sprite2D::CreateSprite(UINT texNumber, float sizeX, float sizeY)
 
 	// メンバ変数初期化
 	spriteMatProjection = XMMatrixOrthographicOffCenterLH(
-		0.0f, WINDOW_WIDTH, WINDOW_HEIGHT, 0.0f, 0.0f, 1.0f
+		0.0f, SETTING_VALUE::WINDOW_WIDTH, SETTING_VALUE::WINDOW_HEIGHT, 0.0f, 0.0f, 1.0f
 	);
 
 	// 頂点バッファ生成
@@ -244,7 +244,7 @@ HRESULT Sprite2D::CreateSprite(UINT texNumber, float sizeX, float sizeY)
 	// 定数バッファにデータ転送
 	ConstBufferData data;
 	// 平行投影行列の合成
-	data.mat = XMMatrixOrthographicOffCenterLH(0.0f, WINDOW_WIDTH, WINDOW_HEIGHT, 0.0f, 0.0f, 1.0f);
+	data.mat = XMMatrixOrthographicOffCenterLH(0.0f, SETTING_VALUE::WINDOW_WIDTH, SETTING_VALUE::WINDOW_HEIGHT, 0.0f, 0.0f, 1.0f);
 	data.color = spriteColor;
 	UpdateBuffer(spriteConstBuff, data);
 
@@ -274,7 +274,7 @@ HRESULT Sprite2D::CreateSprite(UINT texNumber)
 
 	// メンバ変数初期化
 	spriteMatProjection = XMMatrixOrthographicOffCenterLH(
-		0.0f, WINDOW_WIDTH, WINDOW_HEIGHT, 0.0f, 0.0f, 1.0f
+		0.0f, SETTING_VALUE::WINDOW_WIDTH, SETTING_VALUE::WINDOW_HEIGHT, 0.0f, 0.0f, 1.0f
 	);
 
 	// 頂点バッファ生成
@@ -309,7 +309,7 @@ HRESULT Sprite2D::CreateSprite(UINT texNumber)
 	// 定数バッファにデータ転送
 	ConstBufferData data;
 	// 平行投影行列の合成
-	data.mat = XMMatrixOrthographicOffCenterLH(0.0f, WINDOW_WIDTH, WINDOW_HEIGHT, 0.0f, 0.0f, 1.0f);
+	data.mat = XMMatrixOrthographicOffCenterLH(0.0f, SETTING_VALUE::WINDOW_WIDTH, SETTING_VALUE::WINDOW_HEIGHT, 0.0f, 0.0f, 1.0f);
 	data.color = spriteColor;
 
 	UpdateBuffer(spriteConstBuff, data);

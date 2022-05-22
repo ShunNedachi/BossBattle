@@ -100,8 +100,8 @@ void Enemy::RecieveDamage(XMFLOAT3 pos, float damage,bool knockback)
 	{
 		isKnockBack = true;
 		// ノックバック用のイージング設定
-		knockBackXEasing.SetState((float)DAMAGE_FRAME / GAME_FRAME, position.x, knockbackPos.x);
-		knockBackZEasing.SetState((float)DAMAGE_FRAME / GAME_FRAME, position.z, knockbackPos.z);
+		knockBackXEasing.SetState((float)DAMAGE_FRAME / SETTING_VALUE::GAME_FRAME, position.x, knockbackPos.x);
+		knockBackZEasing.SetState((float)DAMAGE_FRAME / SETTING_VALUE::GAME_FRAME, position.z, knockbackPos.z);
 	}
 
 }

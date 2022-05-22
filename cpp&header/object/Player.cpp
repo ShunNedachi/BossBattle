@@ -137,7 +137,7 @@ void Player::Init(const String& filename)
 	attack->SetObject(attackObj);
 
 	// •KŽE‹Z—p
-	specialAttack = new AttackBase(1.5f * GAME_FRAME, 1, 10);
+	specialAttack = new AttackBase(1.5f * SETTING_VALUE::GAME_FRAME, 1, 10);
 
 	specialAttackObj = new Object(NORMAL, "sphere");
 	specialAttackObj->SetScale({ 40,40,40 });

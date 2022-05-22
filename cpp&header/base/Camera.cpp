@@ -87,11 +87,23 @@ void Camera::Follow(XMFLOAT3 target)
 	const int MIN_THETA_RADIUS = 0;
 	const int MAX_THETA_RADIUS = 70;
 
-	if (input->PushKey(DIK_DOWN)|| xinput->MoveStick(0,XINPUT_BUTTON_RS)&XINPUT_STICK_DOWN)theta+= CAMERA_MOVE_VALUE;
-	else if (input->PushKey(DIK_UP)|| xinput->MoveStick(0,XINPUT_BUTTON_RS)&XINPUT_STICK_UP)theta-= CAMERA_MOVE_VALUE;
+	if (input->PushKey(DIK_DOWN) || xinput->MoveStick(0, XINPUT_BUTTON_RS) & XINPUT_STICK_DOWN)
+	{
+		theta += SETTING_VALUE::CAMERA_MOVE_VALUE;
+	}
+	else if (input->PushKey(DIK_UP) || xinput->MoveStick(0, XINPUT_BUTTON_RS) & XINPUT_STICK_UP)
+	{
+		theta -= SETTING_VALUE::CAMERA_MOVE_VALUE;
+	}
 
-	if (input->PushKey(DIK_RIGHT)||xinput->MoveStick(0,XINPUT_BUTTON_RS)&XINPUT_STICK_RIGHT)phi-= CAMERA_MOVE_VALUE;
-	else if (input->PushKey(DIK_LEFT)|| xinput->MoveStick(0,XINPUT_BUTTON_RS)&XINPUT_STICK_LEFT)phi+= CAMERA_MOVE_VALUE;
+	if (input->PushKey(DIK_RIGHT) || xinput->MoveStick(0, XINPUT_BUTTON_RS) & XINPUT_STICK_RIGHT)
+	{
+		phi -= SETTING_VALUE::CAMERA_MOVE_VALUE;
+	}
+	else if (input->PushKey(DIK_LEFT) || xinput->MoveStick(0, XINPUT_BUTTON_RS) & XINPUT_STICK_LEFT)
+	{
+		phi += SETTING_VALUE::CAMERA_MOVE_VALUE;
+	}
 
 	// 最大値最小値の設定
 	if (phi > MAX_PHI_RADIUS)phi = MIN_PHI_RADIUS;
@@ -252,7 +264,7 @@ void Camera::UpdateProjection()
 	// 射影変換
 	projectionMat = DirectX::XMMatrixPerspectiveFovLH(
 		DirectX::XMConvertToRadians(fov),
-		(float)WINDOW_WIDTH / WINDOW_HEIGHT,
+		(float)SETTING_VALUE::WINDOW_WIDTH / SETTING_VALUE::WINDOW_HEIGHT,
 		0.1f, 1000.0f
 	);
 }
@@ -264,7 +276,7 @@ void Camera::ZoomIn()
 	initRadius = zoomEasing.StartEeaging(easeInFLAG);
 
 	// 秒数カウント分　続ける
-	if (zoomCount >= (zoomTime * GAME_FRAME))
+	if (zoomCount >= (zoomTime * SETTING_VALUE::GAME_FRAME))
 	{
 		zoomFlg = false;
 		zoomCount = 0;

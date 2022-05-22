@@ -29,7 +29,7 @@ LRESULT WindowProc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam)
 	// メッセージで分岐
 	switch (msg)
 	{
-	case WM_DESTROY: // ウィンドウが破壊された
+	case WM_DESTROY: // ウィンドウが破壊された場合
 		PostQuitMessage(0); // OSに対して、アプリの終了を伝える
 		return 0;
 
@@ -49,7 +49,7 @@ void MyWindow::Initialize(const char* windowName)
 	// ウィンドウクラスをosに登録
 	RegisterClassEx(&w);
 	// ウィンドウサイズ{ｘ座標　ｙ座標　横幅　縦幅}
-	RECT wrc = { 0,0,WINDOW_WIDTH,WINDOW_HEIGHT };
+	RECT wrc = { 0,0,SETTING_VALUE::WINDOW_WIDTH,SETTING_VALUE::WINDOW_HEIGHT };
 	AdjustWindowRect(&wrc, WS_OVERLAPPEDWINDOW, false); // 自動でサイズ補正
 
 	// ウィンドウオブジェクトの生成

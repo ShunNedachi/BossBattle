@@ -53,8 +53,8 @@ void PostEffect::Initialize()
 	// テクスチャリソース設定
 	D3D12_RESOURCE_DESC texresDesc = CD3DX12_RESOURCE_DESC::Tex2D(
 		DXGI_FORMAT_R8G8B8A8_UNORM,
-		WINDOW_WIDTH,
-		(UINT)WINDOW_HEIGHT,
+		SETTING_VALUE::WINDOW_WIDTH,
+		(UINT)SETTING_VALUE::WINDOW_HEIGHT,
 		1, 0, 1, 0, D3D12_RESOURCE_FLAG_ALLOW_RENDER_TARGET
 	);
 
@@ -72,11 +72,11 @@ void PostEffect::Initialize()
 
 	// テクスチャを赤クリア
 	// 画素数
-	const UINT pixelCount = WINDOW_WIDTH * WINDOW_HEIGHT;
+	const UINT pixelCount = SETTING_VALUE::WINDOW_WIDTH * SETTING_VALUE::WINDOW_HEIGHT;
 	// 画像1行分のデータサイズ
-	const UINT rowPitch = sizeof(UINT) * WINDOW_WIDTH;
+	const UINT rowPitch = sizeof(UINT) * SETTING_VALUE::WINDOW_WIDTH;
 	// 画像全体のサイズ
-	const UINT depthPitch = rowPitch * WINDOW_HEIGHT;
+	const UINT depthPitch = rowPitch * SETTING_VALUE::WINDOW_HEIGHT;
 	// 画像イメージ
 	UINT* img = new UINT[pixelCount];
 	for (int i = 0; i < pixelCount; i++) { img[i] = 0xff0000ff; }
@@ -139,8 +139,8 @@ void PostEffect::Initialize()
 	CD3DX12_RESOURCE_DESC depthResDesc =
 		CD3DX12_RESOURCE_DESC::Tex2D(
 			DXGI_FORMAT_D32_FLOAT,
-			WINDOW_WIDTH,
-			WINDOW_HEIGHT,
+			SETTING_VALUE::WINDOW_WIDTH,
+			SETTING_VALUE::WINDOW_HEIGHT,
 			1, 0,
 			1, 0,
 			D3D12_RESOURCE_FLAG_ALLOW_DEPTH_STENCIL
@@ -222,9 +222,9 @@ void PostEffect::PreDrawScene()
 	commandList->OMSetRenderTargets(1, &rtvH, false, &dsvH);
 
 	// ビューポートの設定
-	commandList->RSSetViewports(1, &CD3DX12_VIEWPORT(0.0f, 0.0f, WINDOW_WIDTH, WINDOW_HEIGHT));
+	commandList->RSSetViewports(1, &CD3DX12_VIEWPORT(0.0f, 0.0f, SETTING_VALUE::WINDOW_WIDTH, SETTING_VALUE::WINDOW_HEIGHT));
 	// シザリング矩形の設定
-	commandList->RSSetScissorRects(1, &CD3DX12_RECT(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT));
+	commandList->RSSetScissorRects(1, &CD3DX12_RECT(0, 0, SETTING_VALUE::WINDOW_WIDTH, SETTING_VALUE::WINDOW_HEIGHT));
 
 	// 全画面クリア
 	commandList->ClearRenderTargetView(rtvH, clearColor, 0, nullptr);

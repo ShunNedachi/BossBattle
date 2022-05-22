@@ -28,7 +28,7 @@ void FrameFixed::PreWait()
 	{
 		startTime = clock();
 	}
-	if (count == GAME_FRAME)
+	if (count == SETTING_VALUE::GAME_FRAME)
 	{
 		startTime = clock();
 		count = 0;
@@ -40,7 +40,7 @@ void FrameFixed::PreWait()
 void FrameFixed::PostWait()
 {
 	TookTime = clock() - startTime;
-	WaitTime = count * 1000 / GAME_FRAME - TookTime;
+	WaitTime = count * 1000 / SETTING_VALUE::GAME_FRAME - TookTime;
 	if (WaitTime > 0)
 	{
 		Sleep(WaitTime);

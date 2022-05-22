@@ -1,22 +1,22 @@
-#include "ClearScene.h"
+#include "EndScene.h"
 #include"GameFunction.h"
 
-ClearScene::~ClearScene()
+
+EndScene::~EndScene()
 {
 	objectManager->Destroy();
 }
 
-void ClearScene::Initalize()
+void EndScene::Initalize()
 {
 	objectManager = ObjectManager::GetInstance();
 
-
-	GameFunction::LoadClearSceneTexture();
-
-	objectManager->AddSprite(clearSprite, { WINDOW_WIDTH / 2,WINDOW_HEIGHT / 2 });
+	GameFunction::LoadEndSceneTexture();
+	objectManager->AddSprite(endSprite, { SETTING_VALUE::WINDOW_WIDTH / 2,SETTING_VALUE::WINDOW_HEIGHT / 2 });
 }
 
-void ClearScene::Update()
+
+void EndScene::Update()
 {
 	Input* input = Input::GetInstance();
 	Xinput* xinput = Xinput::GetInstance();
@@ -24,10 +24,10 @@ void ClearScene::Update()
 	if (IsNext())NextScene(SceneManager::GetInstance());
 
 	// ƒV[ƒ“•ÏX
-	if (xinput->TriggerButton(CONTROLLER_1) & XINPUT_BUTTON_A || input->TriggerKey(DIK_SPACE))isNext = true;
+	if (xinput->TriggerButton(CONTROLLER_1)& XINPUT_BUTTON_A || input->TriggerKey(DIK_SPACE))isNext = true;
 }
 
-void ClearScene::Draw()
+void EndScene::Draw()
 {
 	std::vector<Sprite2D*> spriteArray = *objectManager->GetSpriteArray();
 
@@ -35,9 +35,11 @@ void ClearScene::Draw()
 	{
 		spriteArray[i]->Draw();
 	}
+	//objectManager->Draw();
 }
 
-void ClearScene::NextScene(SceneManager* nowScene)
+void EndScene::NextScene(SceneManager* nowScene)
 {
 	nowScene->ChangeScene(new TitleScene());
 }
+
